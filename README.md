@@ -2,7 +2,7 @@
 
 A single-page dynasty fantasy football dashboard built on the public [Sleeper API](https://docs.sleeper.com). No backend, no login, no build tools — just drop it on GitHub Pages and go.
 
-**[Live Demo →](https://yourusername.github.io/sleeper-league-dashboard)**
+**[Live Demo →](https://nageemsemaj.github.io/sleeper-league-dashboard)**
 
 ![Dashboard preview](preview.png)
 

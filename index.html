@@ -199,6 +199,11 @@ table.st tr:hover td{background:var(--card-h)}
 <script>
 const BASE='https://api.sleeper.app/v1';
 const SEASON=new Date().getFullYear().toString();
+
+// chart instances -- must be destroyed before reuse
+let ageChart=null;
+let txChart=null;
+
 let S={leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],players:{},nflState:null,week:1};
 
 async function api(p){const r=await fetch(BASE+p);if(!r.ok)throw new Error('API '+r.status+' '+p);return r.json();}
@@ -321,9 +326,12 @@ function renderAge(){
     const cls=d.avg<26?'ac':d.avg<=28?'aa':'ar';
     return`<div class="arow"><span class="al">${dn(d.r)}</span><div class="abt"><div class="abf ${cls}" style="width:${Math.max(8,pct)}%"></div></div><span class="av">${d.avg||'?'}</span></div>`;
   }).join('');
+
   const bk={'22-24':0,'25-26':0,'27-28':0,'29-30':0,'31+':0};
   S.rosters.forEach(r=>(r.players||[]).forEach(p=>{const a=S.players[p]?.age;if(!a)return;if(a<=24)bk['22-24']++;else if(a<=26)bk['25-26']++;else if(a<=28)bk['27-28']++;else if(a<=30)bk['29-30']++;else bk['31+']++;}));
-  new Chart(document.getElementById('ac').getContext('2d'),{type:'bar',data:{labels:Object.keys(bk),datasets:[{label:'Players',data:Object.values(bk),backgroundColor:['#22c55e','#22c55e','#eab308','#ef4444','#ef4444'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});
+
+  if(ageChart){ageChart.destroy();ageChart=null;}
+  ageChart=new Chart(document.getElementById('ac').getContext('2d'),{type:'bar',data:{labels:Object.keys(bk),datasets:[{label:'Players',data:Object.values(bk),backgroundColor:['#22c55e','#22c55e','#eab308','#ef4444','#ef4444'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});
 }
 
 function renderTx(){
@@ -361,7 +369,9 @@ function renderTx(){
 
   const wv={};for(let w=1;w<=S.week;w++)wv['Wk '+w]=0;
   S.transactions.filter(t=>t.status==='complete').forEach(t=>{const k='Wk '+t.leg;if(wv[k]!==undefined)wv[k]++;});
-  new Chart(document.getElementById('txch').getContext('2d'),{type:'line',data:{labels:Object.keys(wv),datasets:[{label:'Transactions',data:Object.values(wv),borderColor:'#7c5cfc',backgroundColor:'rgba(124,92,252,.12)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#7c5cfc',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',maxTicksLimit:10}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});
+
+  if(txChart){txChart.destroy();txChart=null;}
+  txChart=new Chart(document.getElementById('txch').getContext('2d'),{type:'line',data:{labels:Object.keys(wv),datasets:[{label:'Transactions',data:Object.values(wv),borderColor:'#7c5cfc',backgroundColor:'rgba(124,92,252,.12)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#7c5cfc',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',maxTicksLimit:10}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});
 }
 
 function renderMgr(){
@@ -419,7 +429,13 @@ function lbl(t){hide('entry');hide('picker');hide('dash');document.getElementByI
 function hideLoad(){hide('loading');}
 function setErr(m){document.getElementById('err').textContent=m;hideLoad();}
 function clearErr(){document.getElementById('err').textContent='';}
-function resetToEntry(){hide('dash');hide('picker');hideLoad();hide('clb');clearErr();show('entry');S={...S,leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],nflState:null,week:1};}
+
+function resetToEntry(){
+  if(ageChart){ageChart.destroy();ageChart=null;}
+  if(txChart){txChart.destroy();txChart=null;}
+  hide('dash');hide('picker');hideLoad();hide('clb');clearErr();show('entry');
+  S={...S,leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],nflState:null,week:1};
+}
 
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')closeModD();

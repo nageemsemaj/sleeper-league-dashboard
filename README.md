@@ -66,7 +66,7 @@ To host it publicly on GitHub Pages:
 
 I built this after noticing that dynasty managers — myself included — were jumping between the Sleeper app, spreadsheets, and dynasty value sites just to get a basic read on their league. The goal was a zero-friction snapshot: paste your username, see everything that matters.
 
-This is part of an ongoing portfolio of tools built around fantasy sports data. See also: [sleeper-dynasty-roster-sync](https://github.com/yourusername/sleeper-dynasty-roster-sync), a Google Apps Script that syncs Sleeper roster data to Google Sheets.
+This is part of an ongoing portfolio of tools built around fantasy sports data. See also: [sleeper-dynasty-roster-sync](https://github.com/nageemsemaj/sleeper-dynasty-roster-sync), a Google Apps Script that syncs Sleeper roster data to Google Sheets.
 
 ---
 

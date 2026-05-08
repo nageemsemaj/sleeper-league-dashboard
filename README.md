@@ -4,7 +4,7 @@ A single-page dynasty fantasy football dashboard built on the public [Sleeper AP
 
 **[Live Demo →](https://nageemsemaj.github.io/sleeper-league-dashboard)**
 
-![Dashboard preview](preview.png)
+![Dashboard preview](sleeperHealth.png)
 
 ---
 

@@ -73,7 +73,7 @@ This is part of an ongoing portfolio of tools built around fantasy sports data. 
 ## Roadmap
 
 - [ ] Injury and news feed per roster
-- [ ] Historical season comparison (year-over-year standings)
+- [x] Historical season comparison (year-over-year standings)
 - [ ] Dynasty value integration (KeepTradeCut or similar)
 - [ ] Shareable per-manager links
 - [ ] Multi-league switcher without returning to the entry screen

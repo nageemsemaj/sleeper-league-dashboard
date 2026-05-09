@@ -19,6 +19,7 @@ header p{color:var(--ts);font-size:.82rem;margin-top:3px}
 .btn:hover{background:var(--acc-d)}
 .btn-o{background:transparent;border:1px solid var(--brd);color:var(--ts)}
 .btn-o:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-g)}
+.btn-sm{padding:6px 12px;font-size:.78rem}
 .hidden{display:none!important}
 #entry{max-width:460px;margin:52px auto;text-align:center}
 #entry h2{font-size:1.5rem;font-weight:700;margin-bottom:8px}
@@ -43,7 +44,11 @@ header p{color:var(--ts);font-size:.82rem;margin-top:3px}
 #loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:280px;gap:14px}
 .spin{width:34px;height:34px;border:3px solid var(--brd);border-top-color:var(--acc);border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
-.ll{color:var(--ts);font-size:.88rem}
+.spinlabel{color:var(--ts);font-size:.88rem}
+.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--brd);padding-bottom:0}
+.tab{background:none;border:none;color:var(--ts);cursor:pointer;font-size:.9rem;font-weight:600;padding:10px 18px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+.tab:hover{color:var(--tp)}
+.tab.active{color:var(--acc);border-bottom-color:var(--acc)}
 #dash{padding-bottom:56px}
 .sec{margin-bottom:32px}
 .stitle{font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ts);margin-bottom:13px;display:flex;align-items:center;gap:8px}
@@ -68,7 +73,7 @@ table.st tr:hover td{background:var(--card-h)}
 .arow .al{width:150px;font-weight:500;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .abt{flex:1;height:9px;background:var(--brd);border-radius:99px;overflow:hidden}
 .abf{height:100%;border-radius:99px}
-.ac{background:var(--grn)}.aa{background:var(--ylw)}.ar{background:var(--blu)}
+.age-c{background:var(--grn)}.age-a{background:var(--ylw)}.age-r{background:var(--blu)}
 .av{width:35px;text-align:right;color:var(--ts);flex-shrink:0}
 .aleg{display:flex;gap:14px;margin-bottom:13px;flex-wrap:wrap}
 .ali{display:flex;align-items:center;gap:5px;font-size:.75rem;color:var(--ts)}
@@ -81,7 +86,7 @@ table.st tr:hover td{background:var(--card-h)}
 .txid{font-size:.73rem;color:var(--tm);flex-shrink:0}
 .tt{border-left:3px solid var(--acc)}
 .ta{border-left:3px solid var(--grn)}
-.td{border-left:3px solid var(--red)}
+.td2{border-left:3px solid var(--red)}
 .tad{border-left:3px solid var(--ylw)}
 .agr2{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;margin-top:15px}
 .ac2{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:11px 13px;font-size:.81rem}
@@ -119,11 +124,47 @@ table.st tr:hover td{background:var(--card-h)}
 .pDEF{background:rgba(148,163,184,.2);color:#94a3b8}
 .cw{position:relative;height:200px;margin-top:10px}
 .fb{display:flex;justify-content:space-between;align-items:center}
-@media(max-width:580px){.cgrid{grid-template-columns:repeat(2,1fr)}.mgr{grid-template-columns:repeat(2,1fr)}table.st th:nth-child(n+5),table.st td:nth-child(n+5){display:none}}
+#hist-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;gap:14px}
+.hist-chart-wrap{position:relative;height:300px;margin-top:12px}
+.hist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px}
+.hist-card{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:14px}
+.hist-card .hc-name{font-weight:600;font-size:.9rem;margin-bottom:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist-seasons{display:flex;flex-direction:column;gap:4px}
+.hist-row{display:flex;align-items:center;justify-content:space-between;font-size:.8rem;padding:4px 0;border-bottom:1px solid var(--brd)}
+.hist-row:last-child{border-bottom:none}
+.hist-year{color:var(--tm);font-weight:600;width:36px;flex-shrink:0}
+.hist-record{color:var(--ts);width:44px;flex-shrink:0}
+.hist-rank{width:60px;flex-shrink:0}
+.rank-pill{font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:99px;display:inline-block}
+.rank-1{background:rgba(124,92,252,.25);color:#a78bfa;border:1px solid rgba(124,92,252,.4)}
+.rank-playoff{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.rank-bubble{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+.rank-out{background:rgba(71,85,105,.15);color:var(--tm);border:1px solid rgba(71,85,105,.2)}
+.hist-pf{color:var(--ts);font-size:.78rem;flex:1;text-align:right}
+.trend-up{color:var(--grn);font-size:.75rem;font-weight:700}
+.trend-dn{color:var(--red);font-size:.75rem;font-weight:700}
+.trend-fl{color:var(--tm);font-size:.75rem;font-weight:700}
+.joined-badge{font-size:.75rem;color:var(--tm);font-style:italic}
+table.ht{width:100%;border-collapse:collapse;font-size:.82rem}
+table.ht th{text-align:left;padding:6px 10px;color:var(--tm);font-weight:600;border-bottom:1px solid var(--brd);font-size:.7rem;text-transform:uppercase;letter-spacing:.05em}
+table.ht td{padding:8px 10px;border-bottom:1px solid var(--brd);vertical-align:middle}
+table.ht tr:last-child td{border-bottom:none}
+table.ht tr:hover td{background:var(--card-h)}
+.chart-controls{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.cb-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;margin-bottom:4px}
+.cb-item{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem;padding:4px 8px;border-radius:6px;border:1px solid var(--brd);background:var(--bg);transition:border-color .15s;user-select:none}
+.cb-item:hover{border-color:var(--acc)}
+.cb-item input[type=checkbox]{accent-color:var(--acc);width:13px;height:13px;cursor:pointer}
+.cb-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.chart-empty{display:flex;align-items:center;justify-content:center;height:300px;color:var(--tm);font-size:.88rem;border:1px dashed var(--brd);border-radius:var(--rad);margin-top:12px}
+.mtabs{display:flex;gap:2px;margin-bottom:16px;border-bottom:1px solid var(--brd)}
+.mtab{background:none;border:none;color:var(--ts);cursor:pointer;font-size:.82rem;font-weight:600;padding:7px 13px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
+.mtab:hover{color:var(--tp)}
+.mtab.active{color:var(--acc);border-bottom-color:var(--acc)}
+@media(max-width:580px){.cgrid{grid-template-columns:repeat(2,1fr)}.mgr{grid-template-columns:repeat(2,1fr)}table.st th:nth-child(n+5),table.st td:nth-child(n+5){display:none}.hist-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Sleeper League Health Dashboard — enter your username or league ID to view standings, roster age, and activity</h2>
 <header>
   <div class="wrap hdr-row">
     <div><h1>Sleeper <span>League Health</span></h1><p>Dynasty dashboard — powered by the Sleeper API</p></div>
@@ -150,63 +191,121 @@ table.st tr:hover td{background:var(--card-h)}
 
 <div id="loading" class="hidden">
   <div class="spin"></div>
-  <p class="ll" id="lbl">Loading...</p>
+  <p class="spinlabel" id="lbl">Loading...</p>
 </div>
 
 <div id="dash" class="hidden">
-  <div class="sec"><h2 class="stitle">League Snapshot</h2><div class="cgrid" id="snap"></div></div>
-  <div class="sec"><h2 class="stitle">Standings &amp; Playoff Picture</h2>
-    <div class="card" style="overflow-x:auto">
-      <table class="st"><thead><tr><th>#</th><th>Team</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead>
-      <tbody id="sb"></tbody></table>
-    </div>
+  <div class="tabs">
+    <button class="tab active" id="tab-season" onclick="switchTab('season')">This Season</button>
+    <button class="tab" id="tab-history" onclick="switchTab('history')">History</button>
   </div>
-  <div class="sec"><h2 class="stitle">Roster Age &amp; Dynasty Health</h2>
-    <div class="card">
-      <div class="aleg">
-        <div class="ali"><div class="ald" style="background:var(--grn)"></div>Contending (avg &lt;26)</div>
-        <div class="ali"><div class="ald" style="background:var(--ylw)"></div>Aging Core (26–28)</div>
-        <div class="ali"><div class="ald" style="background:var(--blu)"></div>Rebuilding (&gt;28)</div>
+
+  <div id="pane-season">
+    <div class="sec"><h2 class="stitle">League Snapshot</h2><div class="cgrid" id="snap"></div></div>
+    <div class="sec"><h2 class="stitle">Standings &amp; Playoff Picture</h2>
+      <div class="card" style="overflow-x:auto">
+        <table class="st"><thead><tr><th>#</th><th>Team</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead>
+        <tbody id="sb"></tbody></table>
       </div>
-      <div class="agrid" id="ag"></div>
-      <div class="cw"><canvas id="ac"></canvas></div>
+    </div>
+    <div class="sec"><h2 class="stitle">Roster Age &amp; Dynasty Health</h2>
+      <div class="card">
+        <div class="aleg">
+          <div class="ali"><div class="ald" style="background:var(--grn)"></div>Contending (avg &lt;26)</div>
+          <div class="ali"><div class="ald" style="background:var(--ylw)"></div>Aging Core (26–28)</div>
+          <div class="ali"><div class="ald" style="background:var(--blu)"></div>Rebuilding (&gt;28)</div>
+        </div>
+        <div class="agrid" id="ag"></div>
+        <div class="cw"><canvas id="ac"></canvas></div>
+      </div>
+    </div>
+    <div class="sec"><h2 class="stitle">Trade &amp; Waiver Activity</h2>
+      <div class="card">
+        <div class="fb" style="margin-bottom:13px"><span style="font-size:.85rem;color:var(--ts)">Recent transactions (last 3 weeks)</span><span id="txc" style="font-size:.78rem;color:var(--tm)"></span></div>
+        <div class="txf" id="txf"></div>
+        <div class="cw" style="height:170px"><canvas id="txch"></canvas></div>
+        <h4 style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tm);margin-top:18px;margin-bottom:8px">Manager Activity</h4>
+        <div class="agr2" id="acg"></div>
+      </div>
+    </div>
+    <div class="sec"><h2 class="stitle">Manager Spotlight</h2>
+      <p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Click any manager to see their full roster, age breakdown, and transaction history.</p>
+      <div class="mgr" id="mg"></div>
     </div>
   </div>
-  <div class="sec"><h2 class="stitle">Trade &amp; Waiver Activity</h2>
-    <div class="card">
-      <div class="fb" style="margin-bottom:13px"><span style="font-size:.85rem;color:var(--ts)">Recent transactions (last 3 weeks)</span><span id="txc" style="font-size:.78rem;color:var(--tm)"></span></div>
-      <div class="txf" id="txf"></div>
-      <div class="cw" style="height:170px"><canvas id="txch"></canvas></div>
-      <h4 style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--tm);margin-top:18px;margin-bottom:8px">Manager Activity</h4>
-      <div class="agr2" id="acg"></div>
+
+  <div id="pane-history" class="hidden">
+    <div id="hist-loading" class="hidden"><div class="spin"></div><p class="spinlabel" id="hist-lbl">Loading historical seasons...</p></div>
+    <div id="hist-content" class="hidden">
+      <div class="sec">
+        <h2 class="stitle">Season Standings Trajectory</h2>
+        <div class="card">
+          <p style="font-size:.8rem;color:var(--ts);margin-bottom:8px">Final rank by season — lower is better. Champion determined by playoff bracket for completed seasons.</p>
+          <div class="chart-controls">
+            <button class="btn btn-o btn-sm" onclick="selectAllManagers()">Select All</button>
+            <button class="btn btn-o btn-sm" onclick="clearAllManagers()">Clear All</button>
+          </div>
+          <div class="cb-grid" id="cb-grid"></div>
+          <div id="hist-chart-area"><div class="hist-chart-wrap"><canvas id="hist-chart"></canvas></div></div>
+        </div>
+      </div>
+      <div class="sec">
+        <h2 class="stitle">Year-over-Year Breakdown</h2>
+        <div class="card" style="overflow-x:auto">
+          <table class="ht"><thead id="hist-thead"></thead><tbody id="hist-tbody"></tbody></table>
+        </div>
+      </div>
+      <div class="sec">
+        <h2 class="stitle">Manager Histories</h2>
+        <p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Sorted by current season standing. Trend shows direction from earliest to most recent season.</p>
+        <div class="hist-grid" id="hist-grid"></div>
+      </div>
     </div>
-  </div>
-  <div class="sec"><h2 class="stitle">Manager Spotlight</h2>
-    <p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Click any manager to see their full roster, age breakdown, and transaction history.</p>
-    <div class="mgr" id="mg"></div>
   </div>
 </div>
-
 </main>
 
 <div class="ov hidden" id="ov" onclick="closeMod(event)">
-  <div class="mod" id="mod">
-    <div class="mhdr"><div><h3 id="mtn"></h3><p style="font-size:.8rem;color:var(--ts);margin-top:2px" id="mmn"></p></div><button class="mcl" onclick="closeModD()">×</button></div>
-    <div id="mb"></div>
+  <div class="mod">
+    <div class="mhdr">
+      <div><h3 id="mtn"></h3><p style="font-size:.8rem;color:var(--ts);margin-top:2px" id="mmn"></p></div>
+      <button class="mcl" onclick="closeModD()">×</button>
+    </div>
+    <div class="mtabs">
+      <button class="mtab active" id="mtab-roster" onclick="switchMTab('roster')">Roster</button>
+      <button class="mtab" id="mtab-history" onclick="switchMTab('history')">History</button>
+    </div>
+    <div id="mb-roster"></div>
+    <div id="mb-history" class="hidden"></div>
   </div>
 </div>
 
 <script>
 const BASE='https://api.sleeper.app/v1';
-const SEASON=new Date().getFullYear().toString();
+const CUR_YEAR=new Date().getFullYear();
+const SEASON=CUR_YEAR.toString();
+const HIST_SEASONS=5;
+const COLORS=['#7c5cfc','#22c55e','#3b82f6','#eab308','#ef4444','#f97316','#06b6d4','#ec4899','#84cc16','#a855f7','#14b8a6','#f43f5e'];
 
-// chart instances -- must be destroyed before reuse
-let ageChart=null;
-let txChart=null;
-
+let ageChart=null,txChart=null,histChart=null;
+let histLoaded=false;
+let H={};
+let currentNames={};
 let S={leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],players:{},nflState:null,week:1};
 
-async function api(p){const r=await fetch(BASE+p);if(!r.ok)throw new Error('API '+r.status+' '+p);return r.json();}
+async function api(p){const r=await fetch(BASE+p);if(!r.ok)throw new Error('API '+r.status);return r.json();}
+
+// Fetch winners bracket and return the champion roster_id, or null if unavailable
+async function getChampionRosterId(leagueId){
+  try{
+    const bracket=await api('/league/'+leagueId+'/winners_bracket');
+    if(!bracket||!bracket.length)return null;
+    // Find the championship matchup -- highest round number with a winner
+    const maxRound=Math.max(...bracket.map(m=>m.r||0));
+    const final=bracket.find(m=>m.r===maxRound&&m.w);
+    return final?final.w:null;
+  }catch(e){return null;}
+}
 
 async function loadPlayers(){
   const c=localStorage.getItem('sl_pl_v1');
@@ -250,13 +349,14 @@ function showPicker(u,leagues){
 
 async function loadDash(id){
   hide('entry');hide('picker');lbl('Loading NFL state...');
-  S.leagueId=id;
+  S.leagueId=id;histLoaded=false;H={};currentNames={};
   try{
     S.nflState=await api('/state/nfl');
     S.week=Math.max(1,S.nflState.week||1);
     lbl('Loading league...');
     const[league,rosters,users]=await Promise.all([api('/league/'+id),api('/league/'+id+'/rosters'),api('/league/'+id+'/users')]);
     S.league=league;S.rosters=rosters;S.users=users;
+    S.users.forEach(u=>{currentNames[u.user_id]=u.display_name||u.username||'Unknown';});
     lbl('Loading matchups...');
     const wks=Array.from({length:S.week},(_,i)=>i+1);
     const mrs=await Promise.all(wks.map(w=>api('/league/'+id+'/matchups/'+w)));
@@ -271,13 +371,211 @@ async function loadDash(id){
   }catch(e){hideLoad();setErr('Failed: '+(e.message||'Unknown error'));show('entry');}
 }
 
+// ── History loader with bracket-based champion detection ──
+async function loadHistory(){
+  if(histLoaded)return;
+  show('hist-loading');hide('hist-content');
+  const seasons=[];
+  let cur=S.league;
+  for(let i=0;i<HIST_SEASONS-1;i++){
+    const prevId=cur.previous_league_id;
+    if(!prevId)break;
+    try{
+      document.getElementById('hist-lbl').textContent=`Loading ${CUR_YEAR-i-1} season...`;
+      const[lg,ro,us]=await Promise.all([
+        api('/league/'+prevId),
+        api('/league/'+prevId+'/rosters'),
+        api('/league/'+prevId+'/users')
+      ]);
+      us.forEach(u=>{if(!currentNames[u.user_id])currentNames[u.user_id]=u.display_name||u.username||'Unknown';});
+      seasons.unshift({year:CUR_YEAR-i-1,leagueId:prevId,league:lg,rosters:ro,users:us});
+      cur=lg;
+    }catch(e){break;}
+  }
+  seasons.push({year:CUR_YEAR,leagueId:S.leagueId,league:S.league,rosters:S.rosters,users:S.users});
+
+  // Fetch brackets for all completed (non-current) seasons in parallel
+  document.getElementById('hist-lbl').textContent='Loading playoff brackets...';
+  const completedSeasons=seasons.filter(s=>s.year<CUR_YEAR);
+  const bracketResults=await Promise.all(completedSeasons.map(s=>getChampionRosterId(s.leagueId)));
+  const championMap={};
+  completedSeasons.forEach((s,i)=>{if(bracketResults[i])championMap[s.year]=bracketResults[i];});
+
+  H.seasons=seasons.map(s=>{
+    const ps=s.league.settings?.playoff_teams||4;
+    // Sort by regular season record first
+    const sorted=[...s.rosters].sort((a,b)=>{
+      const dw=(b.settings?.wins||0)-(a.settings?.wins||0);
+      return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);
+    });
+
+    // Get bracket champion for this season if available
+    const champRosterId=championMap[s.year]||null;
+
+    // Build standings -- if we have a bracket champion, pin them to rank 1
+    let standings=sorted.map((r,i)=>({
+      rank:i+1,
+      userId:r.owner_id,
+      rosterId:r.roster_id,
+      displayName:currentNames[r.owner_id]||'Unknown',
+      wins:r.settings?.wins||0,
+      losses:r.settings?.losses||0,
+      pf:((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1),
+      playoff:i<ps,
+      champion:champRosterId&&r.roster_id===champRosterId,
+    }));
+
+    // If we found a bracket champion and they aren't already rank 1, fix the ranks
+    if(champRosterId){
+      const champIdx=standings.findIndex(st=>st.rosterId===champRosterId);
+      if(champIdx>0){
+        // Move champ to front, shift everyone else down
+        const champ=standings.splice(champIdx,1)[0];
+        standings.unshift(champ);
+        standings=standings.map((st,i)=>({...st,rank:i+1}));
+      }
+    }
+
+    return{year:s.year,total:s.rosters.length,playoffSpots:ps,champRosterId,standings};
+  });
+
+  const userMap={};
+  H.seasons.forEach(s=>{
+    s.standings.forEach(st=>{
+      if(!st.userId)return;
+      if(!userMap[st.userId])userMap[st.userId]={userId:st.userId,name:currentNames[st.userId]||st.displayName,seasons:{}};
+      userMap[st.userId].seasons[s.year]=st;
+    });
+  });
+  H.userMap=userMap;
+  H.years=H.seasons.map(s=>s.year);
+  H.sortedUsers=Object.values(userMap).sort((a,b)=>{
+    const ar=a.seasons[CUR_YEAR]?.rank||999;
+    const br=b.seasons[CUR_YEAR]?.rank||999;
+    return ar-br;
+  });
+
+  histLoaded=true;
+  hide('hist-loading');
+  renderHistory();
+  show('hist-content');
+}
+
+// rank pill -- rank-1 only for completed seasons where bracket confirmed champion
+function rankPill(st,ps,year){
+  if(year===CUR_YEAR){
+    // Current season: no champion yet, use regular season position
+    if(st.rank<=ps)return'rank-playoff';
+    if(st.rank===ps+1)return'rank-bubble';
+    return'rank-out';
+  }
+  // Completed season: use bracket champion flag for rank-1
+  if(st.champion)return'rank-1';
+  if(st.rank<=ps)return'rank-playoff';
+  if(st.rank===ps+1)return'rank-bubble';
+  return'rank-out';
+}
+
+function renderHistory(){buildCheckboxes();renderHistChart();renderHistTable();renderHistGrid();}
+
+function buildCheckboxes(){
+  document.getElementById('cb-grid').innerHTML=H.sortedUsers.map((u,i)=>{
+    const col=COLORS[i%COLORS.length];
+    return`<label class="cb-item"><input type="checkbox" checked data-uid="${u.userId}" onchange="onCheckboxChange()"/><span class="cb-dot" style="background:${col}"></span><span>${u.name}</span></label>`;
+  }).join('');
+}
+
+function getCheckedUids(){return[...document.querySelectorAll('#cb-grid input[type=checkbox]:checked')].map(c=>c.dataset.uid);}
+function selectAllManagers(){document.querySelectorAll('#cb-grid input[type=checkbox]').forEach(c=>c.checked=true);onCheckboxChange();}
+function clearAllManagers(){document.querySelectorAll('#cb-grid input[type=checkbox]').forEach(c=>c.checked=false);onCheckboxChange();}
+function onCheckboxChange(){renderHistChart();}
+
+function renderHistChart(){
+  const checkedUids=new Set(getCheckedUids());
+  const users=H.sortedUsers.filter(u=>checkedUids.has(u.userId));
+  const chartArea=document.getElementById('hist-chart-area');
+  if(histChart){histChart.destroy();histChart=null;}
+  if(!users.length){
+    chartArea.innerHTML=`<div class="chart-empty">Select one or more managers to view their trajectory</div>`;
+    return;
+  }
+  if(!document.getElementById('hist-chart')){
+    chartArea.innerHTML=`<div class="hist-chart-wrap"><canvas id="hist-chart"></canvas></div>`;
+  }
+  const years=H.years;
+  const maxRank=Math.max(...H.seasons.map(s=>s.total),1);
+  const datasets=users.map(u=>{
+    const origIdx=H.sortedUsers.findIndex(x=>x.userId===u.userId);
+    const col=COLORS[origIdx%COLORS.length];
+    return{label:u.name,data:years.map(y=>u.seasons[y]?.rank||null),borderColor:col,backgroundColor:col+'33',borderWidth:2,pointRadius:5,pointBackgroundColor:col,pointBorderColor:col,fill:false,tension:.3,spanGaps:true};
+  });
+  histChart=new Chart(document.getElementById('hist-chart').getContext('2d'),{
+    type:'line',data:{labels:years,datasets},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:11},boxWidth:12,padding:12}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: #${c.raw}`}}},
+      scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',stepSize:1,precision:0},reverse:true,min:1,max:maxRank,title:{display:true,text:'Final Rank',color:'#475569',font:{size:11}}}}}
+  });
+}
+
+function renderHistTable(){
+  const years=H.years;
+  document.getElementById('hist-thead').innerHTML=`<tr><th>Manager</th>${years.map(y=>`<th>${y}</th>`).join('')}<th>Trend</th></tr>`;
+  document.getElementById('hist-tbody').innerHTML=H.sortedUsers.map(u=>{
+    const cells=years.map(y=>{
+      const s=u.seasons[y];
+      if(!s)return`<td><span style="color:var(--tm);font-size:.75rem">—</span></td>`;
+      const season=H.seasons.find(se=>se.year===y);
+      const ps=season?.playoffSpots||4;
+      const cls=rankPill(s,ps,y);
+      const label=s.champion?'🏆 #1':`#${s.rank}`;
+      return`<td><span class="rank-pill ${cls}">${label}</span><div style="font-size:.7rem;color:var(--tm);margin-top:2px">${s.wins}-${s.losses}</div></td>`;
+    }).join('');
+    return`<tr><td style="font-weight:600;white-space:nowrap">${u.name}</td>${cells}<td>${getTrend(u)}</td></tr>`;
+  }).join('');
+}
+
+function renderHistGrid(){
+  document.getElementById('hist-grid').innerHTML=H.sortedUsers.map(u=>{
+    const rows=H.years.map(y=>{
+      const s=u.seasons[y];
+      if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;
+      const season=H.seasons.find(se=>se.year===y);
+      const ps=season?.playoffSpots||4;
+      const cls=rankPill(s,ps,y);
+      const label=s.champion?'🏆 #1':`#${s.rank}`;
+      return`<div class="hist-row"><span class="hist-year">${y}</span><span class="hist-record">${s.wins}-${s.losses}</span><span class="hist-rank"><span class="rank-pill ${cls}">${label}</span></span><span class="hist-pf">${s.pf} pts</span></div>`;
+    }).join('');
+    return`<div class="hist-card"><div class="hc-name">${u.name} ${getTrend(u)}</div><div class="hist-seasons">${rows}</div></div>`;
+  }).join('');
+}
+
+function getTrend(u){
+  const ranks=H.years.map(y=>u.seasons[y]?.rank).filter(Boolean);
+  if(ranks.length<2)return`<span class="trend-fl">—</span>`;
+  const first=ranks[0],last=ranks[ranks.length-1];
+  if(last<first)return`<span class="trend-up">▲</span>`;
+  if(last>first)return`<span class="trend-dn">▼</span>`;
+  return`<span class="trend-fl">—</span>`;
+}
+
+function switchTab(t){
+  document.getElementById('tab-season').classList.toggle('active',t==='season');
+  document.getElementById('tab-history').classList.toggle('active',t==='history');
+  document.getElementById('pane-season').classList.toggle('hidden',t!=='season');
+  document.getElementById('pane-history').classList.toggle('hidden',t!=='history');
+  if(t==='history'&&!histLoaded)loadHistory();
+}
+
+function switchMTab(t){
+  document.getElementById('mtab-roster').classList.toggle('active',t==='roster');
+  document.getElementById('mtab-history').classList.toggle('active',t==='history');
+  document.getElementById('mb-roster').classList.toggle('hidden',t!=='roster');
+  document.getElementById('mb-history').classList.toggle('hidden',t!=='history');
+}
+
 function dn(r){const u=S.users.find(u=>u.user_id===r.owner_id)||{};return u.metadata?.team_name||u.display_name||'Unknown';}
 
-function renderDash(){
-  hideLoad();
-  renderSnap();renderStandings();renderAge();renderTx();renderMgr();
-  show('dash');show('clb');
-}
+function renderDash(){hideLoad();renderSnap();renderStandings();renderAge();renderTx();renderMgr();show('dash');show('clb');switchTab('season');}
 
 function renderSnap(){
   const l=S.league;
@@ -300,10 +598,7 @@ function getStreak(r){
 
 function renderStandings(){
   const ps=S.league.settings?.playoff_teams||4;
-  const sorted=[...S.rosters].sort((a,b)=>{
-    const dw=(b.settings?.wins||0)-(a.settings?.wins||0);
-    return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);
-  });
+  const sorted=[...S.rosters].sort((a,b)=>{const dw=(b.settings?.wins||0)-(a.settings?.wins||0);return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);});
   document.getElementById('sb').innerHTML=sorted.map((r,i)=>{
     const rk=i+1,w=r.settings?.wins||0,l=r.settings?.losses||0;
     const pf=((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1);
@@ -315,21 +610,11 @@ function renderStandings(){
 }
 
 function renderAge(){
-  const rd=S.rosters.map(r=>{
-    const ages=(r.players||[]).map(p=>S.players[p]?.age).filter(Boolean);
-    const avg=ages.length?ages.reduce((a,b)=>a+b,0)/ages.length:0;
-    return{r,avg:Math.round(avg*10)/10};
-  }).sort((a,b)=>a.avg-b.avg);
+  const rd=S.rosters.map(r=>{const ages=(r.players||[]).map(p=>S.players[p]?.age).filter(Boolean);const avg=ages.length?ages.reduce((a,b)=>a+b,0)/ages.length:0;return{r,avg:Math.round(avg*10)/10};}).sort((a,b)=>a.avg-b.avg);
   const mn=Math.min(...rd.map(d=>d.avg)),mx=Math.max(...rd.map(d=>d.avg));
-  document.getElementById('ag').innerHTML=rd.map(d=>{
-    const pct=mx===mn?50:((d.avg-mn)/(mx-mn))*100;
-    const cls=d.avg<26?'ac':d.avg<=28?'aa':'ar';
-    return`<div class="arow"><span class="al">${dn(d.r)}</span><div class="abt"><div class="abf ${cls}" style="width:${Math.max(8,pct)}%"></div></div><span class="av">${d.avg||'?'}</span></div>`;
-  }).join('');
-
+  document.getElementById('ag').innerHTML=rd.map(d=>{const pct=mx===mn?50:((d.avg-mn)/(mx-mn))*100;const cls=d.avg<26?'age-c':d.avg<=28?'age-a':'age-r';return`<div class="arow"><span class="al">${dn(d.r)}</span><div class="abt"><div class="abf ${cls}" style="width:${Math.max(8,pct)}%"></div></div><span class="av">${d.avg||'?'}</span></div>`;}).join('');
   const bk={'22-24':0,'25-26':0,'27-28':0,'29-30':0,'31+':0};
   S.rosters.forEach(r=>(r.players||[]).forEach(p=>{const a=S.players[p]?.age;if(!a)return;if(a<=24)bk['22-24']++;else if(a<=26)bk['25-26']++;else if(a<=28)bk['27-28']++;else if(a<=30)bk['29-30']++;else bk['31+']++;}));
-
   if(ageChart){ageChart.destroy();ageChart=null;}
   ageChart=new Chart(document.getElementById('ac').getContext('2d'),{type:'bar',data:{labels:Object.keys(bk),datasets:[{label:'Players',data:Object.values(bk),backgroundColor:['#22c55e','#22c55e','#eab308','#ef4444','#ef4444'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});
 }
@@ -340,7 +625,7 @@ function renderTx(){
   document.getElementById('txc').textContent=`${trades.length} trades · ${adds.length} adds/drops`;
   document.getElementById('txf').innerHTML=txs.slice(0,10).map(t=>{
     const icon=t.type==='trade'?'🔄':t.adds&&Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'🔀':'➕';
-    const cls=t.type==='trade'?'tt':t.adds&&Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'tad':t.adds&&Object.keys(t.adds||{}).length?'ta':'td';
+    const cls=t.type==='trade'?'tt':t.adds&&Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'tad':t.adds&&Object.keys(t.adds||{}).length?'ta':'td2';
     const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';
     let body='';
     if(t.type==='trade'){
@@ -358,18 +643,12 @@ function renderTx(){
     }
     return`<div class="txi ${cls}"><span>${icon}</span><div class="txib">${body}</div><span class="txid">${date}</span></div>`;
   }).join('');
-
   const am={};S.rosters.forEach(r=>{am[r.roster_id]=0;});
   S.transactions.filter(t=>t.status==='complete').forEach(t=>(t.roster_ids||[]).forEach(rid=>{if(am[rid]!==undefined)am[rid]++;}));
-  const mx=Math.max(...Object.values(am),1);
-  document.getElementById('acg').innerHTML=S.rosters.map(r=>{
-    const c=am[r.roster_id]||0;
-    return`<div class="ac2"><div class="am">${dn(r)}</div><div style="font-size:.72rem;color:var(--tm)">${c} move${c!==1?'s':''}</div><div class="abt2"><div class="abf2" style="width:${(c/mx)*100}%"></div></div></div>`;
-  }).join('');
-
+  const mx2=Math.max(...Object.values(am),1);
+  document.getElementById('acg').innerHTML=S.rosters.map(r=>{const c=am[r.roster_id]||0;return`<div class="ac2"><div class="am">${dn(r)}</div><div style="font-size:.72rem;color:var(--tm)">${c} move${c!==1?'s':''}</div><div class="abt2"><div class="abf2" style="width:${(c/mx2)*100}%"></div></div></div>`;}).join('');
   const wv={};for(let w=1;w<=S.week;w++)wv['Wk '+w]=0;
   S.transactions.filter(t=>t.status==='complete').forEach(t=>{const k='Wk '+t.leg;if(wv[k]!==undefined)wv[k]++;});
-
   if(txChart){txChart.destroy();txChart=null;}
   txChart=new Chart(document.getElementById('txch').getContext('2d'),{type:'line',data:{labels:Object.keys(wv),datasets:[{label:'Transactions',data:Object.values(wv),borderColor:'#7c5cfc',backgroundColor:'rgba(124,92,252,.12)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#7c5cfc',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',maxTicksLimit:10}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});
 }
@@ -408,7 +687,7 @@ function openMod(rid){
     const added=Object.keys(t.adds||{}).map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');
     return`<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--brd);font-size:.8rem"><span>${t.type==='trade'?'🔄':'➕'}</span><span style="flex:1;color:var(--ts)">${added||'Trade'}</span><span style="color:var(--tm)">${date}</span></div>`;
   }).join(''):`<p style="color:var(--tm);font-size:.8rem">No recent transactions</p>`;
-  document.getElementById('mb').innerHTML=`
+  document.getElementById('mb-roster').innerHTML=`
     <div class="ms"><div style="display:flex;gap:12px;margin-bottom:14px">
       <div class="sc" style="flex:1"><div class="sv">${w}-${l}</div><div class="sl">Record</div></div>
       <div class="sc" style="flex:1"><div class="sv">${pf}</div><div class="sl">Pts For</div></div>
@@ -417,26 +696,47 @@ function openMod(rid){
     <div class="ms"><h4>Starters</h4><div>${starters.map(rp).join('')}</div></div>
     <div class="ms"><h4>Bench</h4><div>${bench.slice(0,10).map(rp).join('')}</div></div>
     <div class="ms"><h4>Recent Transactions</h4>${txH}</div>`;
+  const uid=r.owner_id;
+  let histHtml='';
+  if(histLoaded&&H.userMap&&H.userMap[uid]){
+    const ud=H.userMap[uid];
+    const rows=H.years.map(y=>{
+      const s=ud.seasons[y];
+      if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;
+      const season=H.seasons.find(se=>se.year===y);
+      const ps=season?.playoffSpots||4;
+      const cls=rankPill(s,ps,y);
+      const label=s.champion?'🏆 #1':`#${s.rank}`;
+      return`<div class="hist-row" style="padding:6px 0;border-bottom:1px solid var(--brd)"><span class="hist-year">${y}</span><span class="hist-record" style="color:var(--ts)">${s.wins}-${s.losses}</span><span class="hist-rank"><span class="rank-pill ${cls}">${label}</span></span><span class="hist-pf">${s.pf} pts</span></div>`;
+    }).join('');
+    histHtml=`<div class="ms"><h4>Season History</h4><div class="hist-seasons">${rows}</div><p style="font-size:.78rem;color:var(--tm);margin-top:10px">Overall trend: ${getTrend(ud)}</p></div>`;
+  }else if(!histLoaded){
+    histHtml=`<p style="font-size:.83rem;color:var(--tm)">Open the History tab first to load season data.</p>`;
+  }else{
+    histHtml=`<p style="font-size:.83rem;color:var(--tm)">No historical data found for this manager.</p>`;
+  }
+  document.getElementById('mb-history').innerHTML=histHtml;
+  switchMTab('roster');
   document.getElementById('ov').classList.remove('hidden');
   document.body.style.overflow='hidden';
 }
+
 function closeMod(e){if(e.target===document.getElementById('ov'))closeModD();}
 function closeModD(){document.getElementById('ov').classList.add('hidden');document.body.style.overflow='';}
-
 function show(id){document.getElementById(id)?.classList.remove('hidden')}
 function hide(id){document.getElementById(id)?.classList.add('hidden')}
 function lbl(t){hide('entry');hide('picker');hide('dash');document.getElementById('lbl').textContent=t;show('loading');}
 function hideLoad(){hide('loading');}
 function setErr(m){document.getElementById('err').textContent=m;hideLoad();}
 function clearErr(){document.getElementById('err').textContent='';}
-
 function resetToEntry(){
   if(ageChart){ageChart.destroy();ageChart=null;}
   if(txChart){txChart.destroy();txChart=null;}
+  if(histChart){histChart.destroy();histChart=null;}
   hide('dash');hide('picker');hideLoad();hide('clb');clearErr();show('entry');
+  histLoaded=false;H={};currentNames={};
   S={...S,leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],nflState:null,week:1};
 }
-
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape')closeModD();
   if(e.key==='Enter'&&!document.getElementById('entry').classList.contains('hidden')){

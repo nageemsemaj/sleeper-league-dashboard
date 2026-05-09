@@ -60,6 +60,19 @@ To host it publicly on GitHub Pages:
 - **Transaction history**: Loads the last 3 weeks of transactions. Earlier weeks aren't fetched to keep load times reasonable.
 - **Multiple leagues**: If you enter a username, you'll see all NFL leagues tied to that account for the current season — dynasty, redraft, and keeper alike.
 
+## Keeping Trade Values Current
+
+Player values in the Trade Analyzer are stored as a static table in `index.html` and need periodic manual updates. Dynasty values shift significantly after injuries, draft capital changes, and performance.
+
+**To update:**
+1. Visit [keeptradecut.com/dynasty-rankings](https://keeptradecut.com/dynasty-rankings) (use Superflex, .5 PPR to match the current table)
+2. Open `index.html` and find the `const KTC={` block near the top of the `<script>` tag
+3. Update player values to match current KTC numbers
+4. Update the "Last updated" date in the `ktc-update-row` div in the HTML
+5. Commit and push
+
+**Recommended cadence:** after the NFL Draft, after Week 1, and at the start of the offseason.
+
 ---
 
 ## Background
@@ -74,7 +87,7 @@ This is part of an ongoing portfolio of tools built around fantasy sports data. 
 
 - [ ] Injury and news feed per roster
 - [x] Historical season comparison (year-over-year standings)
-- [ ] Dynasty value integration (KeepTradeCut or similar)
+- [x] Dynasty value integration (KeepTradeCut or similar)
 - [ ] Shareable per-manager links
 - [ ] Multi-league switcher without returning to the entry screen
 

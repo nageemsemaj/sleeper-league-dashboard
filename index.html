@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Sleeper League Health Dashboard</title>
+<title>Sleeper Dynasty Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{--bg:#0f1117;--card:#1a1d27;--card-h:#21253a;--inp:#12151f;--brd:#2a2d3e;--acc:#7c5cfc;--acc-d:#4e3ab0;--acc-g:rgba(124,92,252,.15);--grn:#22c55e;--ylw:#eab308;--red:#ef4444;--blu:#3b82f6;--tp:#f1f5f9;--ts:#94a3b8;--tm:#475569;--rad:10px;--radl:16px}
@@ -14,6 +14,8 @@ header{padding:20px 0 16px;border-bottom:1px solid var(--brd);margin-bottom:28px
 header h1{font-size:1.3rem;font-weight:700;letter-spacing:-.02em}
 header h1 span{color:var(--acc)}
 header p{color:var(--ts);font-size:.82rem;margin-top:3px}
+header p a{color:var(--acc);text-decoration:none}
+header p a:hover{text-decoration:underline}
 .hdr-row{display:flex;justify-content:space-between;align-items:center}
 .btn{background:var(--acc);border:none;border-radius:var(--rad);color:#fff;cursor:pointer;font-size:.88rem;font-weight:600;padding:10px 18px;transition:background .15s}
 .btn:hover{background:var(--acc-d)}
@@ -45,10 +47,9 @@ header p{color:var(--ts);font-size:.82rem;margin-top:3px}
 .spin{width:34px;height:34px;border:3px solid var(--brd);border-top-color:var(--acc);border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .spinlabel{color:var(--ts);font-size:.88rem}
-.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--brd);padding-bottom:0;flex-wrap:wrap}
+.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--brd);flex-wrap:wrap}
 .tab{background:none;border:none;color:var(--ts);cursor:pointer;font-size:.9rem;font-weight:600;padding:10px 18px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
-.tab:hover{color:var(--tp)}
-.tab.active{color:var(--acc);border-bottom-color:var(--acc)}
+.tab:hover{color:var(--tp)}.tab.active{color:var(--acc);border-bottom-color:var(--acc)}
 #dash{padding-bottom:56px}
 .sec{margin-bottom:32px}
 .stitle{font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ts);margin-bottom:13px;display:flex;align-items:center;gap:8px}
@@ -56,27 +57,22 @@ header p{color:var(--ts);font-size:.82rem;margin-top:3px}
 .card{background:var(--card);border:1px solid var(--brd);border-radius:var(--radl);padding:18px}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px}
 .sc{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:15px;text-align:center}
-.sc .sv{font-size:1.5rem;font-weight:700}
-.sc .sl{font-size:.72rem;color:var(--ts);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
-/* Format badge strip */
-.format-strip{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;align-items:center}
-.format-badge{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:99px;display:inline-block}
-.fb-ppr{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
-.fb-sf{background:rgba(124,92,252,.15);color:#a78bfa;border:1px solid rgba(124,92,252,.4)}
-.fb-te{background:rgba(234,179,8,.15);color:var(--ylw);border:1px solid rgba(234,179,8,.3)}
-.fb-1qb{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
-.fb-dyn{background:rgba(148,163,184,.1);color:var(--ts);border:1px solid rgba(71,85,105,.2)}
-.format-strip-label{font-size:.75rem;color:var(--tm)}
+.sc .sv{font-size:1.5rem;font-weight:700}.sc .sl{font-size:.72rem;color:var(--ts);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
+.league-format-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.lf-label{font-size:.75rem;color:var(--tm);margin-right:2px}
+.lf-pill{font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:99px}
+.lf-sf{background:rgba(124,92,252,.15);color:#a78bfa;border:1px solid rgba(124,92,252,.3)}
+.lf-1qb{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
+.lf-ppr{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.lf-te{background:rgba(234,179,8,.15);color:var(--ylw);border:1px solid rgba(234,179,8,.3)}
+.lf-std{background:rgba(71,85,105,.15);color:var(--ts);border:1px solid rgba(71,85,105,.2)}
 table.st{width:100%;border-collapse:collapse;font-size:.86rem}
 table.st th{text-align:left;padding:7px 11px;color:var(--tm);font-weight:600;border-bottom:1px solid var(--brd);font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}
 table.st td{padding:9px 11px;border-bottom:1px solid var(--brd)}
 table.st tr:last-child td{border-bottom:none}
 table.st tr:hover td{background:var(--card-h)}
-.py{color:var(--grn);font-size:.72rem;font-weight:700}
-.pb{color:var(--ylw);font-size:.72rem;font-weight:700}
-.pn{color:var(--red);font-size:.72rem;font-weight:700}
-.sw{color:var(--grn);font-weight:600}
-.sl2{color:var(--red);font-weight:600}
+.py{color:var(--grn);font-size:.72rem;font-weight:700}.pb{color:var(--ylw);font-size:.72rem;font-weight:700}.pn{color:var(--red);font-size:.72rem;font-weight:700}
+.sw{color:var(--grn);font-weight:600}.sl2{color:var(--red);font-weight:600}
 .agrid{display:flex;flex-direction:column;gap:9px}
 .arow{display:flex;align-items:center;gap:11px;font-size:.83rem}
 .arow .al{width:150px;font-weight:500;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -127,17 +123,16 @@ table.st tr:hover td{background:var(--card-h)}
 .hist-card{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:14px}
 .hist-card .hc-name{font-weight:600;font-size:.9rem;margin-bottom:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hist-seasons{display:flex;flex-direction:column;gap:4px}
-.hist-row{display:flex;align-items:center;justify-content:space-between;font-size:.8rem;padding:4px 0;border-bottom:1px solid var(--brd)}
+.hist-row{display:flex;align-items:center;font-size:.8rem;padding:4px 0;border-bottom:1px solid var(--brd);gap:6px}
 .hist-row:last-child{border-bottom:none}
 .hist-year{color:var(--tm);font-weight:600;width:36px;flex-shrink:0}
-.hist-record{color:var(--ts);width:44px;flex-shrink:0}
-.hist-rank{width:60px;flex-shrink:0}
 .rank-pill{font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:99px;display:inline-block}
-.rank-1{background:rgba(124,92,252,.25);color:#a78bfa;border:1px solid rgba(124,92,252,.4)}
+.rank-champ{background:rgba(234,179,8,.2);color:var(--ylw);border:1px solid rgba(234,179,8,.4)}
 .rank-playoff{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
 .rank-bubble{background:rgba(59,130,246,.15);color:#60a5fa;border:1px solid rgba(59,130,246,.3)}
 .rank-out{background:rgba(71,85,105,.15);color:var(--tm);border:1px solid rgba(71,85,105,.2)}
 .hist-pf{color:var(--ts);font-size:.78rem;flex:1;text-align:right}
+.hist-sub{font-size:.68rem;color:var(--tm);flex-shrink:0}
 .trend-up{color:var(--grn);font-size:.75rem;font-weight:700}
 .trend-dn{color:var(--red);font-size:.75rem;font-weight:700}
 .trend-fl{color:var(--tm);font-size:.75rem;font-weight:700}
@@ -147,6 +142,7 @@ table.ht th{text-align:left;padding:6px 10px;color:var(--tm);font-weight:600;bor
 table.ht td{padding:8px 10px;border-bottom:1px solid var(--brd);vertical-align:middle}
 table.ht tr:last-child td{border-bottom:none}
 table.ht tr:hover td{background:var(--card-h)}
+.seed-sub{font-size:.66rem;color:var(--tm);margin-top:2px}
 .chart-controls{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .cb-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;margin-bottom:4px}
 .cb-item{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:.8rem;padding:4px 8px;border-radius:6px;border:1px solid var(--brd);background:var(--bg);transition:border-color .15s;user-select:none}
@@ -224,7 +220,6 @@ table.ht tr:hover td{background:var(--card-h)}
 .buyer-tag{background:rgba(124,92,252,.15);color:var(--acc);font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:99px}
 .seller-tag{background:rgba(59,130,246,.15);color:var(--blu);font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:99px}
 .balanced-tag{background:rgba(148,163,184,.1);color:var(--ts);font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:99px}
-/* Value settings */
 .value-settings{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;background:var(--bg);border:1px solid var(--brd);border-radius:var(--rad);padding:14px 16px;margin-bottom:18px}
 .value-settings-left{display:flex;flex-direction:column;gap:4px}
 .value-settings-title{font-size:.82rem;font-weight:600;color:var(--tp)}
@@ -238,6 +233,12 @@ table.ht tr:hover td{background:var(--card-h)}
 .te-btn{background:var(--card);border:1px solid var(--brd);border-radius:6px;color:var(--ts);cursor:pointer;font-size:.73rem;font-weight:600;padding:4px 9px;transition:all .15s;white-space:nowrap}
 .te-btn:hover{border-color:var(--acc);color:var(--acc)}
 .te-btn.active{background:var(--acc-g);border-color:var(--acc);color:var(--acc)}
+.champs-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+.champ-card{background:var(--card);border:1px solid rgba(234,179,8,.35);border-radius:var(--rad);padding:12px 16px;display:flex;align-items:center;gap:10px;min-width:180px}
+.champ-trophy{font-size:1.4rem;flex-shrink:0}
+.champ-info .champ-year{font-size:.7rem;font-weight:700;color:var(--ylw);text-transform:uppercase;letter-spacing:.05em}
+.champ-info .champ-name{font-weight:700;font-size:.9rem;margin-top:1px}
+.champ-info .champ-record{font-size:.72rem;color:var(--tm);margin-top:2px}
 @media(max-width:680px){.evaluator{grid-template-columns:1fr}.eval-divider{padding-top:0;font-size:.9rem}.trade-sides{grid-template-columns:1fr}.trade-divider{display:none}.cgrid{grid-template-columns:repeat(2,1fr)}.mgr{grid-template-columns:repeat(2,1fr)}table.st th:nth-child(n+5),table.st td:nth-child(n+5){display:none}.hist-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -245,13 +246,8 @@ table.ht tr:hover td{background:var(--card-h)}
 <header>
   <div class="wrap hdr-row">
     <div>
-  <h1>Sleeper <span>League Health</span></h1>
-  <p>
-    Dynasty dashboard — powered by the Sleeper API and
-    <a href="https://nageemsemaj.com" target="_blank" rel="noopener noreferrer">
-      nageemsemaj.com
-    </a>
-  </p>
+      <h1>Sleeper <span>Dynasty Dashboard</span></h1>
+      <p>Powered by the Sleeper API &nbsp;·&nbsp; <a href="https://nageemsemaj.com" target="_blank" rel="noopener">nageemsemaj.com</a></p>
     </div>
     <button class="btn btn-o hidden" id="clb" onclick="resetToEntry()">Change League</button>
   </div>
@@ -279,11 +275,12 @@ table.ht tr:hover td{background:var(--card-h)}
   </div>
 
   <div id="pane-season">
-    <!-- Format badge strip -->
-    <div class="format-strip" id="format-strip"></div>
+    <div class="league-format-row" id="league-format-row"></div>
     <div class="sec"><h2 class="stitle">League Snapshot</h2><div class="cgrid" id="snap"></div></div>
     <div class="sec"><h2 class="stitle">Standings &amp; Playoff Picture</h2>
-      <div class="card" style="overflow-x:auto"><table class="st"><thead><tr><th>#</th><th>Username</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead><tbody id="sb"></tbody></table></div>
+      <div class="card" style="overflow-x:auto">
+        <table class="st"><thead><tr><th>#</th><th>Username</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead><tbody id="sb"></tbody></table>
+      </div>
     </div>
     <div class="sec"><h2 class="stitle">Roster Age &amp; Dynasty Health</h2>
       <div class="card">
@@ -309,9 +306,14 @@ table.ht tr:hover td{background:var(--card-h)}
   <div id="pane-history" class="hidden">
     <div id="hist-loading" class="hidden"><div class="spin"></div><p class="spinlabel" id="hist-lbl">Loading historical seasons...</p></div>
     <div id="hist-content" class="hidden">
-      <div class="sec"><h2 class="stitle">Season Standings Trajectory</h2>
+      <div class="sec">
+        <h2 class="stitle">Champions</h2>
+        <div class="champs-row" id="champs-row"></div>
+        <p style="font-size:.75rem;color:var(--tm)">Champion determined from playoff bracket. All other history shows regular season standings.</p>
+      </div>
+      <div class="sec"><h2 class="stitle">Regular Season Standings Trajectory</h2>
         <div class="card">
-          <p style="font-size:.8rem;color:var(--ts);margin-bottom:8px">Final rank by season — lower is better. Champion determined by playoff bracket for completed seasons.</p>
+          <p style="font-size:.8rem;color:var(--ts);margin-bottom:8px">Regular season rank each year. Lower is better. 🏆 indicates that season's champion.</p>
           <div class="chart-controls"><button class="btn btn-o btn-sm" onclick="selectAllManagers()">Select All</button><button class="btn btn-o btn-sm" onclick="clearAllManagers()">Clear All</button></div>
           <div class="cb-grid" id="cb-grid"></div>
           <div id="hist-chart-area"><div class="hist-chart-wrap"><canvas id="hist-chart"></canvas></div></div>
@@ -321,14 +323,13 @@ table.ht tr:hover td{background:var(--card-h)}
         <div class="card" style="overflow-x:auto"><table class="ht"><thead id="hist-thead"></thead><tbody id="hist-tbody"></tbody></table></div>
       </div>
       <div class="sec"><h2 class="stitle">Manager Histories</h2>
-        <p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Sorted by current season standing.</p>
         <div class="hist-grid" id="hist-grid"></div>
       </div>
     </div>
   </div>
 
   <div id="pane-trades" class="hidden">
-    <div class="value-settings" id="value-settings">
+    <div class="value-settings">
       <div class="value-settings-left">
         <div class="value-settings-title" id="value-settings-title">Detecting format...</div>
         <div class="value-settings-sub">Values from <a href="https://keeptradecut.com/dynasty-rankings" target="_blank">KTC dynasty rankings</a> · Last updated May 2026 · Picks ⚠️ approximate · QB values based on Superflex</div>
@@ -351,7 +352,6 @@ table.ht tr:hover td{background:var(--card-h)}
         </div>
       </div>
     </div>
-
     <div class="sec">
       <h2 class="stitle">What-If Evaluator</h2>
       <p style="font-size:.83rem;color:var(--ts);margin-bottom:16px">Build a hypothetical trade and get an instant grade.</p>
@@ -420,86 +420,67 @@ const HIST_SEASONS=5;
 const COLORS=['#7c5cfc','#22c55e','#3b82f6','#eab308','#ef4444','#f97316','#06b6d4','#ec4899','#84cc16','#a855f7','#14b8a6','#f43f5e'];
 const PICK_YEARS=Array.from({length:4},(_,i)=>CUR_YEAR+i);
 
-// ── Format state ──
-let tePremium='off';   // off | plus | plusplus
-let sfFormat='sf';     // sf | 1qb
-
-// ── Multipliers ──
-// TE: applied to TE values
+let tePremium='off',sfFormat='sf';
 const TE_MULT={off:1.0,plus:1.2,plusplus:1.4};
-// QB: KTC base values are Superflex. In 1QB, QBs are worth ~50-60% of SF value
 const QB_MULT={sf:1.0,'1qb':0.55};
 
-const QB_NAMES=new Set(['Josh Allen','Lamar Jackson','Patrick Mahomes','Jayden Daniels','Drake Maye',
-  'C.J. Stroud','Joe Burrow','Jalen Hurts','Justin Herbert','Caleb Williams','Jaxson Dart',
-  'Jordan Love','Brock Purdy','Baker Mayfield','Dak Prescott','Sam Darnold','Bo Nix',
-  'Anthony Richardson','Shedeur Sanders','Tyler Shough']);
-const TE_NAMES=new Set(['Brock Bowers','Trey McBride','Sam LaPorta','Tyler Warren','Colston Loveland',
-  'Tucker Kraft','Luke Musgrave','Dalton Kincaid','Jake Ferguson','Cole Kmet','Dallas Goedert',
-  'T.J. Hockenson','Mark Andrews','Travis Kelce','Jonnu Smith','Chigoziem Okonkwo','Cade Otton',
-  'Mason Taylor','DeAndre Hopkins']);
+const QB_NAMES=new Set(['Josh Allen','Lamar Jackson','Patrick Mahomes','Jayden Daniels','Drake Maye','C.J. Stroud','Joe Burrow','Jalen Hurts','Justin Herbert','Caleb Williams','Jaxson Dart','Jordan Love','Brock Purdy','Baker Mayfield','Dak Prescott','Sam Darnold','Bo Nix','Anthony Richardson','Shedeur Sanders','Tyler Shough','Fernando Mendoza','Ty Simpson','Garrett Nussmeier','Dante Moore','LaNorris Sellers']);
+const TE_NAMES=new Set(['Brock Bowers','Trey McBride','Sam LaPorta','Tyler Warren','Colston Loveland','Tucker Kraft','Luke Musgrave','Dalton Kincaid','Jake Ferguson','Cole Kmet','Dallas Goedert','T.J. Hockenson','Mark Andrews','Travis Kelce','Jonnu Smith','Chigoziem Okonkwo','Cade Otton','Mason Taylor','DeAndre Hopkins','Kenyon Sadiq','Michael Trigg']);
 
-// ── KTC Base Values (Superflex, .5 PPR, May 2026) ──
 const KTC_BASE={
-  'Josh Allen':9500,'Lamar Jackson':9200,'Patrick Mahomes':7800,'Jayden Daniels':7836,
-  'Drake Maye':9404,'C.J. Stroud':8200,'Joe Burrow':7600,'Jalen Hurts':7200,
-  'Justin Herbert':6800,'Caleb Williams':7947,'Jaxson Dart':6400,'Jordan Love':5661,
-  'Brock Purdy':5960,'Baker Mayfield':5200,'Dak Prescott':4800,'Sam Darnold':4200,
-  'Bo Nix':4600,'Anthony Richardson':3800,'Shedeur Sanders':5200,'Tyler Shough':3400,
-  'Bijan Robinson':9985,'Jahmyr Gibbs':9568,'Ashton Jeanty':7566,"De'Von Achane":6888,
-  'Omarion Hampton':6692,'Jonathan Taylor':6062,'James Cook':6035,'Quinshon Judkins':5471,
-  'Kenneth Walker III':5450,'TreVeyon Henderson':5389,'Breece Hall':5366,'Kyren Williams':5200,
-  'Chuba Hubbard':4484,'Josh Jacobs':4400,'Christian McCaffrey':5800,'Saquon Barkley':6200,
-  'Bucky Irving':5600,'RJ Harvey':4624,'Rachaad White':3400,'Isiah Pacheco':3200,
-  'Alvin Kamara':2800,'Joe Mixon':2600,'Najee Harris':2800,'Travis Etienne Jr.':3800,
-  'David Montgomery':3835,'Aaron Jones':2600,'Tony Pollard':2800,'Rhamondre Stevenson':3200,
-  'Jeremiyah Love':7671,'Cam Skattebo':4200,
-  "Ja'Marr Chase":9800,'Jaxon Smith-Njigba':9903,'Puka Nacua':8613,'Justin Jefferson':7786,
-  'Malik Nabers':7852,'Amon-Ra St. Brown':7715,'Drake London':6800,'Garrett Wilson':5777,
-  'CeeDee Lamb':7400,'Rashee Rice':5600,'Brian Thomas Jr.':5800,'Ladd McConkey':5400,
-  'George Pickens':5930,'Nico Collins':5200,'DK Metcalf':4624,'Jordan Addison':4601,
-  'Marvin Harrison Jr.':6800,'Rome Odunze':6200,'Tetairoa McMillan':5800,'Emeka Egbuka':5400,
-  'Carnell Tate':5687,'Terry McLaurin':3600,'Josh Downs':4200,'Khalil Shakir':4000,
-  'Brandon Aiyuk':4400,'DeVonta Smith':4200,'Jaylen Waddle':4200,'Tee Higgins':4800,
-  'Chris Olave':4000,'Mike Evans':3200,'Tyreek Hill':3853,'Davante Adams':3200,
-  'Deebo Samuel':2800,'Stefon Diggs':2200,'Keenan Allen':2000,'Diontae Johnson':2000,
-  'Xavier Worthy':4600,'Adonai Mitchell':4400,'Ricky Pearsall':3600,'Tank Dell':4000,
-  'Brock Bowers':7915,'Trey McBride':7200,'Sam LaPorta':5800,'Tyler Warren':5678,
-  'Colston Loveland':4500,'Tucker Kraft':4200,'Luke Musgrave':4000,'Dalton Kincaid':3800,
-  'Jake Ferguson':3600,'Cole Kmet':3400,'Dallas Goedert':3600,'T.J. Hockenson':3200,
-  'Mark Andrews':3000,'Travis Kelce':2800,'Jonnu Smith':2600,'Chigoziem Okonkwo':3000,
-  'Cade Otton':2800,'Mason Taylor':3800,'DeAndre Hopkins':2000,
+  'Josh Allen':9500,'Lamar Jackson':9200,'Patrick Mahomes':7800,'Jayden Daniels':7836,'Drake Maye':9404,'C.J. Stroud':8200,'Joe Burrow':7600,'Jalen Hurts':7200,'Justin Herbert':6800,'Caleb Williams':7947,'Jaxson Dart':6400,'Jordan Love':5661,'Brock Purdy':5960,'Baker Mayfield':5200,'Dak Prescott':4800,'Sam Darnold':4200,'Bo Nix':4600,'Anthony Richardson':3800,'Shedeur Sanders':5200,'Tyler Shough':3400,
+  'Fernando Mendoza':6400,'Ty Simpson':3600,'Garrett Nussmeier':2800,'Dante Moore':3000,'LaNorris Sellers':2600,
+  'Bijan Robinson':9985,'Jahmyr Gibbs':9568,'Ashton Jeanty':7566,"De'Von Achane":6888,'Omarion Hampton':6692,'Jonathan Taylor':6062,'James Cook':6035,'Quinshon Judkins':5471,'Kenneth Walker III':5450,'TreVeyon Henderson':5389,'Breece Hall':5366,'Kyren Williams':5200,'Chuba Hubbard':4484,'Josh Jacobs':4400,'Christian McCaffrey':5800,'Saquon Barkley':6200,'Bucky Irving':5600,'RJ Harvey':4624,'Rachaad White':3400,'Isiah Pacheco':3200,'Alvin Kamara':2800,'Joe Mixon':2600,'Najee Harris':2800,'Travis Etienne Jr.':3800,'David Montgomery':3835,'Aaron Jones':2600,'Tony Pollard':2800,'Rhamondre Stevenson':3200,'Jeremiyah Love':7671,'Cam Skattebo':4200,
+  'Jadarian Price':5066,'KC Concepcion':4200,'Kaelon Black':2200,'Emmett Johnson':2400,'Kaytron Allen':2200,'Jonah Coleman':2200,
+  "Ja'Marr Chase":9800,'Jaxon Smith-Njigba':9903,'Puka Nacua':8613,'Justin Jefferson':7786,'Malik Nabers':7852,'Amon-Ra St. Brown':7715,'Drake London':6800,'Garrett Wilson':5777,'CeeDee Lamb':7400,'Rashee Rice':5600,'Brian Thomas Jr.':5800,'Ladd McConkey':5400,'George Pickens':5930,'Nico Collins':5200,'DK Metcalf':4624,'Jordan Addison':4601,'Marvin Harrison Jr.':6800,'Rome Odunze':6200,'Tetairoa McMillan':5800,'Emeka Egbuka':5400,'Carnell Tate':5687,'Terry McLaurin':3600,'Josh Downs':4200,'Khalil Shakir':4000,'Brandon Aiyuk':4400,'DeVonta Smith':4200,'Jaylen Waddle':4200,'Tee Higgins':4800,'Chris Olave':4000,'Mike Evans':3200,'Tyreek Hill':3853,'Davante Adams':3200,'Deebo Samuel':2800,'Stefon Diggs':2200,'Keenan Allen':2000,'Diontae Johnson':2000,'Xavier Worthy':4600,'Adonai Mitchell':4400,'Ricky Pearsall':3600,'Tank Dell':4000,
+  'Jordyn Tyson':5678,'Makai Lemon':5287,'Chris Brazzell II':3200,'Omar Cooper Jr.':3000,'Antonio Williams':2800,'Denzel Boston':2600,'Elijah Sarratt':2400,"Ja'Kobi Lane":2200,'Eric Singleton Jr.':2000,'Skyler Bell':2000,'Mike Washington Jr.':1800,
+  'Brock Bowers':7915,'Trey McBride':7200,'Sam LaPorta':5800,'Tyler Warren':5678,'Colston Loveland':4500,'Tucker Kraft':4200,'Luke Musgrave':4000,'Dalton Kincaid':3800,'Jake Ferguson':3600,'Cole Kmet':3400,'Dallas Goedert':3600,'T.J. Hockenson':3200,'Mark Andrews':3000,'Travis Kelce':2800,'Jonnu Smith':2600,'Chigoziem Okonkwo':3000,'Cade Otton':2800,'Mason Taylor':3800,'DeAndre Hopkins':2000,
+  'Kenyon Sadiq':3800,'Michael Trigg':2600,
 };
 
 function getPlayerValue(name){
   if(!name)return 0;
   let base=KTC_BASE[name];
-  if(!base){
-    const lower=name.toLowerCase();
-    const key=Object.keys(KTC_BASE).find(k=>k.toLowerCase()===lower||k.toLowerCase().includes(lower)||lower.includes(k.toLowerCase().split(' ')[1]||''));
-    base=key?KTC_BASE[key]:1500;
-  }
-  // Determine position -- check known sets, then Sleeper DB
-  const isQB=QB_NAMES.has(name)||((pid=>{return pid&&S.players[pid]?.position==='QB';})(Object.keys(S.players||{}).find(id=>S.players[id]?.full_name===name)));
-  const isTE=TE_NAMES.has(name)||((pid=>{return pid&&S.players[pid]?.position==='TE';})(Object.keys(S.players||{}).find(id=>S.players[id]?.full_name===name)));
+  if(!base){const lower=name.toLowerCase();const key=Object.keys(KTC_BASE).find(k=>k.toLowerCase()===lower||k.toLowerCase().includes(lower)||lower.includes(k.toLowerCase().split(' ')[1]||''));base=key?KTC_BASE[key]:1500;}
+  const pid=Object.keys(S.players||{}).find(id=>S.players[id]?.full_name===name);
+  const pos=pid?S.players[pid]?.position:'';
+  const isQB=QB_NAMES.has(name)||pos==='QB';
+  const isTE=TE_NAMES.has(name)||pos==='TE';
   if(isQB)return Math.round(base*QB_MULT[sfFormat]);
   if(isTE)return Math.round(base*TE_MULT[tePremium]);
   return base;
 }
 
-// ── League format detection ──
+function detectTEPremium(league){
+  const ss=league?.scoring_settings||{};
+  const rp=league?.roster_positions||[];
+  const recBase=ss.rec||0;
+  const bonusRecTE=ss.bonus_rec_te||0;
+  const recTE=ss.rec_te||0;
+  const tePremiumPoints=bonusRecTE+(recTE>recBase?recTE-recBase:0);
+  const teStarts=rp.filter(p=>p==='TE').length;
+  if(teStarts>=2||tePremiumPoints>1)return'plusplus';
+  if(tePremiumPoints>0||teStarts>1)return'plus';
+  return'off';
+}
+
 function detectFormats(league){
   const rp=league?.roster_positions||[];
-  const ss=league?.scoring_settings||{};
-  // Superflex: has 'SF' slot or >1 QB slot
   const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;
-  // TE premium
-  const teBonus=(ss.bonus_rec_te||0)+(ss.rec_te||0)-(ss.rec||0);
-  const teStarts=rp.filter(p=>p==='TE').length;
-  let te='off';
-  if(teStarts>=2||teBonus>1)te='plusplus';
-  else if(teBonus>0.1||teStarts>1)te='plus';
-  return{sf:isSF?'sf':'1qb',te};
+  return{sf:isSF?'sf':'1qb',te:detectTEPremium(league)};
+}
+
+async function getChampionRosterId(leagueId){
+  try{
+    const b=await api('/league/'+leagueId+'/winners_bracket');
+    if(!b||!b.length)return null;
+    const completed=b.filter(m=>m.w!=null);
+    if(!completed.length)return null;
+    const maxRound=Math.max(...completed.map(m=>m.r||0));
+    const finalRoundGames=completed.filter(m=>m.r===maxRound);
+    const champGame=finalRoundGames.find(m=>m.p===1)||finalRoundGames[finalRoundGames.length-1];
+    return champGame?.w||null;
+  }catch(e){return null;}
 }
 
 function setSFFormat(val){
@@ -526,30 +507,24 @@ function updateValueSettingsTitle(){
   document.getElementById('value-settings-title').textContent=`${sfLabel} · ${scoring} · ${teLabel}`;
 }
 
-// ── Format badge strip for This Season tab ──
-function renderFormatStrip(){
+function renderLeagueFormatRow(){
   const l=S.league;if(!l)return;
   const rp=l.roster_positions||[];
-  const ss=l.scoring_settings||{};
-  const rec=ss.rec;
+  const rec=l.scoring_settings?.rec;
   const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;
-  const teBonus=(ss.bonus_rec_te||0)+(ss.rec_te||0)-(ss.rec||0);
-  const teStarts=rp.filter(p=>p==='TE').length;
-  const isDynasty=l.settings?.type===2||l.settings?.draft_rounds>4;
-
-  const badges=[];
-  if(isSF)badges.push(`<span class="format-badge fb-sf">Superflex</span>`);
-  else badges.push(`<span class="format-badge fb-1qb">1QB</span>`);
-  if(rec===1)badges.push(`<span class="format-badge fb-ppr">Full PPR</span>`);
-  else if(rec===.5)badges.push(`<span class="format-badge fb-ppr">Half PPR</span>`);
-  else badges.push(`<span class="format-badge fb-dyn">Standard</span>`);
-  if(teStarts>=2||teBonus>1)badges.push(`<span class="format-badge fb-te">TE++</span>`);
-  else if(teBonus>0.1||teStarts>1)badges.push(`<span class="format-badge fb-te">TE+</span>`);
-  if(isDynasty)badges.push(`<span class="format-badge fb-dyn">Dynasty</span>`);
-
-  document.getElementById('format-strip').innerHTML=
-    `<span class="format-strip-label">League format:</span>${badges.join('')}`;
+  const te=detectTEPremium(l);
+  const pills=[];
+  if(rec===1)pills.push(`<span class="lf-pill lf-ppr">Full PPR</span>`);
+  else if(rec===.5)pills.push(`<span class="lf-pill lf-ppr">Half PPR</span>`);
+  else pills.push(`<span class="lf-pill lf-std">Standard</span>`);
+  pills.push(isSF?`<span class="lf-pill lf-sf">Superflex</span>`:`<span class="lf-pill lf-1qb">1QB</span>`);
+  if(te==='plusplus')pills.push(`<span class="lf-pill lf-te">TE++</span>`);
+  else if(te==='plus')pills.push(`<span class="lf-pill lf-te">TE+</span>`);
+  if(l.settings?.type===2||rp.length>12)pills.push(`<span class="lf-pill lf-std">Dynasty</span>`);
+  document.getElementById('league-format-row').innerHTML=`<span class="lf-label">Format</span>${pills.join('')}`;
 }
+
+function ordinal(n){if(!n&&n!==0)return'?';const s=['th','st','nd','rd'];const v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
 
 function pickValue(year,round,tier){
   const offset=Math.max(0,parseInt(year)-CUR_YEAR);
@@ -567,12 +542,14 @@ function buildPickRow(side){
     <button class="btn btn-o btn-sm" onclick="addEvalPick('${side}')">+ Pick</button>`;
 }
 
+// ── Grade logic -- ratio of exactly 1.0 = tie, no winner ──
 function gradeFromRatio(ratio){
-  if(ratio<=1.05)return{grade:'A',label:'Fair Deal',cls:'grade-A',verdictCls:'verdict-fair'};
-  if(ratio<=1.18)return{grade:'B',label:'Slight Edge',cls:'grade-B',verdictCls:'verdict-slight'};
-  if(ratio<=1.35)return{grade:'C',label:'Notable Advantage',cls:'grade-C',verdictCls:'verdict-clear'};
-  if(ratio<=1.6)return{grade:'D',label:'Lopsided',cls:'grade-D',verdictCls:'verdict-clear'};
-  return{grade:'F',label:'One-Sided',cls:'grade-F',verdictCls:'verdict-clear'};
+  if(ratio===1.0)return{grade:'A',label:'Even Trade',cls:'grade-A',verdictCls:'verdict-fair',isTie:true};
+  if(ratio<=1.05)return{grade:'A',label:'Fair Deal',cls:'grade-A',verdictCls:'verdict-fair',isTie:false};
+  if(ratio<=1.18)return{grade:'B',label:'Slight Edge',cls:'grade-B',verdictCls:'verdict-slight',isTie:false};
+  if(ratio<=1.35)return{grade:'C',label:'Notable Advantage',cls:'grade-C',verdictCls:'verdict-clear',isTie:false};
+  if(ratio<=1.6)return{grade:'D',label:'Lopsided',cls:'grade-D',verdictCls:'verdict-clear',isTie:false};
+  return{grade:'F',label:'One-Sided',cls:'grade-F',verdictCls:'verdict-clear',isTie:false};
 }
 
 let ageChart=null,txChart=null,histChart=null;
@@ -581,13 +558,9 @@ let evalAssetsA=[],evalAssetsB=[];
 let S={leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],players:{},nflState:null,week:1};
 
 function dn(r){const u=S.users.find(u=>u.user_id===r.owner_id)||{};return u.display_name||u.username||'Unknown';}
-function getRosterName(rosterId,rosters,users){const r=rosters?.find(r=>r.roster_id===rosterId);if(!r)return`Team ${rosterId}`;const u=users?.find(u=>u.user_id===r.owner_id)||{};return u.display_name||u.username||'Unknown';}
+function getRosterName(rid,rosters,users){const r=rosters?.find(r=>r.roster_id===rid);if(!r)return`Team ${rid}`;const u=users?.find(u=>u.user_id===r.owner_id)||{};return u.display_name||u.username||'Unknown';}
 
 async function api(p){const r=await fetch(BASE+p);if(!r.ok)throw new Error('API '+r.status);return r.json();}
-
-async function getChampionRosterId(lid){
-  try{const b=await api('/league/'+lid+'/winners_bracket');if(!b||!b.length)return null;const mr=Math.max(...b.map(m=>m.r||0));const f=b.find(m=>m.r===mr&&m.w);return f?f.w:null;}catch(e){return null;}
-}
 
 async function loadPlayers(){
   const c=localStorage.getItem('sl_pl_v1');
@@ -622,7 +595,13 @@ function showPicker(u,leagues){
   const ll=document.getElementById('ll');ll.innerHTML='';
   leagues.forEach(l=>{
     const c=document.createElement('div');c.className='lcard';
-    c.innerHTML=`<div><div class="ln">${l.name}</div><div class="lm">${l.total_rosters} teams · ${l.scoring_settings?.rec?'PPR':'Standard'} · ${l.season}</div></div><span style="color:var(--tm);font-size:1.1rem">›</span>`;
+    const rp=l.roster_positions||[];
+    const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;
+    const rec=l.scoring_settings?.rec;
+    const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';
+    const te=detectTEPremium(l);
+    const teStr=te==='plusplus'?' · TE++':te==='plus'?' · TE+':'';
+    c.innerHTML=`<div><div class="ln">${l.name}</div><div class="lm">${l.total_rosters} teams · ${scoring} · ${isSF?'Superflex':'1QB'}${teStr} · ${l.season}</div></div><span style="color:var(--tm);font-size:1.1rem">›</span>`;
     c.onclick=()=>loadDash(l.league_id);ll.appendChild(c);
   });
   show('picker');
@@ -637,10 +616,8 @@ async function loadDash(id){
     const[league,rosters,users]=await Promise.all([api('/league/'+id),api('/league/'+id+'/rosters'),api('/league/'+id+'/users')]);
     S.league=league;S.rosters=rosters;S.users=users;
     S.users.forEach(u=>{currentNames[u.user_id]=u.display_name||u.username||'Unknown';});
-    // Auto-detect formats
     const detected=detectFormats(S.league);
     sfFormat=detected.sf;tePremium=detected.te;
-    // Update toggle buttons without triggering re-renders (data not loaded yet)
     ['sf','1qb'].forEach(v=>document.getElementById(`sf-btn-${v}`).classList.toggle('active',v===sfFormat));
     ['off','plus','plusplus'].forEach(v=>document.getElementById(`te-btn-${v}`).classList.toggle('active',v===tePremium));
     lbl('Loading matchups...');
@@ -678,29 +655,74 @@ async function loadHistory(){
   const ct=S.transactions.filter(t=>t.status==='complete'&&t.type==='trade');
   ct.forEach(t=>{t._leagueId=S.leagueId;t._year=CUR_YEAR;t._rosters=S.rosters;t._users=S.users;});
   allHistTrades.push(...ct);
-  document.getElementById('hist-lbl').textContent='Loading playoff brackets...';
-  const comp=seasons.filter(s=>s.year<CUR_YEAR);
-  const br=await Promise.all(comp.map(s=>getChampionRosterId(s.leagueId)));
-  const cm={};comp.forEach((s,i)=>{if(br[i])cm[s.year]=br[i];});
+  document.getElementById('hist-lbl').textContent='Loading champions from brackets...';
+  const completedSeasons=seasons.filter(s=>s.year<CUR_YEAR);
+  const champIds=await Promise.all(completedSeasons.map(s=>getChampionRosterId(s.leagueId)));
+  const champMap={};
+  completedSeasons.forEach((s,i)=>{if(champIds[i])champMap[s.year]=champIds[i];});
   H.seasons=seasons.map(s=>{
     const ps=s.league.settings?.playoff_teams||4;
+    const champRosterId=champMap[s.year]||null;
     const sorted=[...s.rosters].sort((a,b)=>{const dw=(b.settings?.wins||0)-(a.settings?.wins||0);return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);});
-    const champRosterId=cm[s.year]||null;
-    let standings=sorted.map((r,i)=>({rank:i+1,userId:r.owner_id,rosterId:r.roster_id,displayName:currentNames[r.owner_id]||'Unknown',wins:r.settings?.wins||0,losses:r.settings?.losses||0,pf:((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1),playoff:i<ps,champion:champRosterId&&r.roster_id===champRosterId,}));
-    if(champRosterId){const ci=standings.findIndex(st=>st.rosterId===champRosterId);if(ci>0){const champ=standings.splice(ci,1)[0];standings.unshift(champ);standings=standings.map((st,i)=>({...st,rank:i+1}));}}
+    const standings=sorted.map((r,i)=>({seed:i+1,isChamp:champRosterId&&r.roster_id===champRosterId,userId:r.owner_id,rosterId:r.roster_id,displayName:currentNames[r.owner_id]||'Unknown',wins:r.settings?.wins||0,losses:r.settings?.losses||0,pf:((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1),playoff:i<ps,}));
     return{year:s.year,total:s.rosters.length,playoffSpots:ps,champRosterId,standings};
   });
   const userMap={};
   H.seasons.forEach(s=>{s.standings.forEach(st=>{if(!st.userId)return;if(!userMap[st.userId])userMap[st.userId]={userId:st.userId,name:currentNames[st.userId]||st.displayName,seasons:{}};userMap[st.userId].seasons[s.year]=st;});});
   H.userMap=userMap;H.years=H.seasons.map(s=>s.year);
-  H.sortedUsers=Object.values(userMap).sort((a,b)=>{const ar=a.seasons[CUR_YEAR]?.rank||999,br=b.seasons[CUR_YEAR]?.rank||999;return ar-br;});
+  H.sortedUsers=Object.values(userMap).sort((a,b)=>{const ar=a.seasons[CUR_YEAR]?.seed||999,br=b.seasons[CUR_YEAR]?.seed||999;return ar-br;});
   histLoaded=true;hide('hist-loading');renderHistory();show('hist-content');
 }
 
-function rankPill(st,ps,year){
-  if(year===CUR_YEAR){if(st.rank<=ps)return'rank-playoff';if(st.rank===ps+1)return'rank-bubble';return'rank-out';}
-  if(st.champion)return'rank-1';if(st.rank<=ps)return'rank-playoff';if(st.rank===ps+1)return'rank-bubble';return'rank-out';
+function renderHistory(){renderChampionsRow();buildCheckboxes();renderHistChart();renderHistTable();renderHistGrid();}
+
+function renderChampionsRow(){
+  const withChamp=[...H.seasons].filter(s=>s.champRosterId&&s.year<CUR_YEAR).reverse();
+  if(!withChamp.length){document.getElementById('champs-row').innerHTML=`<p style="font-size:.83rem;color:var(--tm)">No completed seasons with bracket data found.</p>`;return;}
+  document.getElementById('champs-row').innerHTML=withChamp.map(s=>{const champSt=s.standings.find(st=>st.isChamp);if(!champSt)return'';return`<div class="champ-card"><div class="champ-trophy">🏆</div><div class="champ-info"><div class="champ-year">${s.year}</div><div class="champ-name">${champSt.displayName}</div><div class="champ-record">${champSt.wins}–${champSt.losses} · ${ordinal(champSt.seed)} seed</div></div></div>`;}).join('');
 }
+
+function rankPillCls(st,ps,year){
+  if(st.isChamp&&year<CUR_YEAR)return'rank-champ';
+  if(st.seed<=ps)return'rank-playoff';
+  if(st.seed===ps+1)return'rank-bubble';
+  return'rank-out';
+}
+
+function buildCheckboxes(){document.getElementById('cb-grid').innerHTML=H.sortedUsers.map((u,i)=>{const col=COLORS[i%COLORS.length];return`<label class="cb-item"><input type="checkbox" checked data-uid="${u.userId}" onchange="onCheckboxChange()"/><span class="cb-dot" style="background:${col}"></span><span>${u.name}</span></label>`;}).join('');}
+function getCheckedUids(){return[...document.querySelectorAll('#cb-grid input[type=checkbox]:checked')].map(c=>c.dataset.uid);}
+function selectAllManagers(){document.querySelectorAll('#cb-grid input[type=checkbox]').forEach(c=>c.checked=true);onCheckboxChange();}
+function clearAllManagers(){document.querySelectorAll('#cb-grid input[type=checkbox]').forEach(c=>c.checked=false);onCheckboxChange();}
+function onCheckboxChange(){renderHistChart();}
+
+function renderHistChart(){
+  const cu=new Set(getCheckedUids());const users=H.sortedUsers.filter(u=>cu.has(u.userId));
+  const ca=document.getElementById('hist-chart-area');
+  if(histChart){histChart.destroy();histChart=null;}
+  if(!users.length){ca.innerHTML=`<div class="chart-empty">Select one or more managers to view their trajectory</div>`;return;}
+  if(!document.getElementById('hist-chart')){ca.innerHTML=`<div class="hist-chart-wrap"><canvas id="hist-chart"></canvas></div>`;}
+  const years=H.years,mr=Math.max(...H.seasons.map(s=>s.total),1);
+  const ds=users.map(u=>{const oi=H.sortedUsers.findIndex(x=>x.userId===u.userId);const col=COLORS[oi%COLORS.length];return{label:u.name,data:years.map(y=>u.seasons[y]?.seed||null),borderColor:col,backgroundColor:col+'33',borderWidth:2,pointRadius:5,pointBackgroundColor:col,pointBorderColor:col,fill:false,tension:.3,spanGaps:true};});
+  histChart=new Chart(document.getElementById('hist-chart').getContext('2d'),{type:'line',data:{labels:years,datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:11},boxWidth:12,padding:12}},tooltip:{callbacks:{label:c=>{const y=years[c.dataIndex];const u=users.find(u=>u.name===c.dataset.label);const st=u?.seasons[y];const champ=st?.isChamp&&y<CUR_YEAR?' 🏆':'';return`${c.dataset.label}: ${ordinal(c.raw)} seed${champ}`;},}}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',stepSize:1,precision:0},reverse:true,min:1,max:mr,title:{display:true,text:'Regular Season Seed',color:'#475569',font:{size:11}}}}}});
+}
+
+function renderHistTable(){
+  const years=H.years;
+  document.getElementById('hist-thead').innerHTML=`<tr><th>Username</th>${years.map(y=>`<th>${y}</th>`).join('')}<th>Trend</th></tr>`;
+  document.getElementById('hist-tbody').innerHTML=H.sortedUsers.map(u=>{
+    const cells=years.map(y=>{const s=u.seasons[y];if(!s)return`<td><span style="color:var(--tm);font-size:.75rem">—</span></td>`;const ps=H.seasons.find(se=>se.year===y)?.playoffSpots||4;const cls=rankPillCls(s,ps,y);const label=s.isChamp&&y<CUR_YEAR?'🏆':`#${s.seed}`;return`<td><span class="rank-pill ${cls}">${label}</span><div class="seed-sub">${s.wins}–${s.losses}</div></td>`;}).join('');
+    return`<tr><td style="font-weight:600;white-space:nowrap">${u.name}</td>${cells}<td>${getTrend(u)}</td></tr>`;
+  }).join('');
+}
+
+function renderHistGrid(){
+  document.getElementById('hist-grid').innerHTML=H.sortedUsers.map(u=>{
+    const rows=H.years.map(y=>{const s=u.seasons[y];if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;const ps=H.seasons.find(se=>se.year===y)?.playoffSpots||4;const cls=rankPillCls(s,ps,y);const label=s.isChamp&&y<CUR_YEAR?'🏆':`#${s.seed}`;return`<div class="hist-row"><span class="hist-year">${y}</span><span class="hist-rank"><span class="rank-pill ${cls}">${label}</span></span><span class="hist-sub">${s.wins}–${s.losses}</span><span class="hist-pf">${s.pf} pts</span></div>`;}).join('');
+    return`<div class="hist-card"><div class="hc-name">${u.name} ${getTrend(u)}</div><div class="hist-seasons">${rows}</div></div>`;
+  }).join('');
+}
+
+function getTrend(u){const ranks=H.years.map(y=>u.seasons[y]?.seed).filter(Boolean);if(ranks.length<2)return`<span class="trend-fl">—</span>`;const f=ranks[0],l=ranks[ranks.length-1];if(l<f)return`<span class="trend-up">▲</span>`;if(l>f)return`<span class="trend-dn">▼</span>`;return`<span class="trend-fl">—</span>`;}
 
 function initTradeTab(){
   evalAssetsA=[];evalAssetsB=[];
@@ -720,6 +742,7 @@ function initTradeTab(){
   renderTradeGrades();renderManagerProfiles(trades);
 }
 
+// ── gradeTrade -- isTie propagated from gradeFromRatio, no winner when tied ──
 function gradeTrade(t){
   const adds=t.adds||{},picks=t.draft_picks||[];
   const rosterIds=[...new Set(t.roster_ids||[])];
@@ -731,10 +754,14 @@ function gradeTrade(t){
   if(sl.length<2)return null;
   const[ridA,sideA]=sl[0],[ridB,sideB]=sl[1];
   const valA=sideA.value||1,valB=sideB.value||1;
-  const winner=valA>=valB?ridA:ridB;
-  const ratio=Math.max(valA,valB)/Math.max(Math.min(valA,valB),1);
+  const isTied=valA===valB;
+  const winner=isTied?null:(valA>valB?ridA:ridB);
+  const ratio=isTied?1.0:Math.max(valA,valB)/Math.max(Math.min(valA,valB),1);
   const g=gradeFromRatio(ratio);
-  return{ridA,ridB,sideA,sideB,valA,valB,winner,hasPicks,...g,nameA:getRosterName(parseInt(ridA),t._rosters||S.rosters,t._users||S.users),nameB:getRosterName(parseInt(ridB),t._rosters||S.rosters,t._users||S.users)};
+  return{ridA,ridB,sideA,sideB,valA,valB,winner,hasPicks,...g,
+    nameA:getRosterName(parseInt(ridA),t._rosters||S.rosters,t._users||S.users),
+    nameB:getRosterName(parseInt(ridB),t._rosters||S.rosters,t._users||S.users),
+  };
 }
 
 function renderTradeGrades(){
@@ -746,9 +773,11 @@ function renderTradeGrades(){
   document.getElementById('trade-cards').innerHTML=filtered.slice(0,30).map(t=>{
     const g=gradeTrade(t);if(!g)return'';
     const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-    const pctA=Math.round((g.valA/Math.max(Math.max(g.valA,g.valB),1))*100);
+    const pctA=g.isTie?50:Math.round((g.valA/Math.max(Math.max(g.valA,g.valB),1))*100);
     const ra=(side,name)=>`<div class="trade-side"><div class="trade-side-name">${name}</div>${side.players.map(p=>`<div class="trade-asset"><span>${p.name}</span><span class="trade-asset-val">${p.val.toLocaleString()}</span></div>`).join('')}${side.picks.map(p=>`<div class="trade-asset"><span class="pick-badge">Pick</span><span>${p.label}</span><span class="trade-asset-val">~${p.val.toLocaleString()}</span></div>`).join('')}</div>`;
-    return`<div class="trade-card"><div class="trade-card-header"><div><span style="font-weight:600;font-size:.88rem">${g.nameA} ↔ ${g.nameB}</span>${t._year&&t._year!==CUR_YEAR?`<span class="pick-badge" style="margin-left:6px">${t._year}</span>`:''}</div><span class="trade-card-date">${date}</span></div><div class="trade-sides">${ra(g.sideA,g.nameA)}<div class="trade-divider">⇄</div>${ra(g.sideB,g.nameB)}</div>${g.hasPicks?`<p class="pick-note">⚠️ Pick values are approximate.</p>`:''}<div class="trade-grade-wrap"><div class="val-bar-wrap"><span class="val-label" style="color:var(--acc)">${g.valA.toLocaleString()}</span><div class="val-bar-track"><div class="val-bar-a" style="width:${pctA}%"></div></div><span class="val-label val-label-r" style="color:var(--grn)">${g.valB.toLocaleString()}</span></div><div class="trade-grade-row" style="margin-top:8px"><div style="display:flex;align-items:center;gap:8px"><span class="grade-pill ${g.cls}">${g.grade}</span><span style="font-size:.82rem;color:var(--ts)">${g.label}</span></div><span class="verdict ${g.verdictCls}">${g.winner===g.ridA?g.nameA+' wins':g.winner===g.ridB?g.nameB+' wins':'Fair'}</span></div></div></div>`;
+    // Verdict: tie, or winner name
+    const verdictText=g.isTie?'Tie':g.winner===g.ridA?`${g.nameA} wins`:`${g.nameB} wins`;
+    return`<div class="trade-card"><div class="trade-card-header"><div><span style="font-weight:600;font-size:.88rem">${g.nameA} ↔ ${g.nameB}</span>${t._year&&t._year!==CUR_YEAR?`<span class="pick-badge" style="margin-left:6px">${t._year}</span>`:''}</div><span class="trade-card-date">${date}</span></div><div class="trade-sides">${ra(g.sideA,g.nameA)}<div class="trade-divider">⇄</div>${ra(g.sideB,g.nameB)}</div>${g.hasPicks?`<p class="pick-note">⚠️ Pick values are approximate.</p>`:''}<div class="trade-grade-wrap"><div class="val-bar-wrap"><span class="val-label" style="color:var(--acc)">${g.valA.toLocaleString()}</span><div class="val-bar-track"><div class="val-bar-a" style="width:${pctA}%"></div></div><span class="val-label val-label-r" style="color:var(--grn)">${g.valB.toLocaleString()}</span></div><div class="trade-grade-row" style="margin-top:8px"><div style="display:flex;align-items:center;gap:8px"><span class="grade-pill ${g.cls}">${g.grade}</span><span style="font-size:.82rem;color:var(--ts)">${g.label}</span></div><span class="verdict ${g.verdictCls}">${verdictText}</span></div></div></div>`;
   }).join('');
 }
 
@@ -756,10 +785,12 @@ function evalSearch(side){
   const q=document.getElementById(`eval-search-${side}`).value.trim().toLowerCase();
   const rd=document.getElementById(`eval-results-${side}`);
   if(q.length<2){rd.classList.add('hidden');rd.innerHTML='';return;}
-  const allP=[...new Set([...S.rosters.flatMap(r=>r.players||[]),...Object.keys(KTC_BASE)])];
-  const matches=allP.map(pid=>{const p=S.players[pid];const name=p?.full_name||pid;return{name,val:getPlayerValue(name)};}).filter((p,i,arr)=>p.name.toLowerCase().includes(q)&&arr.findIndex(x=>x.name===p.name)===i).slice(0,8);
-  if(!matches.length){rd.classList.add('hidden');return;}
-  rd.innerHTML=matches.map(p=>`<div class="eval-result-item" onclick="addEvalPlayer('${side}','${p.name.replace(/'/g,"\\'")}',${p.val})"><span>${p.name}</span><span class="eval-result-val">${p.val.toLocaleString()}</span></div>`).join('');
+  const seen=new Set();const matches=[];
+  S.rosters.flatMap(r=>r.players||[]).forEach(pid=>{const p=S.players[pid];if(!p)return;const name=p.full_name||pid;if(seen.has(name))return;if(name.toLowerCase().includes(q)){seen.add(name);matches.push({name,val:getPlayerValue(name)});}});
+  Object.keys(KTC_BASE).forEach(name=>{if(seen.has(name))return;if(name.toLowerCase().includes(q)){seen.add(name);matches.push({name,val:getPlayerValue(name)});}});
+  const top=matches.sort((a,b)=>b.val-a.val).slice(0,10);
+  if(!top.length){rd.classList.add('hidden');return;}
+  rd.innerHTML=top.map(p=>`<div class="eval-result-item" onclick="addEvalPlayer('${side}','${p.name.replace(/'/g,"\\'")}',${p.val})"><span>${p.name}</span><span class="eval-result-val">${p.val.toLocaleString()}</span></div>`).join('');
   rd.classList.remove('hidden');
 }
 
@@ -779,18 +810,13 @@ function addEvalPick(side){
   refreshEvalUI();
 }
 
-function removeEvalAsset(side,idx){
-  if(side==='a')evalAssetsA.splice(idx,1);else evalAssetsB.splice(idx,1);refreshEvalUI();
-}
+function removeEvalAsset(side,idx){if(side==='a')evalAssetsA.splice(idx,1);else evalAssetsB.splice(idx,1);refreshEvalUI();}
 
 function refreshEvalUI(){
   ['a','b'].forEach(side=>{
     const assets=side==='a'?evalAssetsA:evalAssetsB;
     const total=assets.reduce((s,a)=>s+(a.type==='pick'?a.val:getPlayerValue(a.name)),0);
-    document.getElementById(`eval-assets-${side}`).innerHTML=assets.map((a,i)=>{
-      const v=a.type==='pick'?a.val:getPlayerValue(a.name);
-      return`<div class="eval-asset-tag"><span>${a.name}</span><span style="font-size:.72rem;color:var(--tm);margin-left:8px">${v.toLocaleString()}</span><button class="eval-asset-remove" onclick="removeEvalAsset('${side}',${i})">×</button></div>`;
-    }).join('');
+    document.getElementById(`eval-assets-${side}`).innerHTML=assets.map((a,i)=>{const v=a.type==='pick'?a.val:getPlayerValue(a.name);return`<div class="eval-asset-tag"><span>${a.name}</span><span style="font-size:.72rem;color:var(--tm);margin-left:8px">${v.toLocaleString()}</span><button class="eval-asset-remove" onclick="removeEvalAsset('${side}',${i})">×</button></div>`;}).join('');
     document.getElementById(`eval-total-${side}`).textContent=total.toLocaleString();
   });
 }
@@ -799,13 +825,15 @@ function evaluateTrade(){
   const valA=evalAssetsA.reduce((s,a)=>s+(a.type==='pick'?a.val:getPlayerValue(a.name)),0);
   const valB=evalAssetsB.reduce((s,a)=>s+(a.type==='pick'?a.val:getPlayerValue(a.name)),0);
   if(!valA&&!valB){document.getElementById('eval-result-box').classList.add('hidden');return;}
-  const ratio=Math.max(valA,valB)/Math.max(Math.min(valA,valB),1);
+  const isTied=valA===valB;
+  const ratio=isTied?1.0:Math.max(valA,valB)/Math.max(Math.min(valA,valB),1);
   const g=gradeFromRatio(ratio);
-  const winner=valA>=valB?'Side A':'Side B';
+  const winner=isTied?null:(valA>valB?'Side A':'Side B');
   const hasPicks=[...evalAssetsA,...evalAssetsB].some(a=>a.type==='pick');
   const gc=g.cls==='grade-A'?'#4ade80':g.cls==='grade-B'?'#a78bfa':g.cls==='grade-C'?'#60a5fa':g.cls==='grade-D'?'#eab308':'#f87171';
+  const verdictLine=isTied?'Perfectly even — nobody wins, nobody loses':g.label+(winner?` — ${winner} wins`:'');
   const box=document.getElementById('eval-result-box');
-  box.innerHTML=`<div class="eval-grade-big" style="color:${gc}">${g.grade}</div><div class="eval-verdict">${g.label}${valA===valB?'':' — '+winner+' wins'}</div><div class="eval-scores"><div class="eval-score-item"><div class="eval-score-val" style="color:var(--acc)">${valA.toLocaleString()}</div><div>Side A value</div></div><div class="eval-score-item"><div class="eval-score-val" style="color:var(--grn)">${valB.toLocaleString()}</div><div>Side B value</div></div><div class="eval-score-item"><div class="eval-score-val">${ratio.toFixed(2)}x</div><div>Value ratio</div></div></div>${hasPicks?`<p class="pick-note" style="margin-top:10px">⚠️ Pick values are approximate.</p>`:''}`;
+  box.innerHTML=`<div class="eval-grade-big" style="color:${gc}">${g.grade}</div><div class="eval-verdict">${verdictLine}</div><div class="eval-scores"><div class="eval-score-item"><div class="eval-score-val" style="color:var(--acc)">${valA.toLocaleString()}</div><div>Side A value</div></div><div class="eval-score-item"><div class="eval-score-val" style="color:var(--grn)">${valB.toLocaleString()}</div><div>Side B value</div></div><div class="eval-score-item"><div class="eval-score-val">${ratio.toFixed(2)}x</div><div>Value ratio</div></div></div>${hasPicks?`<p class="pick-note" style="margin-top:10px">⚠️ Pick values are approximate.</p>`:''}`;
   box.classList.remove('hidden');
 }
 
@@ -815,52 +843,58 @@ function clearEvaluator(){
   document.getElementById('eval-search-a').value='';document.getElementById('eval-search-b').value='';
 }
 
+// ── Manager profiles -- tracks wins, losses, AND ties ──
 function renderManagerProfiles(trades){
   const profiles={};
-  S.rosters.forEach(r=>{const u=S.users.find(u=>u.user_id===r.owner_id)||{};profiles[r.roster_id]={name:u.display_name||u.username||'Unknown',rosterId:r.roster_id,trades:0,valueGained:0,valueLost:0,wins:0,losses:0};});
-  trades.forEach(t=>{const g=gradeTrade(t);if(!g)return;[g.ridA,g.ridB].forEach(rid=>{if(!profiles[rid])return;profiles[rid].trades++;if(String(rid)===String(g.winner)){profiles[rid].valueGained+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));profiles[rid].wins++;}else{profiles[rid].valueLost+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));profiles[rid].losses++;}});});
+  S.rosters.forEach(r=>{
+    const u=S.users.find(u=>u.user_id===r.owner_id)||{};
+    profiles[r.roster_id]={name:u.display_name||u.username||'Unknown',rosterId:r.roster_id,trades:0,valueGained:0,valueLost:0,wins:0,losses:0,ties:0};
+  });
+  trades.forEach(t=>{
+    const g=gradeTrade(t);if(!g)return;
+    [g.ridA,g.ridB].forEach(rid=>{
+      if(!profiles[rid])return;
+      profiles[rid].trades++;
+      if(g.isTie){
+        profiles[rid].ties++;
+      }else if(String(rid)===String(g.winner)){
+        profiles[rid].valueGained+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));
+        profiles[rid].wins++;
+      }else{
+        profiles[rid].valueLost+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));
+        profiles[rid].losses++;
+      }
+    });
+  });
   const sorted=Object.values(profiles).sort((a,b)=>b.trades-a.trades);
   document.getElementById('profile-grid').innerHTML=sorted.map(p=>{
     if(p.trades===0)return`<div class="profile-card"><div class="profile-name">${p.name}</div><p style="font-size:.8rem;color:var(--tm)">No trades found.</p></div>`;
-    const netVal=p.valueGained-p.valueLost,winRate=Math.round((p.wins/p.trades)*100);
+    const netVal=p.valueGained-p.valueLost;
+    const decidedTrades=p.wins+p.losses; // exclude ties from win rate
+    const winRate=decidedTrades>0?Math.round((p.wins/decidedTrades)*100):null;
+    // Record string: W-L-T, only show T if there are ties
+    const record=p.ties>0?`${p.wins}-${p.losses}-${p.ties} (W-L-T)`:`${p.wins}-${p.losses}`;
+    const winRateStr=winRate!==null?`${winRate}% win rate`:'—';
     const tags=[];
     const addCount=trades.filter(t=>(t.roster_ids||[]).includes(p.rosterId)&&Object.values(t.adds||{}).includes(p.rosterId)).length;
     const dropCount=trades.filter(t=>(t.roster_ids||[]).includes(p.rosterId)&&Object.values(t.drops||{}).includes(p.rosterId)).length;
-    if(addCount>dropCount*1.3)tags.push('<span class="buyer-tag">Buyer</span>');else if(dropCount>addCount*1.3)tags.push('<span class="seller-tag">Seller</span>');else tags.push('<span class="balanced-tag">Balanced</span>');
-    if(p.trades>=3&&winRate>=65)tags.push('<span class="sharp-tag">Sharp</span>');else if(p.trades>=3&&winRate<=35)tags.push('<span class="generous-tag">Generous</span>');
-    return`<div class="profile-card"><div class="profile-name">${p.name}</div><div class="profile-stats"><div class="profile-stat"><span class="profile-stat-label">Trades</span><span class="profile-stat-val">${p.trades}</span></div><div class="profile-stat"><span class="profile-stat-label">Trade wins</span><span class="profile-stat-val">${p.wins}-${p.losses} (${winRate}%)</span></div><div class="profile-stat"><span class="profile-stat-label">Net value</span><span class="profile-stat-val" style="color:${netVal>=0?'var(--grn)':'var(--red)'}">${netVal>=0?'+':''}${netVal.toLocaleString()}</span></div></div><div class="profile-tags">${tags.join('')}</div></div>`;
+    if(addCount>dropCount*1.3)tags.push('<span class="buyer-tag">Buyer</span>');
+    else if(dropCount>addCount*1.3)tags.push('<span class="seller-tag">Seller</span>');
+    else tags.push('<span class="balanced-tag">Balanced</span>');
+    if(decidedTrades>=3&&winRate>=65)tags.push('<span class="sharp-tag">Sharp</span>');
+    else if(decidedTrades>=3&&winRate<=35)tags.push('<span class="generous-tag">Generous</span>');
+    return`<div class="profile-card">
+      <div class="profile-name">${p.name}</div>
+      <div class="profile-stats">
+        <div class="profile-stat"><span class="profile-stat-label">Trades</span><span class="profile-stat-val">${p.trades}</span></div>
+        <div class="profile-stat"><span class="profile-stat-label">Record</span><span class="profile-stat-val">${record}</span></div>
+        <div class="profile-stat"><span class="profile-stat-label">Win rate</span><span class="profile-stat-val">${winRateStr}</span></div>
+        <div class="profile-stat"><span class="profile-stat-label">Net value</span><span class="profile-stat-val" style="color:${netVal>=0?'var(--grn)':'var(--red)'}">${netVal>=0?'+':''}${netVal.toLocaleString()}</span></div>
+      </div>
+      <div class="profile-tags">${tags.join('')}</div>
+    </div>`;
   }).join('');
 }
-
-function renderHistory(){buildCheckboxes();renderHistChart();renderHistTable();renderHistGrid();}
-function buildCheckboxes(){document.getElementById('cb-grid').innerHTML=H.sortedUsers.map((u,i)=>{const col=COLORS[i%COLORS.length];return`<label class="cb-item"><input type="checkbox" checked data-uid="${u.userId}" onchange="onCheckboxChange()"/><span class="cb-dot" style="background:${col}"></span><span>${u.name}</span></label>`;}).join('');}
-function getCheckedUids(){return[...document.querySelectorAll('#cb-grid input[type=checkbox]:checked')].map(c=>c.dataset.uid);}
-function selectAllManagers(){document.querySelectorAll('#cb-grid input[type=checkbox]').forEach(c=>c.checked=true);onCheckboxChange();}
-function clearAllManagers(){document.querySelectorAll('#cb-grid input[type=checkbox]').forEach(c=>c.checked=false);onCheckboxChange();}
-function onCheckboxChange(){renderHistChart();}
-
-function renderHistChart(){
-  const cu=new Set(getCheckedUids());const users=H.sortedUsers.filter(u=>cu.has(u.userId));
-  const ca=document.getElementById('hist-chart-area');
-  if(histChart){histChart.destroy();histChart=null;}
-  if(!users.length){ca.innerHTML=`<div class="chart-empty">Select one or more managers to view their trajectory</div>`;return;}
-  if(!document.getElementById('hist-chart')){ca.innerHTML=`<div class="hist-chart-wrap"><canvas id="hist-chart"></canvas></div>`;}
-  const years=H.years,mr=Math.max(...H.seasons.map(s=>s.total),1);
-  const ds=users.map(u=>{const oi=H.sortedUsers.findIndex(x=>x.userId===u.userId);const col=COLORS[oi%COLORS.length];return{label:u.name,data:years.map(y=>u.seasons[y]?.rank||null),borderColor:col,backgroundColor:col+'33',borderWidth:2,pointRadius:5,pointBackgroundColor:col,pointBorderColor:col,fill:false,tension:.3,spanGaps:true};});
-  histChart=new Chart(document.getElementById('hist-chart').getContext('2d'),{type:'line',data:{labels:years,datasets:ds},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#94a3b8',font:{size:11},boxWidth:12,padding:12}},tooltip:{callbacks:{label:c=>`${c.dataset.label}: #${c.raw}`}}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',stepSize:1,precision:0},reverse:true,min:1,max:mr,title:{display:true,text:'Final Rank',color:'#475569',font:{size:11}}}}}});
-}
-
-function renderHistTable(){
-  const years=H.years;
-  document.getElementById('hist-thead').innerHTML=`<tr><th>Username</th>${years.map(y=>`<th>${y}</th>`).join('')}<th>Trend</th></tr>`;
-  document.getElementById('hist-tbody').innerHTML=H.sortedUsers.map(u=>{const cells=years.map(y=>{const s=u.seasons[y];if(!s)return`<td><span style="color:var(--tm);font-size:.75rem">—</span></td>`;const ps=H.seasons.find(se=>se.year===y)?.playoffSpots||4;const cls=rankPill(s,ps,y);const label=s.champion?'🏆 #1':`#${s.rank}`;return`<td><span class="rank-pill ${cls}">${label}</span><div style="font-size:.7rem;color:var(--tm);margin-top:2px">${s.wins}-${s.losses}</div></td>`;}).join('');return`<tr><td style="font-weight:600;white-space:nowrap">${u.name}</td>${cells}<td>${getTrend(u)}</td></tr>`;}).join('');
-}
-
-function renderHistGrid(){
-  document.getElementById('hist-grid').innerHTML=H.sortedUsers.map(u=>{const rows=H.years.map(y=>{const s=u.seasons[y];if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;const ps=H.seasons.find(se=>se.year===y)?.playoffSpots||4;const cls=rankPill(s,ps,y);const label=s.champion?'🏆 #1':`#${s.rank}`;return`<div class="hist-row"><span class="hist-year">${y}</span><span class="hist-record">${s.wins}-${s.losses}</span><span class="hist-rank"><span class="rank-pill ${cls}">${label}</span></span><span class="hist-pf">${s.pf} pts</span></div>`;}).join('');return`<div class="hist-card"><div class="hc-name">${u.name} ${getTrend(u)}</div><div class="hist-seasons">${rows}</div></div>`;}).join('');
-}
-
-function getTrend(u){const ranks=H.years.map(y=>u.seasons[y]?.rank).filter(Boolean);if(ranks.length<2)return`<span class="trend-fl">—</span>`;const f=ranks[0],l=ranks[ranks.length-1];if(l<f)return`<span class="trend-up">▲</span>`;if(l>f)return`<span class="trend-dn">▼</span>`;return`<span class="trend-fl">—</span>`;}
 
 function switchTab(t){
   ['season','history','trades'].forEach(tab=>{document.getElementById(`tab-${tab}`).classList.toggle('active',t===tab);document.getElementById(`pane-${tab}`).classList.toggle('hidden',t!==tab);});
@@ -873,34 +907,18 @@ function switchMTab(t){
   document.getElementById('mb-roster').classList.toggle('hidden',t!=='roster');document.getElementById('mb-history').classList.toggle('hidden',t!=='history');
 }
 
-function renderDash(){
-  hideLoad();
-  renderFormatStrip();
-  renderSnap();renderStandings();renderAge();renderTx();renderMgr();
-  show('dash');show('clb');switchTab('season');
-}
+function renderDash(){hideLoad();renderLeagueFormatRow();renderSnap();renderStandings();renderAge();renderTx();renderMgr();show('dash');show('clb');switchTab('season');}
 
 function renderSnap(){
-  const l=S.league;
-  const rp=l.roster_positions||[];
+  const l=S.league,rp=l.roster_positions||[];
   const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;
   const rec=l.scoring_settings?.rec;
   const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';
-  const teBonus=(l.scoring_settings?.bonus_rec_te||0)+(l.scoring_settings?.rec_te||0)-(rec||0);
-  const teStarts=rp.filter(p=>p==='TE').length;
-  let teLabel='';
-  if(teStarts>=2||teBonus>1)teLabel='TE++';
-  else if(teBonus>0.1||teStarts>1)teLabel='TE+';
-  const formatLabel=`${isSF?'SF':'1QB'} · ${scoring}${teLabel?' · '+teLabel:''}`;
-  const stats=[
-    {l:'Teams',v:l.total_rosters},
-    {l:'Current Week',v:'Week '+S.week},
-    {l:'Format',v:formatLabel},
-    {l:'Playoff Spots',v:l.settings?.playoff_teams||'?'},
-    {l:'Season',v:l.season},
-    {l:'Type',v:'Dynasty'},
-  ];
-  document.getElementById('snap').innerHTML=stats.map(s=>`<div class="sc"><div class="sv" style="font-size:${s.l==='Format'?'1rem':'1.5rem'}">${s.v}</div><div class="sl">${s.l}</div></div>`).join('');
+  const te=detectTEPremium(l);
+  const teStr=te==='plusplus'?' · TE++':te==='plus'?' · TE+':'';
+  const fmt=`${isSF?'SF':'1QB'} · ${scoring}${teStr}`;
+  const stats=[{l:'Teams',v:l.total_rosters},{l:'Current Week',v:'Week '+S.week},{l:'Format',v:fmt},{l:'Playoff Spots',v:l.settings?.playoff_teams||'?'},{l:'Season',v:l.season},{l:'Type',v:'Dynasty'}];
+  document.getElementById('snap').innerHTML=stats.map(s=>`<div class="sc"><div class="sv" style="font-size:${s.l==='Format'?'.88rem':'1.5rem'}">${s.v}</div><div class="sl">${s.l}</div></div>`).join('');
 }
 
 function getStreak(r){let n=0,t=null;for(let w=S.week;w>=1;w--){const wm=S.matchups[w];if(!wm)continue;const me=wm.find(m=>m.roster_id===r.roster_id);if(!me)continue;const op=wm.find(m=>m.matchup_id===me.matchup_id&&m.roster_id!==r.roster_id);if(!op)continue;const w2=me.points>op.points;if(t===null)t=w2;if(w2!==t)break;n++;}return n===0?'-':`${t?'W':'L'}${n}`;}
@@ -952,8 +970,10 @@ function renderMgr(){
     const ages=(r.players||[]).map(p=>S.players[p]?.age).filter(Boolean);
     const avg=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'?';
     const tags=[];
-    if(rk<=ps)tags.push('<span class="tag tg">Playoff</span>');if(rk===ps||rk===ps+1)tags.push('<span class="tag ty">Bubble</span>');
-    if(parseFloat(avg)<25)tags.push('<span class="tag tb">Young Core</span>');if(parseFloat(avg)>28)tags.push('<span class="tag tr2">Aging</span>');
+    if(rk<=ps)tags.push('<span class="tag tg">Playoff</span>');
+    if(rk===ps||rk===ps+1)tags.push('<span class="tag ty">Bubble</span>');
+    if(parseFloat(avg)<25)tags.push('<span class="tag tb">Young Core</span>');
+    if(parseFloat(avg)>28)tags.push('<span class="tag tr2">Aging</span>');
     const tc=S.transactions.filter(t=>t.status==='complete'&&(t.roster_ids||[]).includes(r.roster_id)).length;
     if(tc>=5)tags.push('<span class="tag tp2">Active</span>');
     return`<div class="mc" onclick="openMod(${r.roster_id})"><div class="mn">${dn(r)}</div><div class="mr2">${w}-${l} · Avg age ${avg}</div><div class="mt">${tags.join('')}</div></div>`;
@@ -971,8 +991,11 @@ function openMod(rid){
   const txH=myTx.length?myTx.map(t=>{const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';const added=Object.keys(t.adds||{}).map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');return`<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--brd);font-size:.8rem"><span>${t.type==='trade'?'🔄':'➕'}</span><span style="flex:1;color:var(--ts)">${added||'Trade'}</span><span style="color:var(--tm)">${date}</span></div>`;}).join(''):`<p style="color:var(--tm);font-size:.8rem">No recent transactions</p>`;
   document.getElementById('mb-roster').innerHTML=`<div class="ms"><div style="display:flex;gap:12px;margin-bottom:14px"><div class="sc" style="flex:1"><div class="sv">${w}-${l}</div><div class="sl">Record</div></div><div class="sc" style="flex:1"><div class="sv">${pf}</div><div class="sl">Pts For</div></div><div class="sc" style="flex:1"><div class="sv">${myTx.length}</div><div class="sl">Recent Moves</div></div></div></div><div class="ms"><h4>Starters</h4><div>${starters.map(rp).join('')}</div></div><div class="ms"><h4>Bench</h4><div>${bench.slice(0,10).map(rp).join('')}</div></div><div class="ms"><h4>Recent Transactions</h4>${txH}</div>`;
   const uid=r.owner_id;let histHtml='';
-  if(histLoaded&&H.userMap&&H.userMap[uid]){const ud=H.userMap[uid];const rows=H.years.map(y=>{const s=ud.seasons[y];if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;const ps=H.seasons.find(se=>se.year===y)?.playoffSpots||4;const cls=rankPill(s,ps,y);const label=s.champion?'🏆 #1':`#${s.rank}`;return`<div class="hist-row" style="padding:6px 0;border-bottom:1px solid var(--brd)"><span class="hist-year">${y}</span><span class="hist-record" style="color:var(--ts)">${s.wins}-${s.losses}</span><span class="hist-rank"><span class="rank-pill ${cls}">${label}</span></span><span class="hist-pf">${s.pf} pts</span></div>`;}).join('');histHtml=`<div class="ms"><h4>Season History</h4><div class="hist-seasons">${rows}</div><p style="font-size:.78rem;color:var(--tm);margin-top:10px">Overall trend: ${getTrend(ud)}</p></div>`;}
-  else if(!histLoaded){histHtml=`<p style="font-size:.83rem;color:var(--tm)">Open the History tab first to load season data.</p>`;}
+  if(histLoaded&&H.userMap&&H.userMap[uid]){
+    const ud=H.userMap[uid];
+    const rows=H.years.map(y=>{const s=ud.seasons[y];if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;const ps=H.seasons.find(se=>se.year===y)?.playoffSpots||4;const cls=rankPillCls(s,ps,y);const label=s.isChamp&&y<CUR_YEAR?'🏆':`#${s.seed}`;return`<div class="hist-row" style="padding:6px 0;border-bottom:1px solid var(--brd)"><span class="hist-year">${y}</span><span class="hist-rank"><span class="rank-pill ${cls}">${label}</span></span><span class="hist-sub">${s.wins}–${s.losses}</span><span class="hist-pf">${s.pf} pts</span></div>`;}).join('');
+    histHtml=`<div class="ms"><h4>Season History</h4><div class="hist-seasons">${rows}</div><p style="font-size:.78rem;color:var(--tm);margin-top:10px">Trend: ${getTrend(ud)} &nbsp;·&nbsp; Rank shown is regular season seed</p></div>`;
+  }else if(!histLoaded){histHtml=`<p style="font-size:.83rem;color:var(--tm)">Open the History tab first to load season data.</p>`;}
   else{histHtml=`<p style="font-size:.83rem;color:var(--tm)">No historical data found for this manager.</p>`;}
   document.getElementById('mb-history').innerHTML=histHtml;
   switchMTab('roster');document.getElementById('ov').classList.remove('hidden');document.body.style.overflow='hidden';

@@ -228,6 +228,9 @@ table.ht tr:hover td{background:var(--card-h)}
 .value-settings-sub{font-size:.73rem;color:var(--tm)}
 .value-settings-sub a{color:var(--acc);text-decoration:none}
 .value-settings-sub a:hover{text-decoration:underline}
+.value-source-badge{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:99px;margin-top:2px}
+.vsb-live{background:rgba(34,197,94,.12);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+.vsb-fallback{background:rgba(234,179,8,.12);color:var(--ylw);border:1px solid rgba(234,179,8,.25)}
 .toggle-group{display:flex;flex-direction:column;gap:8px}
 .toggle-row{display:flex;align-items:center;gap:8px}
 .toggle-label{font-size:.75rem;color:var(--ts);font-weight:600;width:52px;flex-shrink:0}
@@ -253,7 +256,7 @@ table.ht tr:hover td{background:var(--card-h)}
     </div>
     <div class="hdr-right hidden" id="hdr-right">
       <span class="league-name-hdr" id="league-name-hdr"></span>
-      <button class="btn btn-o" id="clb" onclick="resetToEntry()">Change League</button>
+      <button class="btn btn-o" onclick="resetToEntry()">Change League</button>
     </div>
   </div>
 </header>
@@ -282,9 +285,7 @@ table.ht tr:hover td{background:var(--card-h)}
     <div class="league-format-row" id="league-format-row"></div>
     <div class="sec"><h2 class="stitle">League Snapshot</h2><div class="cgrid" id="snap"></div></div>
     <div class="sec"><h2 class="stitle">Standings &amp; Playoff Picture</h2>
-      <div class="card" style="overflow-x:auto">
-        <table class="st"><thead><tr><th>#</th><th>Username</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead><tbody id="sb"></tbody></table>
-      </div>
+      <div class="card" style="overflow-x:auto"><table class="st"><thead><tr><th>#</th><th>Username</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead><tbody id="sb"></tbody></table></div>
     </div>
     <div class="sec"><h2 class="stitle">Roster Age &amp; Dynasty Health</h2>
       <div class="card">
@@ -309,11 +310,7 @@ table.ht tr:hover td{background:var(--card-h)}
   <div id="pane-history" class="hidden">
     <div id="hist-loading" class="hidden"><div class="spin"></div><p class="spinlabel" id="hist-lbl">Loading historical seasons...</p></div>
     <div id="hist-content" class="hidden">
-      <div class="sec">
-        <h2 class="stitle">Champions</h2>
-        <div class="champs-row" id="champs-row"></div>
-        <p style="font-size:.75rem;color:var(--tm)">Champion determined from playoff bracket. All other history shows regular season standings.</p>
-      </div>
+      <div class="sec"><h2 class="stitle">Champions</h2><div class="champs-row" id="champs-row"></div><p style="font-size:.75rem;color:var(--tm)">Champion determined from playoff bracket. All other history shows regular season standings.</p></div>
       <div class="sec"><h2 class="stitle">Regular Season Standings Trajectory</h2>
         <div class="card">
           <p style="font-size:.8rem;color:var(--ts);margin-bottom:8px">Regular season rank each year. Lower is better. 🏆 indicates that season's champion.</p>
@@ -322,28 +319,23 @@ table.ht tr:hover td{background:var(--card-h)}
           <div id="hist-chart-area"><div class="hist-chart-wrap"><canvas id="hist-chart"></canvas></div></div>
         </div>
       </div>
-      <div class="sec"><h2 class="stitle">Year-over-Year Breakdown</h2>
-        <div class="card" style="overflow-x:auto"><table class="ht"><thead id="hist-thead"></thead><tbody id="hist-tbody"></tbody></table></div>
-      </div>
-      <div class="sec"><h2 class="stitle">Manager Histories</h2>
-        <div class="hist-grid" id="hist-grid"></div>
-      </div>
+      <div class="sec"><h2 class="stitle">Year-over-Year Breakdown</h2><div class="card" style="overflow-x:auto"><table class="ht"><thead id="hist-thead"></thead><tbody id="hist-tbody"></tbody></table></div></div>
+      <div class="sec"><h2 class="stitle">Manager Histories</h2><div class="hist-grid" id="hist-grid"></div></div>
     </div>
   </div>
   <div id="pane-trades" class="hidden">
     <div class="value-settings">
       <div class="value-settings-left">
         <div class="value-settings-title" id="value-settings-title">Detecting format...</div>
-        <div class="value-settings-sub">Values from <a href="https://keeptradecut.com/dynasty-rankings" target="_blank">KTC dynasty rankings</a> · Last updated May 2026 · Picks ⚠️ approximate · QB values based on Superflex</div>
+        <div class="value-settings-sub">Values from <a href="https://fantasycalc.com" target="_blank" rel="noopener">FantasyCalc</a>, sourced from real dynasty trades · <span id="value-source-badge" class="value-source-badge vsb-fallback">Loading...</span></div>
+        <div class="value-settings-sub" style="margin-top:2px">Picks ⚠️ approximate · QB values based on Superflex</div>
       </div>
       <div class="toggle-group">
         <div class="toggle-row"><span class="toggle-label">QB:</span><div class="te-btn-group"><button class="te-btn" id="sf-btn-sf" onclick="setSFFormat('sf')">Superflex</button><button class="te-btn" id="sf-btn-1qb" onclick="setSFFormat('1qb')">1QB</button></div></div>
         <div class="toggle-row"><span class="toggle-label">TE:</span><div class="te-btn-group"><button class="te-btn" id="te-btn-off" onclick="setTEPremium('off')">Off</button><button class="te-btn" id="te-btn-plus" onclick="setTEPremium('plus')">TE+</button><button class="te-btn" id="te-btn-plusplus" onclick="setTEPremium('plusplus')">TE++</button></div></div>
       </div>
     </div>
-    <div class="sec">
-      <h2 class="stitle">What-If Evaluator</h2>
-      <p style="font-size:.83rem;color:var(--ts);margin-bottom:16px">Build a hypothetical trade and get an instant grade.</p>
+    <div class="sec"><h2 class="stitle">What-If Evaluator</h2><p style="font-size:.83rem;color:var(--ts);margin-bottom:16px">Build a hypothetical trade and get an instant grade.</p>
       <div class="card">
         <div class="evaluator">
           <div class="eval-side"><h4>Side A gives</h4><input class="eval-search" id="eval-search-a" type="text" placeholder="Search players..." oninput="evalSearch('a')" autocomplete="off"/><div class="eval-results hidden" id="eval-results-a"></div><div class="eval-pick-row" id="pick-row-a"></div><div class="eval-assets" id="eval-assets-a"></div><div class="eval-total"><span>Total value</span><span id="eval-total-a" style="color:var(--acc);font-weight:700">0</span></div></div>
@@ -376,55 +368,105 @@ const SEASON=CUR_YEAR.toString();
 const HIST_SEASONS=5;
 const COLORS=['#7c5cfc','#22c55e','#3b82f6','#eab308','#ef4444','#f97316','#06b6d4','#ec4899','#84cc16','#a855f7','#14b8a6','#f43f5e'];
 const PICK_YEARS=Array.from({length:4},(_,i)=>CUR_YEAR+i);
+const PLAYER_CACHE_KEY='sl_pl_v2';
+// ── FantasyCalc value cache ──
+const FC_CACHE_KEY='sl_fc_values_v1';
+// Base format pulled once: Superflex (numQbs=2), Half PPR (ppr=0.5), 12-team dynasty
+const FC_URL='https://api.fantasycalc.com/values/current?isDynasty=true&numQbs=2&numTeams=12&ppr=0.5';
+
 let tePremium='off',sfFormat='sf';
 const TE_MULT={off:1.0,plus:1.2,plusplus:1.4};
+// Since base values are pulled at Superflex, 1QB applies a QB discount
 const QB_MULT={sf:1.0,'1qb':0.55};
 
-const QB_NAMES=new Set(['Josh Allen','Lamar Jackson','Patrick Mahomes','Jayden Daniels','Drake Maye','C.J. Stroud','Joe Burrow','Jalen Hurts','Justin Herbert','Caleb Williams','Jaxson Dart','Jordan Love','Brock Purdy','Baker Mayfield','Dak Prescott','Sam Darnold','Bo Nix','Anthony Richardson','Shedeur Sanders','Tyler Shough','Fernando Mendoza','Ty Simpson','Garrett Nussmeier','Dante Moore','LaNorris Sellers','Trevor Lawrence','Bryce Young','Sam Howell','Deshaun Watson','Derek Carr','Kirk Cousins','Russell Wilson','Matthew Stafford','Geno Smith','Daniel Jones','Zach Wilson','Justin Fields','Mac Jones','Malik Willis','Will Levis',"Aidan O'Connell",'Jake Browning','Gardner Minshew','Jacoby Brissett','Kenny Pickett','Tanner McKee','Michael Penix Jr.','J.J. McCarthy']);
-const TE_NAMES=new Set(['Brock Bowers','Trey McBride','Sam LaPorta','Tyler Warren','Colston Loveland','Tucker Kraft','Luke Musgrave','Dalton Kincaid','Jake Ferguson','Cole Kmet','Dallas Goedert','T.J. Hockenson','Mark Andrews','Travis Kelce','Jonnu Smith','Chigoziem Okonkwo','Cade Otton','Mason Taylor','DeAndre Hopkins','Kenyon Sadiq','Michael Trigg','Evan Engram','David Njoku','Pat Freiermuth','Theo Johnson','Hunter Henry','Noah Fant','Tyler Conklin','Gerald Everett','Durham Smythe','Charlie Kolar','Peyton Hendershot','Austin Hooper','Juwan Johnson','Grant Calcaterra','Isaiah Likely','Logan Thomas','Daniel Bellinger','Tanner McLachlan']);
+// ── Live values, keyed by Sleeper player ID. Populated from FantasyCalc on load. ──
+let valuesBySleeperId={};   // { sleeperId: { value, position, name } }
+let valueSource='fallback'; // 'live' | 'cached' | 'fallback'
 
-// ── KTC Base Values -- Updated May 2026 (Superflex, .5 PPR) ──
-const KTC_BASE={
-  // QBs
-  'Josh Allen':9992,'Lamar Jackson':7648,'Drake Maye':9343,'Caleb Williams':7929,'Jayden Daniels':7857,'Justin Herbert':6869,'Patrick Mahomes':6727,'Joe Burrow':7475,'Jalen Hurts':6180,'Jaxson Dart':6530,'Bo Nix':6049,'Brock Purdy':5854,'Jordan Love':5605,'Trevor Lawrence':6324,'Fernando Mendoza':5617,'Baker Mayfield':4800,'Dak Prescott':4400,'Sam Darnold':3800,'Anthony Richardson':3200,'Shedeur Sanders':4600,'Tyler Shough':3200,'Ty Simpson':3000,'Garrett Nussmeier':2400,'Dante Moore':2600,'LaNorris Sellers':2200,'J.J. McCarthy':4200,'Michael Penix Jr.':3600,'Will Levis':2800,'Bryce Young':3400,'Sam Howell':1800,'Geno Smith':1800,'Kenny Pickett':1800,'Justin Fields':2200,'Mac Jones':1600,'Kirk Cousins':1800,'Russell Wilson':1600,'Matthew Stafford':2000,'Derek Carr':1600,"Aidan O'Connell":1400,'Gardner Minshew':1400,'Jacoby Brissett':1200,
-  // RBs
-  'Bijan Robinson':9996,'Jahmyr Gibbs':9683,'Jeremiyah Love':7657,'Ashton Jeanty':7597,"De'Von Achane":6931,'Omarion Hampton':6827,'Jonathan Taylor':6002,'James Cook':5982,'Quinshon Judkins':5511,'Kenneth Walker III':5448,'Breece Hall':5419,'Kyren Williams':5200,'TreVeyon Henderson':5100,'Saquon Barkley':5800,'Christian McCaffrey':4800,'Chuba Hubbard':4200,'Josh Jacobs':4000,'Bucky Irving':5200,'RJ Harvey':4400,'Cam Skattebo':3800,'Jadarian Price':4600,'KC Concepcion':3600,'Kaelon Black':2800,'Emmett Johnson':2200,'Kaytron Allen':2000,'Jonah Coleman':2000,'David Montgomery':3400,'Travis Etienne Jr.':3200,'Aaron Jones':2200,'Tony Pollard':2400,'Rhamondre Stevenson':2800,'Najee Harris':2400,'Joe Mixon':2000,'Alvin Kamara':2200,'Rachaad White':2800,'Isiah Pacheco':2600,'Javonte Williams':3000,"D'Andre Swift":3200,'Miles Sanders':1600,'Dameon Pierce':1800,'Ty Chandler':1400,'Devin Singletary':1600,'Samaje Perine':1400,
-  // RBs with "Jr." suffixes and others easily confused
-  'Brian Robinson Jr.':2800,'Zamir White':1800,'Roschon Johnson':1600,'Zach Charbonnet':3000,'MarShawn Lloyd':2200,'Ray Davis':2000,'Dylan Laube':1800,'Kimani Vidal':1600,
-  // WRs
-  "Ja'Marr Chase":9995,'Jaxon Smith-Njigba':9845,'Puka Nacua':8631,'Amon-Ra St. Brown':7823,'Justin Jefferson':7813,'Malik Nabers':7664,'CeeDee Lamb':7255,'Drake London':6877,'Tetairoa McMillan':6543,'Emeka Egbuka':6107,'George Pickens':5928,'Carnell Tate':5927,'Garrett Wilson':5663,'Nico Collins':5595,'Chris Olave':5498,'Rome Odunze':5452,'Ladd McConkey':5432,'Jordyn Tyson':5000,'Marvin Harrison Jr.':5300,'Brian Thomas Jr.':5100,'Rashee Rice':4400,'DK Metcalf':4200,'Tee Higgins':4600,'Brandon Aiyuk':4000,'DeVonta Smith':3800,'Jaylen Waddle':4000,'Jordan Addison':4200,'Khalil Shakir':3600,'Terry McLaurin':3200,'Josh Downs':3800,'Xavier Worthy':4400,'Adonai Mitchell':4000,'Ricky Pearsall':3200,'Tank Dell':3600,'Makai Lemon':4200,'Chris Brazzell II':2800,'Omar Cooper Jr.':2600,'Antonio Williams':3400,'Denzel Boston':2200,'Elijah Sarratt':2000,"Ja'Kobi Lane":1800,'Eric Singleton Jr.':1800,'Skyler Bell':1800,'Mike Washington Jr.':1600,'Tyreek Hill':3400,'Davante Adams':2800,'Deebo Samuel':2400,'Stefon Diggs':1800,'Keenan Allen':1600,'Diontae Johnson':1600,'Mike Evans':2800,'Chris Godwin':2000,'Amari Cooper':2000,'Adam Thielen':1400,'Jakobi Meyers':1600,'Marquise Brown':2000,"De'Zhaun Stribling":2400,'Justin Joly':2000,'Brenen Thompson':2800,'Matthew Golden':2200,'Xavier Restrepo':2000,'Jalen McMillan':2400,'Wan\'Dale Robinson':1400,
-  // TEs
-  'Brock Bowers':7993,'Trey McBride':7529,'Colston Loveland':6114,'Tyler Warren':5761,'Sam LaPorta':5200,'Tucker Kraft':4000,'Luke Musgrave':3600,'Dalton Kincaid':3400,'Jake Ferguson':3200,'Cole Kmet':3000,'Dallas Goedert':3200,'T.J. Hockenson':2800,'Mark Andrews':2600,'Travis Kelce':2400,'Jonnu Smith':2200,'Chigoziem Okonkwo':2600,'Cade Otton':2400,'Mason Taylor':3400,'Kenyon Sadiq':3200,'Michael Trigg':2200,'Isaiah Likely':3000,'David Njoku':3200,'Pat Freiermuth':2800,'Evan Engram':2600,'Theo Johnson':2400,'Charlie Kolar':1800,'Hunter Henry':1600,'Noah Fant':1600,'Tyler Conklin':1400,'Gerald Everett':1200,'Grant Calcaterra':1400,'Tanner McLachlan':1600,'DeAndre Hopkins':1800,
+// ── Fallback table (used only if FantasyCalc fetch fails AND no cache). Keyed by name. ──
+// Trimmed to a safety net -- the live API is the real source.
+const FALLBACK_BASE={
+  'Josh Allen':9992,'Lamar Jackson':7648,'Drake Maye':9343,'Caleb Williams':7929,'Jayden Daniels':7857,'Justin Herbert':6869,'Patrick Mahomes':6727,'Joe Burrow':7475,'Jalen Hurts':6180,'Jaxson Dart':6530,'Bo Nix':6049,'Brock Purdy':5854,'Jordan Love':5605,'Trevor Lawrence':6324,
+  'Bijan Robinson':9996,'Jahmyr Gibbs':9683,'Jeremiyah Love':7657,'Ashton Jeanty':7597,"De'Von Achane":6931,'Omarion Hampton':6827,'Jonathan Taylor':6002,'James Cook':5982,'Quinshon Judkins':5511,'Kenneth Walker III':5448,'Breece Hall':5419,'Kyren Williams':5200,'Saquon Barkley':5800,'Brian Robinson Jr.':2800,
+  "Ja'Marr Chase":9995,'Jaxon Smith-Njigba':9845,'Puka Nacua':8631,'Amon-Ra St. Brown':7823,'Justin Jefferson':7813,'Malik Nabers':7664,'CeeDee Lamb':7255,'Drake London':6877,'Tetairoa McMillan':6543,'Emeka Egbuka':6107,'George Pickens':5928,'Nico Collins':5595,'Marvin Harrison Jr.':5300,'Brian Thomas Jr.':5100,
+  'Brock Bowers':7993,'Trey McBride':7529,'Colston Loveland':6114,'Tyler Warren':5761,'Sam LaPorta':5200,'Tucker Kraft':4000,
 };
-
-// ── Positional floor values for players not in KTC table ──
 const POS_FLOOR={QB:1800,RB:1200,WR:1000,TE:900};
 
-function applyMultiplier(name,base){
-  const pid=Object.keys(S.players||{}).find(id=>S.players[id]?.full_name===name);
-  const pos=pid?S.players[pid]?.position:'';
-  const isQB=QB_NAMES.has(name)||pos==='QB';
-  const isTE=TE_NAMES.has(name)||pos==='TE';
-  if(isQB)return Math.round(base*QB_MULT[sfFormat]);
-  if(isTE)return Math.round(base*TE_MULT[tePremium]);
-  return base;
+// ── Fetch FantasyCalc values, cache for the day ──
+async function loadValues(){
+  // Try cache first
+  try{
+    const cached=JSON.parse(localStorage.getItem(FC_CACHE_KEY)||'null');
+    if(cached&&cached.date===todayStr()&&cached.map&&Object.keys(cached.map).length){
+      valuesBySleeperId=cached.map;valueSource='cached';return;
+    }
+  }catch(e){}
+  // Fetch fresh
+  try{
+    const res=await fetch(FC_URL);
+    if(!res.ok)throw new Error('FantasyCalc '+res.status);
+    const data=await res.json();
+    const map={};
+    data.forEach(row=>{
+      const sid=row.player?.sleeperId;
+      if(!sid)return;
+      map[sid]={value:row.value||0,position:row.player?.position||'',name:row.player?.name||''};
+    });
+    if(!Object.keys(map).length)throw new Error('empty');
+    valuesBySleeperId=map;valueSource='live';
+    try{localStorage.setItem(FC_CACHE_KEY,JSON.stringify({date:todayStr(),map}))}catch(e){}
+  }catch(e){
+    // Fall back to bundled table -- keyed by name, resolved in getPlayerValue
+    valuesBySleeperId={};valueSource='fallback';
+  }
 }
 
-// ── getPlayerValue -- exact matches only, no substring guessing ──
-function getPlayerValue(name){
-  if(!name)return 0;
-  // 1. Exact match (case-sensitive, fastest path)
-  if(KTC_BASE[name])return applyMultiplier(name,KTC_BASE[name]);
-  // 2. Case-insensitive exact match only -- NO substring fallback
-  const lower=name.toLowerCase();
-  const exactKey=Object.keys(KTC_BASE).find(k=>k.toLowerCase()===lower);
-  if(exactKey)return applyMultiplier(name,KTC_BASE[exactKey]);
-  // 3. No match -- positional floor from Sleeper DB, not a random player's value
-  const pid=Object.keys(S.players||{}).find(id=>S.players[id]?.full_name===name);
-  const pos=pid?S.players[pid]?.position:'';
-  const floor=POS_FLOOR[pos]||800;
-  return applyMultiplier(name,floor);
+function todayStr(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
+
+// ── Apply QB/TE multipliers to a raw base value given a position ──
+function applyMultiplier(base,pos,name){
+  const isQB=pos==='QB';
+  const isTE=pos==='TE';
+  if(isQB)return Math.round(base*QB_MULT[sfFormat]);
+  if(isTE)return Math.round(base*TE_MULT[tePremium]);
+  return Math.round(base);
 }
+
+// ── Primary lookup: by Sleeper player ID (exact, no name matching) ──
+function getPlayerValueById(sleeperId){
+  if(!sleeperId)return 0;
+  const entry=valuesBySleeperId[sleeperId];
+  if(entry)return applyMultiplier(entry.value,entry.position,entry.name);
+  // Live map missing this player -> positional floor from Sleeper DB
+  const pos=S.players[sleeperId]?.position||'';
+  return applyMultiplier(POS_FLOOR[pos]||800,pos,'');
+}
+
+// ── Name-based lookup (used by evaluator search where we have a name).
+//    Resolves name -> Sleeper ID -> value. Falls back to bundled table if live data unavailable. ──
+function getPlayerValue(nameOrId){
+  if(!nameOrId)return 0;
+  // If it's a known Sleeper ID present in our maps, treat as ID
+  if(valuesBySleeperId[nameOrId]||S.players[nameOrId]){
+    return getPlayerValueById(nameOrId);
+  }
+  // Otherwise treat as a name -- find the Sleeper player ID
+  const name=nameOrId;
+  const pid=Object.keys(S.players||{}).find(id=>S.players[id]?.full_name===name);
+  if(pid&&valueSource!=='fallback'){
+    return getPlayerValueById(pid);
+  }
+  // Fallback table path (live data failed): exact name match only, no substring guessing
+  if(FALLBACK_BASE[name]){
+    const pos=pid?S.players[pid]?.position:'';
+    return applyMultiplier(FALLBACK_BASE[name],pos,name);
+  }
+  const pos=pid?S.players[pid]?.position:'';
+  return applyMultiplier(POS_FLOOR[pos]||800,pos,name);
+}
+
+function nameMatchesQuery(name,q){const parts=name.toLowerCase().split(/[\s'.]+/);return parts.some(p=>p.startsWith(q));}
 
 function detectTEPremium(league){
   const ss=league?.scoring_settings||{};const rp=league?.roster_positions||[];
@@ -435,12 +477,7 @@ function detectTEPremium(league){
   if(tePremiumPoints>0||teStarts>1)return'plus';
   return'off';
 }
-
-function detectFormats(league){
-  const rp=league?.roster_positions||[];
-  const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;
-  return{sf:isSF?'sf':'1qb',te:detectTEPremium(league)};
-}
+function detectFormats(league){const rp=league?.roster_positions||[];const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;return{sf:isSF?'sf':'1qb',te:detectTEPremium(league)};}
 
 async function getChampionRosterId(leagueId){
   try{const b=await api('/league/'+leagueId+'/winners_bracket');if(!b||!b.length)return null;const completed=b.filter(m=>m.w!=null);if(!completed.length)return null;const maxRound=Math.max(...completed.map(m=>m.r||0));const finalRoundGames=completed.filter(m=>m.r===maxRound);const champGame=finalRoundGames.find(m=>m.p===1)||finalRoundGames[finalRoundGames.length-1];return champGame?.w||null;}catch(e){return null;}
@@ -450,20 +487,19 @@ function setSFFormat(val){sfFormat=val;['sf','1qb'].forEach(v=>document.getEleme
 function setTEPremium(val){tePremium=val;['off','plus','plusplus'].forEach(v=>document.getElementById(`te-btn-${v}`).classList.toggle('active',v===val));updateValueSettingsTitle();if(window._allGradedTrades){renderTradeGrades();renderManagerProfiles(window._allGradedTrades);}refreshEvalUI();}
 
 function updateValueSettingsTitle(){
-  const rec=S.league?.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';
-  const sfLabel=sfFormat==='sf'?'Superflex':'1QB';const teLabel=tePremium==='off'?'Standard TE':tePremium==='plus'?'TE+':'TE++';
+  const rec=S.league?.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';const sfLabel=sfFormat==='sf'?'Superflex':'1QB';const teLabel=tePremium==='off'?'Standard TE':tePremium==='plus'?'TE+':'TE++';
   document.getElementById('value-settings-title').textContent=`${sfLabel} · ${scoring} · ${teLabel}`;
+  const badge=document.getElementById('value-source-badge');
+  if(badge){
+    if(valueSource==='live'){badge.className='value-source-badge vsb-live';badge.textContent='● Live values (updated today)';}
+    else if(valueSource==='cached'){badge.className='value-source-badge vsb-live';badge.textContent='● Live values (cached today)';}
+    else{badge.className='value-source-badge vsb-fallback';badge.textContent='⚠ Offline estimates';}
+  }
 }
 
 function renderLeagueFormatRow(){
-  const l=S.league;if(!l)return;
-  const rp=l.roster_positions||[];const rec=l.scoring_settings?.rec;
-  const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;const te=detectTEPremium(l);
-  const pills=[];
-  if(rec===1)pills.push(`<span class="lf-pill lf-ppr">Full PPR</span>`);else if(rec===.5)pills.push(`<span class="lf-pill lf-ppr">Half PPR</span>`);else pills.push(`<span class="lf-pill lf-std">Standard</span>`);
-  pills.push(isSF?`<span class="lf-pill lf-sf">Superflex</span>`:`<span class="lf-pill lf-1qb">1QB</span>`);
-  if(te==='plusplus')pills.push(`<span class="lf-pill lf-te">TE++</span>`);else if(te==='plus')pills.push(`<span class="lf-pill lf-te">TE+</span>`);
-  if(l.settings?.type===2||rp.length>12)pills.push(`<span class="lf-pill lf-std">Dynasty</span>`);
+  const l=S.league;if(!l)return;const rp=l.roster_positions||[];const rec=l.scoring_settings?.rec;const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;const te=detectTEPremium(l);
+  const pills=[];if(rec===1)pills.push(`<span class="lf-pill lf-ppr">Full PPR</span>`);else if(rec===.5)pills.push(`<span class="lf-pill lf-ppr">Half PPR</span>`);else pills.push(`<span class="lf-pill lf-std">Standard</span>`);pills.push(isSF?`<span class="lf-pill lf-sf">Superflex</span>`:`<span class="lf-pill lf-1qb">1QB</span>`);if(te==='plusplus')pills.push(`<span class="lf-pill lf-te">TE++</span>`);else if(te==='plus')pills.push(`<span class="lf-pill lf-te">TE+</span>`);if(l.settings?.type===2||rp.length>12)pills.push(`<span class="lf-pill lf-std">Dynasty</span>`);
   document.getElementById('league-format-row').innerHTML=`<span class="lf-label">Format</span>${pills.join('')}`;
 }
 
@@ -478,11 +514,7 @@ function pickValue(year,round,tier){
 
 function buildPickRow(side){
   const yo=PICK_YEARS.map(y=>`<option value="${y}">${y}</option>`).join('');
-  document.getElementById(`pick-row-${side}`).innerHTML=`
-    <select id="eval-pick-year-${side}">${yo}</select>
-    <select id="eval-pick-round-${side}"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option></select>
-    <select id="eval-pick-tier-${side}"><option value="early">Early</option><option value="mid">Mid</option><option value="late">Late</option></select>
-    <button class="btn btn-o btn-sm" onclick="addEvalPick('${side}')">+ Pick</button>`;
+  document.getElementById(`pick-row-${side}`).innerHTML=`<select id="eval-pick-year-${side}">${yo}</select><select id="eval-pick-round-${side}"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option></select><select id="eval-pick-tier-${side}"><option value="early">Early</option><option value="mid">Mid</option><option value="late">Late</option></select><button class="btn btn-o btn-sm" onclick="addEvalPick('${side}')">+ Pick</button>`;
 }
 
 function gradeFromRatio(ratio){
@@ -504,10 +536,10 @@ function getRosterName(rid,rosters,users){const r=rosters?.find(r=>r.roster_id==
 async function api(p){const r=await fetch(BASE+p);if(!r.ok)throw new Error('API '+r.status);return r.json();}
 
 async function loadPlayers(){
-  const c=localStorage.getItem('sl_pl_v1');
+  const c=localStorage.getItem(PLAYER_CACHE_KEY);
   if(c){try{S.players=JSON.parse(c);return}catch(e){}}
   lbl('Loading player database...');S.players=await api('/players/nfl');
-  try{localStorage.setItem('sl_pl_v1',JSON.stringify(S.players))}catch(e){}
+  try{localStorage.setItem(PLAYER_CACHE_KEY,JSON.stringify(S.players))}catch(e){}
 }
 
 async function handleUser(){
@@ -517,10 +549,7 @@ async function handleUser(){
   catch(e){hideLoad();setErr(e.message||'Something went wrong.');show('entry');}
 }
 
-async function handleLeague(){
-  const id=document.getElementById('li').value.trim();if(!id)return setErr('Please enter a League ID.');
-  clearErr();await loadDash(id);
-}
+async function handleLeague(){const id=document.getElementById('li').value.trim();if(!id)return setErr('Please enter a League ID.');clearErr();await loadDash(id);}
 
 function showPicker(u,leagues){
   hide('entry');hide('loading');document.getElementById('pu').textContent=u+"'s Leagues";
@@ -542,7 +571,9 @@ async function loadDash(id){
     lbl('Loading matchups...');const wks=Array.from({length:S.week},(_,i)=>i+1);
     const mrs=await Promise.all(wks.map(w=>api('/league/'+id+'/matchups/'+w)));S.matchups={};wks.forEach((w,i)=>S.matchups[w]=mrs[i]);
     lbl('Loading transactions...');const txwks=wks.slice(-3);const txrs=await Promise.all(txwks.map(w=>api('/league/'+id+'/transactions/'+w)));S.transactions=txrs.flat();
-    lbl('Loading players...');await loadPlayers();renderDash();
+    lbl('Loading players...');await loadPlayers();
+    lbl('Loading trade values...');await loadValues();
+    renderDash();
   }catch(e){hideLoad();setErr('Failed: '+(e.message||'Unknown error'));show('entry');}
 }
 
@@ -566,13 +597,7 @@ async function loadHistory(){
 }
 
 function renderHistory(){renderChampionsRow();buildCheckboxes();renderHistChart();renderHistTable();renderHistGrid();}
-
-function renderChampionsRow(){
-  const withChamp=[...H.seasons].filter(s=>s.champRosterId&&s.year<CUR_YEAR).reverse();
-  if(!withChamp.length){document.getElementById('champs-row').innerHTML=`<p style="font-size:.83rem;color:var(--tm)">No completed seasons with bracket data found.</p>`;return;}
-  document.getElementById('champs-row').innerHTML=withChamp.map(s=>{const champSt=s.standings.find(st=>st.isChamp);if(!champSt)return'';return`<div class="champ-card"><div class="champ-trophy">🏆</div><div class="champ-info"><div class="champ-year">${s.year}</div><div class="champ-name">${champSt.displayName}</div><div class="champ-record">${champSt.wins}–${champSt.losses} · ${ordinal(champSt.seed)} seed</div></div></div>`;}).join('');
-}
-
+function renderChampionsRow(){const withChamp=[...H.seasons].filter(s=>s.champRosterId&&s.year<CUR_YEAR).reverse();if(!withChamp.length){document.getElementById('champs-row').innerHTML=`<p style="font-size:.83rem;color:var(--tm)">No completed seasons with bracket data found.</p>`;return;}document.getElementById('champs-row').innerHTML=withChamp.map(s=>{const champSt=s.standings.find(st=>st.isChamp);if(!champSt)return'';return`<div class="champ-card"><div class="champ-trophy">🏆</div><div class="champ-info"><div class="champ-year">${s.year}</div><div class="champ-name">${champSt.displayName}</div><div class="champ-record">${champSt.wins}–${champSt.losses} · ${ordinal(champSt.seed)} seed</div></div></div>`;}).join('');}
 function rankPillCls(st,ps,year){if(st.isChamp&&year<CUR_YEAR)return'rank-champ';if(st.seed<=ps)return'rank-playoff';if(st.seed===ps+1)return'rank-bubble';return'rank-out';}
 function buildCheckboxes(){document.getElementById('cb-grid').innerHTML=H.sortedUsers.map((u,i)=>{const col=COLORS[i%COLORS.length];return`<label class="cb-item"><input type="checkbox" checked data-uid="${u.userId}" onchange="onCheckboxChange()"/><span class="cb-dot" style="background:${col}"></span><span>${u.name}</span></label>`;}).join('');}
 function getCheckedUids(){return[...document.querySelectorAll('#cb-grid input[type=checkbox]:checked')].map(c=>c.dataset.uid);}
@@ -615,10 +640,11 @@ function initTradeTab(){
   window._allGradedTrades=trades;renderTradeGrades();renderManagerProfiles(trades);
 }
 
+// ── gradeTrade now values players by Sleeper ID (the adds object IS keyed by player ID) ──
 function gradeTrade(t){
   const adds=t.adds||{},picks=t.draft_picks||[];const rosterIds=[...new Set(t.roster_ids||[])];
   const sides={};rosterIds.forEach(rid=>{sides[rid]={players:[],picks:[],value:0};});
-  Object.entries(adds).forEach(([pid,rid])=>{if(!sides[rid])sides[rid]={players:[],picks:[],value:0};const name=S.players[pid]?.full_name||pid;const val=getPlayerValue(name);sides[rid].players.push({name,val});sides[rid].value+=val;});
+  Object.entries(adds).forEach(([pid,rid])=>{if(!sides[rid])sides[rid]={players:[],picks:[],value:0};const name=S.players[pid]?.full_name||pid;const val=getPlayerValueById(pid);sides[rid].players.push({name,val});sides[rid].value+=val;});
   const hasPicks=picks.length>0;
   picks.forEach(p=>{const rid=p.owner_id;if(!sides[rid])sides[rid]={players:[],picks:[],value:0};const val=pickValue(p.season||CUR_YEAR,p.round||2,'mid');const roundLabel=['','1st','2nd','3rd','4th'][p.round]||p.round+'th';const label=`${p.season||'?'} ${roundLabel} ⚠️`;sides[rid].picks.push({label,val});sides[rid].value+=val;});
   const sl=Object.entries(sides).filter(([,s])=>s.value>0||s.players.length>0||s.picks.length>0);if(sl.length<2)return null;
@@ -634,7 +660,8 @@ function renderTradeGrades(){
   document.getElementById('trade-count').textContent=`${filtered.length} trade${filtered.length!==1?'s':''}`;
   if(!filtered.length){document.getElementById('trade-cards').innerHTML=`<div style="color:var(--tm);font-size:.85rem;padding:20px 0">No trades found.</div>`;return;}
   document.getElementById('trade-cards').innerHTML=filtered.slice(0,30).map(t=>{
-    const g=gradeTrade(t);if(!g)return'';const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+    const g=gradeTrade(t);if(!g)return'';
+    const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
     const pctA=g.isTie?50:Math.round((g.valA/Math.max(Math.max(g.valA,g.valB),1))*100);
     const ra=(side,name)=>`<div class="trade-side"><div class="trade-side-name">${name}</div>${side.players.map(p=>`<div class="trade-asset"><span>${p.name}</span><span class="trade-asset-val">${p.val.toLocaleString()}</span></div>`).join('')}${side.picks.map(p=>`<div class="trade-asset"><span class="pick-badge">Pick</span><span>${p.label}</span><span class="trade-asset-val">~${p.val.toLocaleString()}</span></div>`).join('')}</div>`;
     const verdictText=g.isTie?'Tie':g.winner===g.ridA?`${g.nameA} wins`:`${g.nameB} wins`;
@@ -642,22 +669,33 @@ function renderTradeGrades(){
   }).join('');
 }
 
+// ── evalSearch: now stores the Sleeper ID with each result so values resolve by ID ──
 function evalSearch(side){
-  const q=document.getElementById(`eval-search-${side}`).value.trim().toLowerCase();const rd=document.getElementById(`eval-results-${side}`);
+  const q=document.getElementById(`eval-search-${side}`).value.trim().toLowerCase();
+  const rd=document.getElementById(`eval-results-${side}`);
   if(q.length<2){rd.classList.add('hidden');rd.innerHTML='';return;}
   const seen=new Set();const matches=[];
-  // Search KTC table first (exact/known values)
-  Object.keys(KTC_BASE).forEach(name=>{if(seen.has(name))return;if(name.toLowerCase().includes(q)){seen.add(name);matches.push({name,val:getPlayerValue(name)});}});
-  // Then Sleeper DB for active skill players not already found
-  Object.values(S.players||{}).forEach(p=>{const name=p.full_name||'';if(!name||seen.has(name))return;if(!['QB','RB','WR','TE'].includes(p.position))return;if(p.status==='Inactive'&&!p.active)return;if(name.toLowerCase().includes(q)){seen.add(name);matches.push({name,val:getPlayerValue(name)});}});
+  // Search Sleeper player DB (active skill players) -- this is the master list now
+  Object.entries(S.players||{}).forEach(([pid,p])=>{
+    const name=p.full_name||'';
+    if(!name||seen.has(pid))return;
+    if(!['QB','RB','WR','TE'].includes(p.position))return;
+    if(p.status==='Inactive'&&!p.active)return;
+    if(nameMatchesQuery(name,q)){
+      seen.add(pid);
+      matches.push({pid,name,val:getPlayerValueById(pid)});
+    }
+  });
   const top=matches.sort((a,b)=>b.val-a.val).slice(0,12);
   if(!top.length){rd.classList.add('hidden');return;}
-  rd.innerHTML=top.map(p=>`<div class="eval-result-item" onclick="addEvalPlayer('${side}','${p.name.replace(/'/g,"\\'")}',${p.val})"><span>${p.name}</span><span class="eval-result-val">${p.val.toLocaleString()}</span></div>`).join('');
+  rd.innerHTML=top.map(p=>`<div class="eval-result-item" onclick="addEvalPlayer('${side}','${p.name.replace(/'/g,"\\'")}','${p.pid}',${p.val})"><span>${p.name}</span><span class="eval-result-val">${p.val.toLocaleString()}</span></div>`).join('');
   rd.classList.remove('hidden');
 }
 
-function addEvalPlayer(side,name,val){
-  if(side==='a')evalAssetsA.push({type:'player',name,val});else evalAssetsB.push({type:'player',name,val});
+// ── eval assets now carry the Sleeper ID so re-valuation on toggle is exact ──
+function addEvalPlayer(side,name,pid,val){
+  const asset={type:'player',name,pid,val};
+  if(side==='a')evalAssetsA.push(asset);else evalAssetsB.push(asset);
   document.getElementById(`eval-search-${side}`).value='';document.getElementById(`eval-results-${side}`).classList.add('hidden');refreshEvalUI();
 }
 
@@ -670,12 +708,15 @@ function addEvalPick(side){
 
 function removeEvalAsset(side,idx){if(side==='a')evalAssetsA.splice(idx,1);else evalAssetsB.splice(idx,1);refreshEvalUI();}
 
+// ── asset value: picks use stored val, players re-resolve by Sleeper ID (so toggles update live) ──
+function assetValue(a){return a.type==='pick'?a.val:(a.pid?getPlayerValueById(a.pid):getPlayerValue(a.name));}
+
 function refreshEvalUI(){
-  ['a','b'].forEach(side=>{const assets=side==='a'?evalAssetsA:evalAssetsB;const total=assets.reduce((s,a)=>s+(a.type==='pick'?a.val:getPlayerValue(a.name)),0);document.getElementById(`eval-assets-${side}`).innerHTML=assets.map((a,i)=>{const v=a.type==='pick'?a.val:getPlayerValue(a.name);return`<div class="eval-asset-tag"><span>${a.name}</span><span style="font-size:.72rem;color:var(--tm);margin-left:8px">${v.toLocaleString()}</span><button class="eval-asset-remove" onclick="removeEvalAsset('${side}',${i})">×</button></div>`;}).join('');document.getElementById(`eval-total-${side}`).textContent=total.toLocaleString();});
+  ['a','b'].forEach(side=>{const assets=side==='a'?evalAssetsA:evalAssetsB;const total=assets.reduce((s,a)=>s+assetValue(a),0);document.getElementById(`eval-assets-${side}`).innerHTML=assets.map((a,i)=>{const v=assetValue(a);return`<div class="eval-asset-tag"><span>${a.name}</span><span style="font-size:.72rem;color:var(--tm);margin-left:8px">${v.toLocaleString()}</span><button class="eval-asset-remove" onclick="removeEvalAsset('${side}',${i})">×</button></div>`;}).join('');document.getElementById(`eval-total-${side}`).textContent=total.toLocaleString();});
 }
 
 function evaluateTrade(){
-  const valA=evalAssetsA.reduce((s,a)=>s+(a.type==='pick'?a.val:getPlayerValue(a.name)),0);const valB=evalAssetsB.reduce((s,a)=>s+(a.type==='pick'?a.val:getPlayerValue(a.name)),0);
+  const valA=evalAssetsA.reduce((s,a)=>s+assetValue(a),0);const valB=evalAssetsB.reduce((s,a)=>s+assetValue(a),0);
   if(!valA&&!valB){document.getElementById('eval-result-box').classList.add('hidden');return;}
   const isTied=valA===valB;const ratio=isTied?1.0:Math.max(valA,valB)/Math.max(Math.min(valA,valB),1);const g=gradeFromRatio(ratio);
   const winner=isTied?null:(valA>valB?'Side A':'Side B');const hasPicks=[...evalAssetsA,...evalAssetsB].some(a=>a.type==='pick');
@@ -686,10 +727,7 @@ function evaluateTrade(){
   box.classList.remove('hidden');
 }
 
-function clearEvaluator(){
-  evalAssetsA=[];evalAssetsB=[];refreshEvalUI();document.getElementById('eval-result-box').classList.add('hidden');
-  document.getElementById('eval-search-a').value='';document.getElementById('eval-search-b').value='';
-}
+function clearEvaluator(){evalAssetsA=[];evalAssetsB=[];refreshEvalUI();document.getElementById('eval-result-box').classList.add('hidden');document.getElementById('eval-search-a').value='';document.getElementById('eval-search-b').value='';}
 
 function renderManagerProfiles(trades){
   const profiles={};S.rosters.forEach(r=>{const u=S.users.find(u=>u.user_id===r.owner_id)||{};profiles[r.roster_id]={name:u.display_name||u.username||'Unknown',rosterId:r.roster_id,trades:0,valueGained:0,valueLost:0,wins:0,losses:0,ties:0};});
@@ -713,16 +751,11 @@ function renderDash(){hideLoad();renderLeagueFormatRow();renderSnap();renderStan
 
 function renderSnap(){const l=S.league,rp=l.roster_positions||[];const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;const rec=l.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';const te=detectTEPremium(l);const teStr=te==='plusplus'?' · TE++':te==='plus'?' · TE+':'';const fmt=`${isSF?'SF':'1QB'} · ${scoring}${teStr}`;const stats=[{l:'Teams',v:l.total_rosters},{l:'Current Week',v:'Week '+S.week},{l:'Format',v:fmt},{l:'Playoff Spots',v:l.settings?.playoff_teams||'?'},{l:'Season',v:l.season},{l:'Type',v:'Dynasty'}];document.getElementById('snap').innerHTML=stats.map(s=>`<div class="sc"><div class="sv" style="font-size:${s.l==='Format'?'.88rem':'1.5rem'}">${s.v}</div><div class="sl">${s.l}</div></div>`).join('');}
 function getStreak(r){let n=0,t=null;for(let w=S.week;w>=1;w--){const wm=S.matchups[w];if(!wm)continue;const me=wm.find(m=>m.roster_id===r.roster_id);if(!me)continue;const op=wm.find(m=>m.matchup_id===me.matchup_id&&m.roster_id!==r.roster_id);if(!op)continue;const w2=me.points>op.points;if(t===null)t=w2;if(w2!==t)break;n++;}return n===0?'-':`${t?'W':'L'}${n}`;}
-
 function renderStandings(){const ps=S.league.settings?.playoff_teams||4;const sorted=[...S.rosters].sort((a,b)=>{const dw=(b.settings?.wins||0)-(a.settings?.wins||0);return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);});document.getElementById('sb').innerHTML=sorted.map((r,i)=>{const rk=i+1,w=r.settings?.wins||0,l=r.settings?.losses||0;const pf=((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1);const pa=((r.settings?.fpts_against||0)+(r.settings?.fpts_against_decimal||0)/100).toFixed(1);const st=getStreak(r);const ph=rk<=ps?`<span class="py">IN</span>`:rk===ps+1?`<span class="pb">BUBBLE</span>`:`<span class="pn">OUT</span>`;return`<tr><td style="color:var(--tm);font-weight:600">${rk}</td><td style="font-weight:600">${dn(r)}</td><td style="color:var(--ts)">${w}-${l}</td><td>${pf}</td><td>${pa}</td><td class="${st.startsWith('W')?'sw':'sl2'}">${st}</td><td>${ph}</td></tr>`;}).join('');}
-
 function renderAge(){const rd=S.rosters.map(r=>{const ages=(r.players||[]).map(p=>S.players[p]?.age).filter(Boolean);const avg=ages.length?ages.reduce((a,b)=>a+b,0)/ages.length:0;return{r,avg:Math.round(avg*10)/10};}).sort((a,b)=>a.avg-b.avg);const mn=Math.min(...rd.map(d=>d.avg)),mx=Math.max(...rd.map(d=>d.avg));document.getElementById('ag').innerHTML=rd.map(d=>{const pct=mx===mn?50:((d.avg-mn)/(mx-mn))*100;const cls=d.avg<26?'age-c':d.avg<=28?'age-a':'age-r';return`<div class="arow"><span class="al">${dn(d.r)}</span><div class="abt"><div class="abf ${cls}" style="width:${Math.max(8,pct)}%"></div></div><span class="av">${d.avg||'?'}</span></div>`;}).join('');const bk={'22-24':0,'25-26':0,'27-28':0,'29-30':0,'31+':0};S.rosters.forEach(r=>(r.players||[]).forEach(p=>{const a=S.players[p]?.age;if(!a)return;if(a<=24)bk['22-24']++;else if(a<=26)bk['25-26']++;else if(a<=28)bk['27-28']++;else if(a<=30)bk['29-30']++;else bk['31+']++;}));if(ageChart){ageChart.destroy();ageChart=null;}ageChart=new Chart(document.getElementById('ac').getContext('2d'),{type:'bar',data:{labels:Object.keys(bk),datasets:[{label:'Players',data:Object.values(bk),backgroundColor:['#22c55e','#22c55e','#eab308','#ef4444','#ef4444'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});}
-
 function renderTx(){const txs=S.transactions.filter(t=>t.status==='complete').sort((a,b)=>b.created-a.created);const trades=txs.filter(t=>t.type==='trade'),adds=txs.filter(t=>t.type!=='trade');document.getElementById('txc').textContent=`${trades.length} trades · ${adds.length} adds/drops`;document.getElementById('txf').innerHTML=txs.slice(0,10).map(t=>{const icon=t.type==='trade'?'🔄':t.adds&&Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'🔀':'➕';const cls=t.type==='trade'?'tt':t.adds&&Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'tad':t.adds&&Object.keys(t.adds||{}).length?'ta':'td2';const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';let body='';if(t.type==='trade'){const teams=[...new Set(t.roster_ids||[])].map(rid=>{const r=S.rosters.find(r=>r.roster_id===rid);return r?dn(r):`Team ${rid}`;}).join(' ↔ ');const added=Object.keys(t.adds||{}).map(p=>S.players[p]?.full_name||p).slice(0,3).join(', ');body=`<div class="txitt">${teams}</div><div class="txip">${added||'Players exchanged'}</div>`;}else{const apids=Object.keys(t.adds||{}),dpids=Object.keys(t.drops||{});const mid=apids.length?t.adds[apids[0]]:dpids.length?t.drops[dpids[0]]:null;const ros=mid?S.rosters.find(r=>r.roster_id===mid):null;const team=ros?dn(ros):'Unknown';let detail=apids.map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');if(dpids.length)detail+=(detail?' − ':'')+dpids.map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');body=`<div class="txitt">${team}</div><div class="txip">${detail}</div>`;}return`<div class="txi ${cls}"><span>${icon}</span><div class="txib">${body}</div><span class="txid">${date}</span></div>`;}).join('');const am={};S.rosters.forEach(r=>{am[r.roster_id]=0;});S.transactions.filter(t=>t.status==='complete').forEach(t=>(t.roster_ids||[]).forEach(rid=>{if(am[rid]!==undefined)am[rid]++;}));const mx2=Math.max(...Object.values(am),1);document.getElementById('acg').innerHTML=S.rosters.map(r=>{const c=am[r.roster_id]||0;return`<div class="ac2"><div class="am">${dn(r)}</div><div style="font-size:.72rem;color:var(--tm)">${c} move${c!==1?'s':''}</div><div class="abt2"><div class="abf2" style="width:${(c/mx2)*100}%"></div></div></div>`;}).join('');const wv={};for(let w=1;w<=S.week;w++)wv['Wk '+w]=0;S.transactions.filter(t=>t.status==='complete').forEach(t=>{const k='Wk '+t.leg;if(wv[k]!==undefined)wv[k]++;});if(txChart){txChart.destroy();txChart=null;}txChart=new Chart(document.getElementById('txch').getContext('2d'),{type:'line',data:{labels:Object.keys(wv),datasets:[{label:'Transactions',data:Object.values(wv),borderColor:'#7c5cfc',backgroundColor:'rgba(124,92,252,.12)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#7c5cfc',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',maxTicksLimit:10}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});}
-
 function renderMgr(){const ps=S.league.settings?.playoff_teams||4;const sorted=[...S.rosters].sort((a,b)=>(b.settings?.wins||0)-(a.settings?.wins||0));document.getElementById('mg').innerHTML=sorted.map((r,i)=>{const rk=i+1,w=r.settings?.wins||0,l=r.settings?.losses||0;const ages=(r.players||[]).map(p=>S.players[p]?.age).filter(Boolean);const avg=ages.length?(ages.reduce((a,b)=>a+b,0)/ages.length).toFixed(1):'?';const tags=[];if(rk<=ps)tags.push('<span class="tag tg">Playoff</span>');if(rk===ps||rk===ps+1)tags.push('<span class="tag ty">Bubble</span>');if(parseFloat(avg)<25)tags.push('<span class="tag tb">Young Core</span>');if(parseFloat(avg)>28)tags.push('<span class="tag tr2">Aging</span>');const tc=S.transactions.filter(t=>t.status==='complete'&&(t.roster_ids||[]).includes(r.roster_id)).length;if(tc>=5)tags.push('<span class="tag tp2">Active</span>');return`<div class="mc" onclick="openMod(${r.roster_id})"><div class="mn">${dn(r)}</div><div class="mr2">${w}-${l} · Avg age ${avg}</div><div class="mt">${tags.join('')}</div></div>`;}).join('');}
-
-function openMod(rid){const r=S.rosters.find(r=>r.roster_id===rid);if(!r)return;const u=S.users.find(u=>u.user_id===r.owner_id)||{};document.getElementById('mtn').textContent=dn(r);document.getElementById('mmn').textContent=u.display_name||u.username||'';const w=r.settings?.wins||0,l=r.settings?.losses||0;const pf=((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1);const starters=r.starters||[];const bench=(r.players||[]).filter(p=>!starters.includes(p));const rp=p=>{const pl=S.players[p];if(!pl)return'';const pos=pl.position||'?';return`<div class="rp"><div style="display:flex;align-items:center;gap:4px"><span class="pp p${pos}">${pos}</span><span>${pl.full_name||p}</span></div><span style="font-size:.75rem;color:var(--tm)">${pl.age?'Age '+pl.age:''}</span></div>`;};const myTx=S.transactions.filter(t=>t.status==='complete'&&(t.roster_ids||[]).includes(rid)).sort((a,b)=>b.created-a.created).slice(0,5);const txH=myTx.length?myTx.map(t=>{const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';const added=Object.keys(t.adds||{}).map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');return`<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--brd);font-size:.8rem"><span>${t.type==='trade'?'🔄':'➕'}</span><span style="flex:1;color:var(--ts)">${added||'Trade'}</span><span style="color:var(--tm)">${date}</span></div>`;}).join(''):`<p style="color:var(--tm);font-size:.8rem">No recent transactions</p>`;document.getElementById('mb-roster').innerHTML=`<div class="ms"><div style="display:flex;gap:12px;margin-bottom:14px"><div class="sc" style="flex:1"><div class="sv">${w}-${l}</div><div class="sl">Record</div></div><div class="sc" style="flex:1"><div class="sv">${pf}</div><div class="sl">Pts For</div></div><div class="sc" style="flex:1"><div class="sv">${myTx.length}</div><div class="sl">Recent Moves</div></div></div></div><div class="ms"><h4>Starters</h4><div>${starters.map(rp).join('')}</div></div><div class="ms"><h4>Bench</h4><div>${bench.slice(0,10).map(rp).join('')}</div></div><div class="ms"><h4>Recent Transactions</h4>${txH}</div>`;
+function openMod(rid){const r=S.rosters.find(r=>r.roster_id===rid);if(!r)return;const u=S.users.find(u=>u.user_id===r.owner_id)||{};document.getElementById('mtn').textContent=dn(r);document.getElementById('mmn').textContent=u.display_name||u.username||'';const w=r.settings?.wins||0,l=r.settings?.losses||0;const pf=((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1);const starters=r.starters||[];const bench=(r.players||[]).filter(p=>!starters.includes(p));const rp=p=>{const pl=S.players[p];if(!pl)return'';const pos=pl.position||'?';const val=getPlayerValueById(p);return`<div class="rp"><div style="display:flex;align-items:center;gap:4px"><span class="pp p${pos}">${pos}</span><span>${pl.full_name||p}</span></div><span style="font-size:.75rem;color:var(--tm)">${val?val.toLocaleString()+' val':''}${pl.age?' · '+pl.age+'y':''}</span></div>`;};const myTx=S.transactions.filter(t=>t.status==='complete'&&(t.roster_ids||[]).includes(rid)).sort((a,b)=>b.created-a.created).slice(0,5);const txH=myTx.length?myTx.map(t=>{const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';const added=Object.keys(t.adds||{}).map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');return`<div style="display:flex;gap:8px;align-items:flex-start;padding:5px 0;border-bottom:1px solid var(--brd);font-size:.8rem"><span>${t.type==='trade'?'🔄':'➕'}</span><span style="flex:1;color:var(--ts)">${added||'Trade'}</span><span style="color:var(--tm)">${date}</span></div>`;}).join(''):`<p style="color:var(--tm);font-size:.8rem">No recent transactions</p>`;document.getElementById('mb-roster').innerHTML=`<div class="ms"><div style="display:flex;gap:12px;margin-bottom:14px"><div class="sc" style="flex:1"><div class="sv">${w}-${l}</div><div class="sl">Record</div></div><div class="sc" style="flex:1"><div class="sv">${pf}</div><div class="sl">Pts For</div></div><div class="sc" style="flex:1"><div class="sv">${myTx.length}</div><div class="sl">Recent Moves</div></div></div></div><div class="ms"><h4>Starters</h4><div>${starters.map(rp).join('')}</div></div><div class="ms"><h4>Bench</h4><div>${bench.slice(0,10).map(rp).join('')}</div></div><div class="ms"><h4>Recent Transactions</h4>${txH}</div>`;
   const uid=r.owner_id;let histHtml='';if(histLoaded&&H.userMap&&H.userMap[uid]){const ud=H.userMap[uid];const rows=H.years.map(y=>{const s=ud.seasons[y];if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;const ps=H.seasons.find(se=>se.year===y)?.playoffSpots||4;const cls=rankPillCls(s,ps,y);const label=s.isChamp&&y<CUR_YEAR?'🏆':`#${s.seed}`;return`<div class="hist-row" style="padding:6px 0;border-bottom:1px solid var(--brd)"><span class="hist-year">${y}</span><span class="hist-rank"><span class="rank-pill ${cls}">${label}</span></span><span class="hist-sub">${s.wins}–${s.losses}</span><span class="hist-pf">${s.pf} pts</span></div>`;}).join('');histHtml=`<div class="ms"><h4>Season History</h4><div class="hist-seasons">${rows}</div><p style="font-size:.78rem;color:var(--tm);margin-top:10px">Trend: ${getTrend(ud)} &nbsp;·&nbsp; Rank shown is regular season seed</p></div>`;}else if(!histLoaded){histHtml=`<p style="font-size:.83rem;color:var(--tm)">Open the History tab first to load season data.</p>`;}else{histHtml=`<p style="font-size:.83rem;color:var(--tm)">No historical data found for this manager.</p>`;}
   document.getElementById('mb-history').innerHTML=histHtml;switchMTab('roster');document.getElementById('ov').classList.remove('hidden');document.body.style.overflow='hidden';
 }

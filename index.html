@@ -416,7 +416,7 @@ const PLAYER_CACHE_KEY='sl_pl_v2';
 const FC_CACHE_KEY='sl_fc_values_v1';
 const FC_URL='https://api.fantasycalc.com/values/current?isDynasty=true&numQbs=2&numTeams=12&ppr=0.5';
 const DRAFT_CACHE_KEY='sl_draft_slots_v1';
- 
+
 let tePremium='off',sfFormat='sf';
 const TE_MULT={off:1.0,plus:1.2,plusplus:1.4};
 const QB_MULT={sf:1.0,'1qb':0.55};
@@ -425,13 +425,13 @@ let valueSource='fallback';
 let leagueType='redraft';
 let leagueStatus='inseason';
 let draftSlotsBySeason={};
- 
+
 function detectLeagueType(league){const s=league?.settings||{};if(s.type===3||s.last_chopped_leg!=null)return'chopped';if(s.type===2)return'dynasty';if(s.type===1)return'keeper';return'redraft';}
 function getLeagueStatus(league){const st=league?.status||'';if(st==='pre_draft')return'predraft';if(st==='drafting')return'drafting';if(st==='complete')return'complete';return'inseason';}
 function tradesEnabled(league){return (league?.settings?.disable_trades||0)!==1;}
 function typeLabel(t){return t==='chopped'?'Chopped':t==='dynasty'?'Dynasty':t==='keeper'?'Keeper':'Redraft';}
 function typeBadgeClass(t){return t==='chopped'?'badge-chopped':t==='dynasty'?'badge-dynasty':t==='keeper'?'badge-keeper':'badge-redraft';}
- 
+
 const FALLBACK_BASE={
   'Josh Allen':9992,'Lamar Jackson':7648,'Drake Maye':9343,'Caleb Williams':7929,'Jayden Daniels':7857,'Justin Herbert':6869,'Patrick Mahomes':6727,'Joe Burrow':7475,'Jalen Hurts':6180,'Jaxson Dart':6530,'Bo Nix':6049,'Brock Purdy':5854,'Jordan Love':5605,'Trevor Lawrence':6324,
   'Bijan Robinson':9996,'Jahmyr Gibbs':9683,'Jeremiyah Love':7657,'Ashton Jeanty':7597,"De'Von Achane":6931,'Omarion Hampton':6827,'Jonathan Taylor':6002,'James Cook':5982,'Quinshon Judkins':5511,'Kenneth Walker III':5448,'Breece Hall':5419,'Kyren Williams':5200,'Saquon Barkley':5800,'Brian Robinson Jr.':2800,
@@ -439,7 +439,7 @@ const FALLBACK_BASE={
   'Brock Bowers':7993,'Trey McBride':7529,'Colston Loveland':6114,'Tyler Warren':5761,'Sam LaPorta':5200,'Tucker Kraft':4000,
 };
 const POS_FLOOR={QB:1800,RB:1200,WR:1000,TE:900};
- 
+
 async function loadValues(){
   try{const cached=JSON.parse(localStorage.getItem(FC_CACHE_KEY)||'null');if(cached&&cached.date===todayStr()&&cached.map&&Object.keys(cached.map).length){valuesBySleeperId=cached.map;valueSource='cached';return;}}catch(e){}
   try{const res=await fetch(FC_URL);if(!res.ok)throw new Error('FantasyCalc '+res.status);const data=await res.json();const map={};data.forEach(row=>{const sid=row.player?.sleeperId;if(!sid)return;map[sid]={value:row.value||0,position:row.player?.position||'',name:row.player?.name||''};});if(!Object.keys(map).length)throw new Error('empty');valuesBySleeperId=map;valueSource='live';try{localStorage.setItem(FC_CACHE_KEY,JSON.stringify({date:todayStr(),map}))}catch(e){}}catch(e){valuesBySleeperId={};valueSource='fallback';}
@@ -452,7 +452,7 @@ function nameMatchesQuery(name,q){const parts=name.toLowerCase().split(/[\s'.]+/
 function detectTEPremium(league){const ss=league?.scoring_settings||{};const rp=league?.roster_positions||[];const recBase=ss.rec||0;const bonusRecTE=ss.bonus_rec_te||0;const recTE=ss.rec_te||0;const tePremiumPoints=bonusRecTE+(recTE>recBase?recTE-recBase:0);const teStarts=rp.filter(p=>p==='TE').length;if(teStarts>=2||tePremiumPoints>1)return'plusplus';if(tePremiumPoints>0||teStarts>1)return'plus';return'off';}
 function detectFormats(league){const rp=league?.roster_positions||[];const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;return{sf:isSF?'sf':'1qb',te:detectTEPremium(league)};}
 async function getChampionRosterId(leagueId){try{const b=await api('/league/'+leagueId+'/winners_bracket');if(!b||!b.length)return null;const completed=b.filter(m=>m.w!=null);if(!completed.length)return null;const maxRound=Math.max(...completed.map(m=>m.r||0));const finalRoundGames=completed.filter(m=>m.r===maxRound);const champGame=finalRoundGames.find(m=>m.p===1)||finalRoundGames[finalRoundGames.length-1];return champGame?.w||null;}catch(e){return null;}}
- 
+
 async function loadDraftSlots(chain){
   let cache={};
   try{cache=JSON.parse(localStorage.getItem(DRAFT_CACHE_KEY)||'{}');}catch(e){}
@@ -487,33 +487,33 @@ function resolvePickTier(season,originalRosterId){
   const tier=col<=teams/3?'early':col>teams*2/3?'late':'mid';
   return{tier,col,teams};
 }
- 
+
 function setSFFormat(val){sfFormat=val;['sf','1qb'].forEach(v=>document.getElementById(`sf-btn-${v}`).classList.toggle('active',v===val));updateValueSettingsTitle();if(window._allGradedTrades){renderTradeGrades();renderManagerProfiles(window._allGradedTrades);}refreshEvalUI();}
 function setTEPremium(val){tePremium=val;['off','plus','plusplus'].forEach(v=>document.getElementById(`te-btn-${v}`).classList.toggle('active',v===val));updateValueSettingsTitle();if(window._allGradedTrades){renderTradeGrades();renderManagerProfiles(window._allGradedTrades);}refreshEvalUI();}
 function updateValueSettingsTitle(){const rec=S.league?.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';const sfLabel=sfFormat==='sf'?'Superflex':'1QB';const teLabel=tePremium==='off'?'Standard TE':tePremium==='plus'?'TE+':'TE++';document.getElementById('value-settings-title').textContent=`${sfLabel} · ${scoring} · ${teLabel}`;const badge=document.getElementById('value-source-badge');if(badge){if(valueSource==='live'){badge.className='value-source-badge vsb-live';badge.textContent='● Live values (updated today)';}else if(valueSource==='cached'){badge.className='value-source-badge vsb-live';badge.textContent='● Live values (cached today)';}else{badge.className='value-source-badge vsb-fallback';badge.textContent='⚠ Offline estimates';}}}
- 
+
 function renderLeagueFormatRow(){const l=S.league;if(!l)return;const rp=l.roster_positions||[];const rec=l.scoring_settings?.rec;const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;const te=detectTEPremium(l);const pills=[];const typeCls=leagueType==='chopped'?'lf-chop':leagueType==='dynasty'?'lf-dyn':leagueType==='keeper'?'lf-keep':'lf-red';pills.push(`<span class="lf-pill ${typeCls}">${typeLabel(leagueType)}</span>`);if(rec===1)pills.push(`<span class="lf-pill lf-ppr">Full PPR</span>`);else if(rec===.5)pills.push(`<span class="lf-pill lf-ppr">Half PPR</span>`);else pills.push(`<span class="lf-pill lf-std">Standard</span>`);pills.push(isSF?`<span class="lf-pill lf-sf">Superflex</span>`:`<span class="lf-pill lf-1qb">1QB</span>`);if(te==='plusplus')pills.push(`<span class="lf-pill lf-te">TE++</span>`);else if(te==='plus')pills.push(`<span class="lf-pill lf-te">TE+</span>`);document.getElementById('league-format-row').innerHTML=`<span class="lf-label">Format</span>${pills.join('')}`;}
- 
+
 function ordinal(n){if(!n&&n!==0)return'?';const s=['th','st','nd','rd'];const v=n%100;return n+(s[(v-20)%10]||s[v]||s[0]);}
 function pickValue(year,round,tier){const offset=Math.max(0,parseInt(year)-CUR_YEAR);const base={1:{early:7100,mid:5600,late:4000},2:{early:3200,mid:2400,late:1800},3:{early:1600,mid:1200,late:900},4:{early:900,mid:700,late:500}};const decay=[1,.78,.58,.42];return Math.round((base[parseInt(round)]?.[tier]||600)*(decay[offset]||.35));}
 function buildPickRow(side){const yo=PICK_YEARS.map(y=>`<option value="${y}">${y}</option>`).join('');document.getElementById(`pick-row-${side}`).innerHTML=`<select id="eval-pick-year-${side}">${yo}</select><select id="eval-pick-round-${side}"><option value="1">1st</option><option value="2">2nd</option><option value="3">3rd</option><option value="4">4th</option></select><select id="eval-pick-tier-${side}"><option value="early">Early</option><option value="mid">Mid</option><option value="late">Late</option></select><button class="btn btn-o btn-sm" onclick="addEvalPick('${side}')">+ Pick</button>`;}
 function gradeFromRatio(ratio){if(ratio===1.0)return{grade:'A',label:'Even Trade',cls:'grade-A',verdictCls:'verdict-fair',isTie:true};if(ratio<=1.05)return{grade:'A',label:'Fair Deal',cls:'grade-A',verdictCls:'verdict-fair',isTie:false};if(ratio<=1.18)return{grade:'B',label:'Slight Edge',cls:'grade-B',verdictCls:'verdict-slight',isTie:false};if(ratio<=1.35)return{grade:'C',label:'Notable Advantage',cls:'grade-C',verdictCls:'verdict-clear',isTie:false};if(ratio<=1.6)return{grade:'D',label:'Lopsided',cls:'grade-D',verdictCls:'verdict-clear',isTie:false};return{grade:'F',label:'One-Sided',cls:'grade-F',verdictCls:'verdict-clear',isTie:false};}
- 
+
 let ageChart=null,txChart=null,histChart=null;
 let histLoaded=false,H={},currentNames={},allHistTrades=[];
 let evalAssetsA=[],evalAssetsB=[];
 let S={leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],players:{},nflState:null,week:1};
- 
+
 function dn(r){const u=S.users.find(u=>u.user_id===r.owner_id)||{};return u.display_name||u.username||'Unknown';}
 function getRosterName(rid,rosters,users){const r=rosters?.find(r=>r.roster_id===rid);if(!r)return`Team ${rid}`;const u=users?.find(u=>u.user_id===r.owner_id)||{};return u.display_name||u.username||'Unknown';}
 async function api(p){const r=await fetch(BASE+p);if(!r.ok)throw new Error('API '+r.status);return r.json();}
 async function loadPlayers(){const c=localStorage.getItem(PLAYER_CACHE_KEY);if(c){try{S.players=JSON.parse(c);return}catch(e){}}lbl('Loading player database...');S.players=await api('/players/nfl');try{localStorage.setItem(PLAYER_CACHE_KEY,JSON.stringify(S.players))}catch(e){}}
- 
+
 async function handleUser(){const u=document.getElementById('ui').value.trim();if(!u)return setErr('Please enter a Sleeper username.');clearErr();lbl('Looking up user...');try{const user=await api('/user/'+u);if(!user||!user.user_id)throw new Error('User not found.');lbl('Fetching leagues...');const leagues=await api('/user/'+user.user_id+'/leagues/nfl/'+SEASON);if(!leagues||!leagues.length)throw new Error('No leagues found for this user this season.');showPicker(u,leagues);}catch(e){hideLoad();setErr(e.message||'Something went wrong.');show('entry');}}
 async function handleLeague(){const id=document.getElementById('li').value.trim();if(!id)return setErr('Please enter a League ID.');clearErr();await loadDash(id);}
- 
+
 function showPicker(u,leagues){hide('entry');hide('loading');document.getElementById('pu').textContent=u+"'s Leagues";const ll=document.getElementById('ll');ll.innerHTML='';leagues.forEach(l=>{const c=document.createElement('div');c.className='lcard';const rp=l.roster_positions||[];const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;const rec=l.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';const te=detectTEPremium(l);const teStr=te==='plusplus'?' · TE++':te==='plus'?' · TE+':'';const lt=detectLeagueType(l);const badge=`<span class="lbadge ${typeBadgeClass(lt)}">${typeLabel(lt)}</span>`;c.innerHTML=`<div style="display:flex;align-items:center"><div><div class="ln">${l.name}</div><div class="lm">${l.total_rosters} teams · ${scoring} · ${isSF?'Superflex':'1QB'}${teStr} · ${l.season}</div></div>${badge}</div><span style="color:var(--tm);font-size:1.1rem">›</span>`;c.onclick=()=>loadDash(l.league_id);ll.appendChild(c);});show('picker');}
- 
+
 async function loadDash(id){
   hide('entry');hide('picker');lbl('Loading NFL state...');
   S.leagueId=id;histLoaded=false;H={};currentNames={};allHistTrades=[];evalAssetsA=[];evalAssetsB=[];draftSlotsBySeason={};
@@ -525,22 +525,28 @@ async function loadDash(id){
     const detected=detectFormats(S.league);sfFormat=detected.sf;tePremium=detected.te;
     ['sf','1qb'].forEach(v=>document.getElementById(`sf-btn-${v}`).classList.toggle('active',v===sfFormat));
     ['off','plus','plusplus'].forEach(v=>document.getElementById(`te-btn-${v}`).classList.toggle('active',v===tePremium));
+    // Matchups only exist once games are played (in-season / complete)
     if(leagueStatus==='inseason'||leagueStatus==='complete'){
       lbl('Loading matchups...');const wks=Array.from({length:S.week},(_,i)=>i+1);
       const mrs=await Promise.all(wks.map(w=>api('/league/'+id+'/matchups/'+w)));S.matchups={};wks.forEach((w,i)=>S.matchups[w]=mrs[i]);
-      lbl('Loading transactions...');const txwks=wks.slice(-3);const txrs=await Promise.all(txwks.map(w=>api('/league/'+id+'/transactions/'+w)));S.transactions=txrs.flat();
-    }else{S.matchups={};S.transactions=[];}
+    }else{S.matchups={};}
+    // Transactions ALWAYS load, regardless of draft status — offseason/pre-draft trades matter.
+    // Sleeper keys transactions by round (leg). Pre-draft moves land on leg 1; in-season on the played weeks.
+    lbl('Loading transactions...');
+    const txLegs=(leagueStatus==='inseason'||leagueStatus==='complete')?Array.from({length:S.week},(_,i)=>i+1).slice(-4):[1];
+    const txrs=await Promise.all(txLegs.map(w=>api('/league/'+id+'/transactions/'+w).catch(()=>[])));
+    S.transactions=txrs.flat();
     lbl('Loading players...');await loadPlayers();
     lbl('Loading trade values...');await loadValues();
     renderDash();
   }catch(e){hideLoad();setErr('Failed: '+(e.message||'Unknown error'));show('entry');}
 }
- 
+
 function rosterTotalPoints(r){const fromSettings=(r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100;if(fromSettings>0)return fromSettings;let sum=0;for(let w=1;w<=S.week;w++){const wm=S.matchups[w];if(!wm)continue;const me=wm.find(m=>m.roster_id===r.roster_id);if(me&&me.points)sum+=me.points;}return sum;}
 function isEliminated(r){return leagueType==='chopped'&&(!r.players||r.players.length===0)&&leagueStatus!=='predraft';}
- 
+
 async function resolveChampion(league,rosters,sType,leagueId){const metaWinner=league?.metadata?.latest_league_winner_roster_id;if(metaWinner!=null&&metaWinner!==''&&metaWinner!=='0')return parseInt(metaWinner);if(sType==='chopped'){const surv=rosters.filter(r=>r.settings?.eliminated==null);if(surv.length===1)return surv[0].roster_id;}const cid=await getChampionRosterId(leagueId);return cid||null;}
- 
+
 async function loadHistory(){
   if(histLoaded)return;show('hist-loading');hide('hist-content');
   const seasons=[];let cur=S.league;
@@ -556,7 +562,7 @@ async function loadHistory(){
   H.userMap=userMap;H.years=H.seasons.map(s=>s.year);const latestCompleted=H.seasons.filter(s=>!s.inProgress).map(s=>s.year).sort((a,b)=>b-a)[0];H.latestCompleted=latestCompleted;H.sortedUsers=Object.values(userMap).sort((a,b)=>{const ap=a.seasons[latestCompleted]?.finishPlace||999,bp=b.seasons[latestCompleted]?.finishPlace||999;return ap-bp;});H.anyChopped=H.seasons.some(s=>s.type==='chopped');
   histLoaded=true;hide('hist-loading');renderHistory();show('hist-content');
 }
- 
+
 function renderHistory(){renderChampionsRow();updateHistCopy();buildCheckboxes();renderHistChart();renderHistTable();renderHistGrid();}
 function updateHistCopy(){const note=document.getElementById('champs-note');if(H.anyChopped){note.textContent='Champion is the last team standing (survived every chop). Chopped seasons are ranked by elimination order.';document.getElementById('traj-title').textContent='Survival Trajectory';document.getElementById('traj-sub').textContent='Finish each year (survivor = 1). Lower is better. 🏆 marks that season\'s champion.';}else{note.textContent='Champion determined from the playoff bracket. Other placements show regular season finish.';document.getElementById('traj-title').textContent='Regular Season Standings Trajectory';document.getElementById('traj-sub').textContent='Regular season finish each year. Lower is better. 🏆 marks that season\'s champion.';}}
 function champRecordLine(st){if(st.seasonType==='chopped')return`Last team standing · ${st.pf} pts`;return`${st.wins}–${st.losses} · ${ordinal(st.seed)} seed`;}
@@ -573,7 +579,7 @@ function renderHistChart(){const cu=new Set(getCheckedUids());const users=H.sort
 function renderHistTable(){const years=H.years;document.getElementById('hist-thead').innerHTML=`<tr><th>Username</th>${years.map(y=>`<th>${y}</th>`).join('')}<th>Trend</th></tr>`;document.getElementById('hist-tbody').innerHTML=H.sortedUsers.map(u=>{const cells=years.map(y=>{const s=u.seasons[y];if(!s)return`<td><span style="color:var(--tm);font-size:.75rem">—</span></td>`;const cls=rankPillClsU(s);return`<td><span class="rank-pill ${cls}">${finishLabel(s)}</span><div class="seed-sub">${finishSub(s)}</div></td>`;}).join('');return`<tr><td style="font-weight:600;white-space:nowrap">${u.name}</td>${cells}<td>${getTrend(u)}</td></tr>`;}).join('');}
 function renderHistGrid(){document.getElementById('hist-grid').innerHTML=H.sortedUsers.map(u=>{const rows=H.years.map(y=>{const s=u.seasons[y];if(!s)return`<div class="hist-row"><span class="hist-year">${y}</span><span class="joined-badge">Not in league</span></div>`;const cls=rankPillClsU(s);return`<div class="hist-row"><span class="hist-year">${y}</span><span class="hist-rank"><span class="rank-pill ${cls}">${finishLabel(s)}</span></span><span class="hist-sub">${finishSub(s)}</span><span class="hist-pf">${s.pf} pts</span></div>`;}).join('');return`<div class="hist-card"><div class="hc-name">${u.name} ${getTrend(u)}</div><div class="hist-seasons">${rows}</div></div>`;}).join('');}
 function getTrend(u){const ranks=H.years.map(y=>{const s=u.seasons[y];return s&&!s.__inProgress?s.finishPlace:null;}).filter(Boolean);if(ranks.length<2)return`<span class="trend-fl">—</span>`;const f=ranks[0],l=ranks[ranks.length-1];if(l<f)return`<span class="trend-up">▲</span>`;if(l>f)return`<span class="trend-dn">▼</span>`;return`<span class="trend-fl">—</span>`;}
- 
+
 async function initTradeTab(){
   evalAssetsA=[];evalAssetsB=[];buildPickRow('a');buildPickRow('b');refreshEvalUI();document.getElementById('eval-result-box').classList.add('hidden');document.getElementById('eval-search-a').value='';document.getElementById('eval-search-b').value='';document.getElementById('eval-results-a').classList.add('hidden');document.getElementById('eval-results-b').classList.add('hidden');updateValueSettingsTitle();
   if(H.chain){try{await loadDraftSlots(H.chain);}catch(e){}}
@@ -612,12 +618,36 @@ function refreshEvalUI(){['a','b'].forEach(side=>{const assets=side==='a'?evalAs
 function evaluateTrade(){const valA=evalAssetsA.reduce((s,a)=>s+assetValue(a),0);const valB=evalAssetsB.reduce((s,a)=>s+assetValue(a),0);if(!valA&&!valB){document.getElementById('eval-result-box').classList.add('hidden');return;}const isTied=valA===valB;const ratio=isTied?1.0:Math.max(valA,valB)/Math.max(Math.min(valA,valB),1);const g=gradeFromRatio(ratio);const winner=isTied?null:(valA>valB?'Side A':'Side B');const gc=g.cls==='grade-A'?'#4ade80':g.cls==='grade-B'?'#a78bfa':g.cls==='grade-C'?'#60a5fa':g.cls==='grade-D'?'#eab308':'#f87171';const verdictLine=isTied?'Perfectly even — nobody wins, nobody loses':g.label+(winner?` — ${winner} wins`:'');const box=document.getElementById('eval-result-box');box.innerHTML=`<div class="eval-grade-big" style="color:${gc}">${g.grade}</div><div class="eval-verdict">${verdictLine}</div><div class="eval-scores"><div class="eval-score-item"><div class="eval-score-val" style="color:var(--acc)">${valA.toLocaleString()}</div><div>Side A value</div></div><div class="eval-score-item"><div class="eval-score-val" style="color:var(--grn)">${valB.toLocaleString()}</div><div>Side B value</div></div><div class="eval-score-item"><div class="eval-score-val">${ratio.toFixed(2)}x</div><div>Value ratio</div></div></div>`;box.classList.remove('hidden');}
 function clearEvaluator(){evalAssetsA=[];evalAssetsB=[];refreshEvalUI();document.getElementById('eval-result-box').classList.add('hidden');document.getElementById('eval-search-a').value='';document.getElementById('eval-search-b').value='';}
 function renderManagerProfiles(trades){const profiles={};S.rosters.forEach(r=>{const u=S.users.find(u=>u.user_id===r.owner_id)||{};profiles[r.roster_id]={name:u.display_name||u.username||'Unknown',rosterId:r.roster_id,trades:0,valueGained:0,valueLost:0,wins:0,losses:0,ties:0};});trades.forEach(t=>{const g=gradeTrade(t);if(!g)return;[g.ridA,g.ridB].forEach(rid=>{if(!profiles[rid])return;profiles[rid].trades++;if(g.isTie){profiles[rid].ties++;}else if(String(rid)===String(g.winner)){profiles[rid].valueGained+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));profiles[rid].wins++;}else{profiles[rid].valueLost+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));profiles[rid].losses++;}});});const sorted=Object.values(profiles).sort((a,b)=>b.trades-a.trades);document.getElementById('profile-grid').innerHTML=sorted.map(p=>{if(p.trades===0)return`<div class="profile-card"><div class="profile-name">${p.name}</div><p style="font-size:.8rem;color:var(--tm)">No trades found.</p></div>`;const netVal=p.valueGained-p.valueLost;const decidedTrades=p.wins+p.losses;const winRate=decidedTrades>0?Math.round((p.wins/decidedTrades)*100):null;const record=p.ties>0?`${p.wins}-${p.losses}-${p.ties} (W-L-T)`:`${p.wins}-${p.losses}`;const winRateStr=winRate!==null?`${winRate}% win rate`:'—';const tags=[];const addCount=trades.filter(t=>(t.roster_ids||[]).includes(p.rosterId)&&Object.values(t.adds||{}).includes(p.rosterId)).length;const dropCount=trades.filter(t=>(t.roster_ids||[]).includes(p.rosterId)&&Object.values(t.drops||{}).includes(p.rosterId)).length;if(addCount>dropCount*1.3)tags.push('<span class="buyer-tag">Buyer</span>');else if(dropCount>addCount*1.3)tags.push('<span class="seller-tag">Seller</span>');else tags.push('<span class="balanced-tag">Balanced</span>');if(decidedTrades>=3&&winRate>=65)tags.push('<span class="sharp-tag">Sharp</span>');else if(decidedTrades>=3&&winRate<=35)tags.push('<span class="generous-tag">Generous</span>');return`<div class="profile-card"><div class="profile-name">${p.name}</div><div class="profile-stats"><div class="profile-stat"><span class="profile-stat-label">Trades</span><span class="profile-stat-val">${p.trades}</span></div><div class="profile-stat"><span class="profile-stat-label">Record</span><span class="profile-stat-val">${record}</span></div><div class="profile-stat"><span class="profile-stat-label">Win rate</span><span class="profile-stat-val">${winRateStr}</span></div><div class="profile-stat"><span class="profile-stat-label">Net value</span><span class="profile-stat-val" style="color:${netVal>=0?'var(--grn)':'var(--red)'}">${netVal>=0?'+':''}${netVal.toLocaleString()}</span></div></div><div class="profile-tags">${tags.join('')}</div></div>`;}).join('');}
- 
+
 function switchTab(t){['season','history','trades'].forEach(tab=>{document.getElementById(`tab-${tab}`).classList.toggle('active',t===tab);document.getElementById(`pane-${tab}`).classList.toggle('hidden',t!==tab);});if(t==='history'&&!histLoaded)loadHistory();if(t==='trades'){if(!tradesEnabled(S.league)){document.getElementById('trades-disabled').classList.remove('hidden');document.getElementById('trades-content').classList.add('hidden');return;}document.getElementById('trades-disabled').classList.add('hidden');document.getElementById('trades-content').classList.remove('hidden');if(!histLoaded)loadHistory().then(()=>initTradeTab());else initTradeTab();}}
 function switchMTab(t){document.getElementById('mtab-roster').classList.toggle('active',t==='roster');document.getElementById('mtab-history').classList.toggle('active',t==='history');document.getElementById('mb-roster').classList.toggle('hidden',t!=='roster');document.getElementById('mb-history').classList.toggle('hidden',t!=='history');}
- 
-function renderDash(){hideLoad();renderLeagueFormatRow();document.getElementById('league-name-hdr').textContent=S.league?.name||'';show('hdr-right');show('dash');if(leagueStatus==='predraft'||leagueStatus==='drafting'){renderPredraft();document.getElementById('season-content').classList.add('hidden');document.getElementById('predraft-wrap').classList.remove('hidden');}else{document.getElementById('predraft-wrap').classList.add('hidden');document.getElementById('predraft-wrap').innerHTML='';document.getElementById('season-content').classList.remove('hidden');renderSnap();renderStandingsSection();renderAge();renderTx();renderMgr();}switchTab('season');}
+
+function renderDash(){hideLoad();renderLeagueFormatRow();document.getElementById('league-name-hdr').textContent=S.league?.name||'';show('hdr-right');show('dash');if(leagueStatus==='predraft'||leagueStatus==='drafting'){renderPredraft();renderPredraftActivity();document.getElementById('season-content').classList.add('hidden');document.getElementById('predraft-wrap').classList.remove('hidden');}else{document.getElementById('predraft-wrap').classList.add('hidden');document.getElementById('predraft-wrap').innerHTML='';document.getElementById('season-content').classList.remove('hidden');renderSnap();renderStandingsSection();renderAge();renderTx();renderMgr();}switchTab('season');}
 function renderPredraft(){const l=S.league;const s=l.settings||{};const rec=l.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';const typeDesc={chopped:'Lowest score each week gets chopped. Last team standing wins.',dynasty:'Keep your roster year to year. Build for the long haul.',keeper:'Carry select players into next season.',redraft:'Fresh draft every year. Win it this season.'}[leagueType];document.getElementById('predraft-wrap').innerHTML=`<div class="predraft-panel"><div class="predraft-icon">${leagueType==='chopped'?'🪓':'📋'}</div><h3>${leagueStatus==='drafting'?'Draft in progress':'Draft hasn\'t happened yet'}</h3><p>${l.name} is a <strong>${typeLabel(leagueType)}</strong> league. ${typeDesc} Standings, rosters, and activity will populate here once the draft completes and games are played.</p><div class="predraft-meta"><div class="predraft-stat"><div class="pv">${l.total_rosters}</div><div class="pl">Teams</div></div><div class="predraft-stat"><div class="pv">${scoring}</div><div class="pl">Scoring</div></div><div class="predraft-stat"><div class="pv">${s.draft_rounds||'?'}</div><div class="pl">Rounds</div></div><div class="predraft-stat"><div class="pv">${l.season}</div><div class="pl">Season</div></div></div><p style="font-size:.8rem;color:var(--tm);margin-top:16px">💡 Past seasons are already available — check the <strong>History</strong> tab to see last year's results.</p></div>`;}
+function renderPredraftActivity(){
+  const txs=(S.transactions||[]).filter(t=>t.status==='complete').sort((a,b)=>b.created-a.created);
+  const trades=txs.filter(t=>t.type==='trade');
+  const wrap=document.getElementById('predraft-wrap');
+  if(!txs.length){wrap.insertAdjacentHTML('beforeend',`<div class="sec"><h2 class="stitle">Offseason Activity</h2><div class="card"><p style="color:var(--tm);font-size:.85rem">No completed trades or moves yet this offseason.</p></div></div>`);return;}
+  const items=txs.slice(0,15).map(t=>{
+    const icon=t.type==='trade'?'🔄':(Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'🔀':'➕');
+    const cls=t.type==='trade'?'tt':(Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'tad':Object.keys(t.adds||{}).length?'ta':'td2');
+    const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+    let body='';
+    if(t.type==='trade'){
+      const teams=[...new Set(t.roster_ids||[])].map(rid=>{const r=S.rosters.find(r=>r.roster_id===rid);return r?dn(r):`Team ${rid}`;}).join(' ↔ ');
+      const parts=[];const adds=t.adds||{};const picks=t.draft_picks||[];
+      Object.keys(adds).forEach(pid=>{const nm=S.players[pid]?.full_name||pid;parts.push(nm);});
+      picks.forEach(p=>{const rl=['','1st','2nd','3rd','4th'][p.round]||p.round+'th';parts.push(`${p.season} ${rl}`);});
+      body=`<div class="txitt">${teams}</div><div class="txip">${parts.slice(0,5).join(', ')||'Assets exchanged'}</div>`;
+    }else{
+      const apids=Object.keys(t.adds||{}),dpids=Object.keys(t.drops||{});const mid=apids.length?t.adds[apids[0]]:dpids.length?t.drops[dpids[0]]:null;const ros=mid?S.rosters.find(r=>r.roster_id===mid):null;const team=ros?dn(ros):'Unknown';let detail=apids.map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');if(dpids.length)detail+=(detail?' − ':'')+dpids.map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');
+      body=`<div class="txitt">${team}</div><div class="txip">${detail||'Roster move'}</div>`;
+    }
+    return`<div class="txi ${cls}"><span>${icon}</span><div class="txib">${body}</div><span class="txid">${date}</span></div>`;
+  }).join('');
+  wrap.insertAdjacentHTML('beforeend',`<div class="sec"><h2 class="stitle">Offseason Activity</h2><div class="card"><div class="fb-row" style="margin-bottom:13px"><span style="font-size:.85rem;color:var(--ts)">Trades and roster moves before the draft</span><span style="font-size:.78rem;color:var(--tm)">${trades.length} trade${trades.length!==1?'s':''} · ${txs.length-trades.length} other</span></div><div class="txf">${items}</div></div></div>`);
+}
 function renderSnap(){const l=S.league,rp=l.roster_positions||[];const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;const rec=l.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';const te=detectTEPremium(l);const teStr=te==='plusplus'?' · TE++':te==='plus'?' · TE+':'';const fmt=`${isSF?'SF':'1QB'} · ${scoring}${teStr}`;const stats=[{l:'Teams',v:l.total_rosters},{l:'Current Week',v:'Week '+S.week},{l:'Format',v:fmt},{l:'Type',v:typeLabel(leagueType)}];if(leagueType==='chopped'){const alive=S.rosters.filter(r=>!isEliminated(r)).length;stats.push({l:'Still Alive',v:alive+' / '+l.total_rosters});stats.push({l:'Chopped',v:(l.total_rosters-alive)});}else{stats.push({l:'Playoff Spots',v:l.settings?.playoff_teams||'?'});stats.push({l:'Season',v:l.season});}document.getElementById('snap').innerHTML=stats.map(s=>`<div class="sc"><div class="sv" style="font-size:${s.l==='Format'?'.88rem':'1.5rem'}">${s.v}</div><div class="sl">${s.l}</div></div>`).join('');}
 function renderStandingsSection(){const titleEl=document.getElementById('standings-title');const ageTitle=document.getElementById('age-title');if(leagueType==='chopped'){titleEl.textContent='Survival Standings';ageTitle.textContent='Roster Age';renderChoppedStandings();renderEliminated();document.getElementById('elim-sec').classList.remove('hidden');}else{titleEl.textContent='Standings & Playoff Picture';ageTitle.textContent='Roster Age & Dynasty Health';renderH2HStandings();document.getElementById('elim-sec').classList.add('hidden');}}
 function getStreak(r){let n=0,t=null;for(let w=S.week;w>=1;w--){const wm=S.matchups[w];if(!wm)continue;const me=wm.find(m=>m.roster_id===r.roster_id);if(!me)continue;const op=wm.find(m=>m.matchup_id===me.matchup_id&&m.roster_id!==r.roster_id);if(!op)continue;const w2=me.points>op.points;if(t===null)t=w2;if(w2!==t)break;n++;}return n===0?'-':`${t?'W':'L'}${n}`;}
@@ -641,10 +671,3 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModD();if(e.key
 </script>
 </body>
 </html>
- 
-
-
-
-
-
-

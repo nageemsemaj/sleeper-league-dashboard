@@ -464,11 +464,14 @@ async function loadDraftSlots(chain){
     for(const d of drafts){const s=d.season;if(!bySeason[s]||d.settings?.player_type===1)bySeason[s]=d;}
     for(const s of Object.keys(bySeason)){
       const d=bySeason[s];
-      if(d.status!=='complete'&&d.status!=='drafting'&&d.status!=='in_progress')continue;
-      if(cache[d.draft_id]){draftSlotsBySeason[s]=cache[d.draft_id];continue;}
+      // Use the PERMANENT cache only for completed drafts (their order never changes).
+      // Pre-draft orders can still be reshuffled, so always re-fetch those fresh.
+      if(d.status==='complete'&&cache[d.draft_id]){draftSlotsBySeason[s]=cache[d.draft_id];continue;}
       let full;
       try{full=await api('/draft/'+d.draft_id);}catch(e){continue;}
-      if(!full||!full.slot_to_roster_id)continue;
+      // Resolve whenever the draft ORDER is set — slot_to_roster_id populated — regardless of status.
+      // A pre_draft draft with a set order already carries a full slot_to_roster_id map.
+      if(!full||!full.slot_to_roster_id||!Object.keys(full.slot_to_roster_id).length)continue;
       const rosterToCol={};
       Object.entries(full.slot_to_roster_id).forEach(([slot,rid])=>{rosterToCol[rid]=parseInt(slot);});
       const entry={rosterToCol,teams:full.settings?.teams||12,type:full.type||'linear'};

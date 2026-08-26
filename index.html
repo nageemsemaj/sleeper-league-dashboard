@@ -106,6 +106,11 @@ body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bot
 .secchip{background:var(--card);border:1px solid var(--brd);border-radius:99px;color:var(--ts);cursor:pointer;font-size:.75rem;font-weight:600;padding:5px 12px;white-space:nowrap;flex-shrink:0;transition:all .15s}
 .secchip:hover{border-color:var(--acc);color:var(--acc)}
 .secchip.active{background:var(--acc-g);border-color:var(--acc);color:var(--acc)}
+.secchip.chip-fb{border-style:dashed;color:var(--tm)}
+.secchip.chip-fb:hover{border-style:solid;color:var(--acc)}
+.inline-fb{background:none;border:none;color:var(--tm);font-size:.73rem;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
+.inline-fb:hover{color:var(--acc)}
+.fb-prompt{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.75rem;color:var(--tm);padding:14px 0 2px}
 .sec{scroll-margin-top:96px}
 .to-top{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--brd);color:var(--ts);cursor:pointer;font-size:1.05rem;line-height:1;z-index:60;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s,border-color .15s,color .15s}
 .to-top.show{opacity:1;pointer-events:auto}
@@ -395,7 +400,7 @@ header h1{font-size:1.05rem}
   <div class="wrap hdr-row">
     <div>
       <h1>The <span>Ledger</span></h1>
-      <p>Powered by the Sleeper API &nbsp;·&nbsp; <a href="https://nageemsemaj.com" target="_blank" rel="noopener">nageemsemaj.com</a> &nbsp;·&nbsp; <a href="https://docs.google.com/forms/d/e/1FAIpQLSepYE4Y_v0LVK7YgRm7Rwjqp946WlyiX1W1cWC1FB3ef_Mkrg/viewform?usp=header" target="_blank" rel="noopener">Submit Feedback</a> &nbsp;·&nbsp; <a href="https://www.buymeacoffee.com/nageemsemaj" target="_blank" rel="noopener">Buy me a coffee ☕</a></p>
+      <p>Powered by the Sleeper API &nbsp;·&nbsp; <a href="https://nageemsemaj.com" target="_blank" rel="noopener">nageemsemaj.com</a> &nbsp;·&nbsp; <a href="#" onclick="openFeedback();return false;">Submit Feedback</a> &nbsp;·&nbsp; <a href="https://www.buymeacoffee.com/nageemsemaj" target="_blank" rel="noopener">Buy me a coffee ☕</a></p>
     </div>
     <div class="hdr-right hidden" id="hdr-right">
       <span class="league-name-hdr" id="league-name-hdr"></span>
@@ -463,6 +468,7 @@ header h1{font-size:1.05rem}
       <div class="sec" id="sec-managers" data-sec="Managers"><h2 class="stitle">Manager Spotlight</h2>
         <p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Click any manager to see their full roster, age breakdown, and transaction history.</p>
         <div class="mgr" id="mg"></div>
+        <div class="fb-prompt">What would make this more useful? <button class="inline-fb" onclick="openFeedback('This Season')">Share a thought</button></div>
       </div>
     </div>
   </div>
@@ -513,6 +519,7 @@ header h1{font-size:1.05rem}
       <div class="sec" id="sec-grades" data-sec="Past Grades"><h2 class="stitle">Past Trade Grades</h2>
         <div class="trade-filter"><span style="font-size:.83rem;color:var(--ts)">Filter by manager:</span><select id="trade-filter-select" onchange="renderTradeGrades()"><option value="all">All managers</option></select><span id="trade-count" style="font-size:.78rem;color:var(--tm)"></span></div>
         <div class="trade-cards" id="trade-cards"></div>
+        <div class="fb-prompt">Do these grades match your gut? <button class="inline-fb" onclick="openFeedback('Trade grades')">Tell me</button></div>
       </div>
     </div>
   </div>
@@ -923,6 +930,35 @@ async function boot(){
   if(!handled)maybeShowInstallHint();
 }
 
+// ══════════ Feedback ══════════
+// Base Google Form. Responses land in your linked spreadsheet.
+const FEEDBACK_FORM='https://docs.google.com/forms/d/e/1FAIpQLSepYE4Y_v0LVK7YgRm7Rwjqp946WlyiX1W1cWC1FB3ef_Mkrg/viewform';
+// OPTIONAL: paste your form's entry IDs here to get structured columns in the sheet.
+// How to find them: open the form -> ⋮ menu -> "Get pre-filled link" -> type a dummy
+// answer in each field -> "Get link" -> copy. The URL contains entry.123456=dummy pairs.
+// Leave any blank and that field is simply skipped.
+const FEEDBACK_FIELDS={
+  context:'entry.870846971',      // which screen they were on
+  leagueType:'entry.1885408883',  // redraft / dynasty / keeper / chopped
+  device:'entry.1008085970'       // installed app vs browser
+};
+function feedbackUrl(context){
+  const p=new URLSearchParams();
+  if(FEEDBACK_FIELDS.context&&context)p.set(FEEDBACK_FIELDS.context,context);
+  if(FEEDBACK_FIELDS.leagueType&&S.league)p.set(FEEDBACK_FIELDS.leagueType,typeLabel(leagueType));
+  if(FEEDBACK_FIELDS.device)p.set(FEEDBACK_FIELDS.device,isStandalone()?'Installed app':'Browser');
+  const q=p.toString();
+  return FEEDBACK_FORM+(q?'?usp=pp_url&'+q:'?usp=header');
+}
+function openFeedback(context){
+  window.open(feedbackUrl(context||currentContextLabel()),'_blank','noopener');
+}
+function currentContextLabel(){
+  const tab=document.querySelector('.tab.active')?.textContent?.trim()||'App';
+  const chip=document.querySelector('.secchip.active')?.textContent?.trim();
+  return chip?`${tab} › ${chip}`:tab;
+}
+
 // ══════════ Section navigation (jump-to + scroll spy) ══════════
 let _spyTicking=false,_activeSecId=null,_jumpUntil=0,_resizeTimer=null,_secEls=[],_navH=90,_topShown=false;
 function visibleSections(){
@@ -943,7 +979,7 @@ function buildSecNav(){
   nav.innerHTML=secs.map((el,i)=>{
     if(!el.id)el.id='sec-auto-'+i;
     return`<button class="secchip" data-target="${el.id}" onclick="jumpToSec('${el.id}')">${el.dataset.sec}</button>`;
-  }).join('');
+  }).join('')+`<button class="secchip chip-fb" onclick="openFeedback()" title="Send feedback about this screen">💬 Feedback</button>`;
   nav.classList.remove('hidden');
   _activeSecId=null;
   _secEls=secs;

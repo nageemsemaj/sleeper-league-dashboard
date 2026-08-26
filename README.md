@@ -1,4 +1,4 @@
-# Sleeper League Health Dashboard
+# The Ledger
 
 A single-page dynasty fantasy football dashboard built on the public [Sleeper API](https://docs.sleeper.com). No backend, no login, no build tools — just drop it on GitHub Pages and go.
 

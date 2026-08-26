@@ -2,7 +2,7 @@
 // Strategy: cache the app SHELL only (html/manifest/icons/Chart.js).
 // Sleeper + FantasyCalc API calls are NEVER cached here, league data must stay fresh.
 // Bump CACHE_VERSION on every deploy so clients pick up the new shell.
-const CACHE_VERSION = 'ledger-shell-v5';
+const CACHE_VERSION = 'ledger-shell-v7';
 const SHELL = [
   './',
   './index.html',

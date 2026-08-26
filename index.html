@@ -16,6 +16,11 @@
 <style>
 :root{--bg:#0f1117;--card:#1a1d27;--card-h:#21253a;--inp:#12151f;--brd:#2a2d3e;--acc:#7c5cfc;--acc-d:#4e3ab0;--acc-g:rgba(124,92,252,.15);--grn:#22c55e;--ylw:#eab308;--red:#ef4444;--blu:#3b82f6;--org:#f97316;--tp:#f1f5f9;--ts:#94a3b8;--tm:#475569;--rad:10px;--radl:16px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{max-width:100%;overflow-x:hidden}
+/* Flex/grid children default to min-width:auto and refuse to shrink below their
+   content, which is what pushed the page wider than the viewport on phones. */
+.txib,.saved-item-body,.eval-side,.trade-side,.profile-card,.hist-card,.mc,.ac2,.sc,.elim-info,.champ-info,.arow,.hdr-row>div{min-width:0}
+.txitt,.txip,.saved-item-name,.trade-side-name,.profile-name,.elim-name{overflow-wrap:anywhere}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--tp);min-height:100vh;line-height:1.5}
 .wrap{max-width:1080px;margin:0 auto;padding:0 16px}
 header{padding:20px 0 16px;border-bottom:1px solid var(--brd);margin-bottom:28px}
@@ -89,7 +94,18 @@ body{padding-bottom:env(safe-area-inset-bottom)}
 .spin{width:34px;height:34px;border:3px solid var(--brd);border-top-color:var(--acc);border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 .spinlabel{color:var(--ts);font-size:.88rem}
-.tabs{display:flex;gap:4px;margin-bottom:24px;border-bottom:1px solid var(--brd);flex-wrap:wrap}
+.tabs{display:flex;gap:4px;margin-bottom:0;border-bottom:1px solid var(--brd);flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.navwrap{position:sticky;top:0;z-index:50;background:var(--bg);margin-bottom:20px;padding-top:2px}
+.secnav{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:9px 0 3px;border-bottom:1px solid var(--brd)}
+.secnav::-webkit-scrollbar{display:none}
+.secchip{background:var(--card);border:1px solid var(--brd);border-radius:99px;color:var(--ts);cursor:pointer;font-size:.75rem;font-weight:600;padding:5px 12px;white-space:nowrap;flex-shrink:0;transition:all .15s}
+.secchip:hover{border-color:var(--acc);color:var(--acc)}
+.secchip.active{background:var(--acc-g);border-color:var(--acc);color:var(--acc)}
+.sec{scroll-margin-top:96px}
+.to-top{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--brd);color:var(--ts);cursor:pointer;font-size:1.05rem;line-height:1;z-index:60;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .2s,border-color .15s,color .15s}
+.to-top.show{opacity:1;pointer-events:auto}
+.to-top:hover{border-color:var(--acc);color:var(--acc)}
 .tab{background:none;border:none;color:var(--ts);cursor:pointer;font-size:.9rem;font-weight:600;padding:10px 18px;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .15s,border-color .15s}
 .tab:hover{color:var(--tp)}.tab.active{color:var(--acc);border-bottom-color:var(--acc)}
 #dash{padding-bottom:56px}
@@ -97,7 +113,7 @@ body{padding-bottom:env(safe-area-inset-bottom)}
 .stitle{font-size:.82rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ts);margin-bottom:13px;display:flex;align-items:center;gap:8px}
 .stitle::after{content:'';flex:1;height:1px;background:var(--brd)}
 .card{background:var(--card);border:1px solid var(--brd);border-radius:var(--radl);padding:18px}
-.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(150px,100%),1fr));gap:11px}
 .sc{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:15px;text-align:center}
 .sc .sv{font-size:1.5rem;font-weight:700}.sc .sl{font-size:.72rem;color:var(--ts);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
 .league-format-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:18px}
@@ -133,12 +149,12 @@ table.st tr:hover td{background:var(--card-h)}
 .txi{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:11px 13px;font-size:.83rem;display:flex;gap:11px;align-items:flex-start}
 .txib{flex:1}.txitt{font-weight:600}.txip{color:var(--ts);margin-top:2px}.txid{font-size:.73rem;color:var(--tm);flex-shrink:0}
 .tt{border-left:3px solid var(--acc)}.ta{border-left:3px solid var(--grn)}.td2{border-left:3px solid var(--red)}.tad{border-left:3px solid var(--ylw)}
-.agr2{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;margin-top:15px}
+.agr2{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(170px,100%),1fr));gap:9px;margin-top:15px}
 .ac2{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:11px 13px;font-size:.81rem}
 .ac2 .am{font-weight:600;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .abt2{height:5px;background:var(--brd);border-radius:99px;margin-top:5px;overflow:hidden}
 .abf2{height:100%;background:var(--acc);border-radius:99px}
-.mgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:9px}
+.mgr{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(190px,100%),1fr));gap:9px}
 .mc{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:13px;cursor:pointer;transition:border-color .15s,background .15s}
 .mc:hover{border-color:var(--acc);background:var(--card-h)}
 .mc .mn{font-weight:600;font-size:.88rem;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -165,7 +181,7 @@ table.st tr:hover td{background:var(--card-h)}
 .fb-row{display:flex;justify-content:space-between;align-items:center}
 #hist-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;gap:14px}
 .hist-chart-wrap{position:relative;height:300px;margin-top:12px}
-.hist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:4px}
+.hist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:10px;margin-top:4px}
 .hist-card{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:14px}
 .hist-card .hc-name{font-weight:600;font-size:.9rem;margin-bottom:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .hist-seasons{display:flex;flex-direction:column;gap:4px}
@@ -267,7 +283,7 @@ table.ht tr:hover td{background:var(--card-h)}
 .eval-scores{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 .eval-score-item{font-size:.82rem;color:var(--ts)}
 .eval-score-val{font-weight:700;color:var(--tp);font-size:1rem}
-.profile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.profile-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:12px}
 .profile-card{background:var(--card);border:1px solid var(--brd);border-radius:var(--radl);padding:16px}
 .profile-name{font-weight:600;font-size:.9rem;margin-bottom:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .profile-stats{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
@@ -315,7 +331,7 @@ table.ht tr:hover td{background:var(--card-h)}
 .cs-safe{background:rgba(34,197,94,.15);color:var(--grn)}
 .cs-danger{background:rgba(249,115,22,.15);color:var(--org)}
 .cs-chop{background:rgba(239,68,68,.15);color:var(--red)}
-.elim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:9px}
+.elim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(160px,100%),1fr));gap:9px}
 .elim-card{background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:12px;display:flex;align-items:center;gap:10px;opacity:.8}
 .elim-week{font-size:.9rem;font-weight:700;color:var(--red);flex-shrink:0;width:44px;text-align:center}
 .elim-info .elim-name{font-weight:600;font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -323,7 +339,50 @@ table.ht tr:hover td{background:var(--card-h)}
 .survivor-banner{background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(124,92,252,.12));border:1px solid rgba(34,197,94,.3);border-radius:var(--radl);padding:16px 20px;display:flex;align-items:center;gap:14px;margin-bottom:18px}
 .survivor-banner .sb-icon{font-size:1.8rem}
 .chop-info-banner{background:rgba(249,115,22,.06);border:1px solid rgba(249,115,22,.2);border-radius:var(--rad);padding:11px 14px;font-size:.8rem;color:var(--ts);margin-bottom:16px;display:flex;gap:9px;align-items:flex-start}
-@media(max-width:680px){.evaluator{grid-template-columns:1fr}.eval-divider{padding-top:0;font-size:.9rem}.trade-sides{grid-template-columns:1fr}.trade-divider{display:none}.cgrid{grid-template-columns:repeat(2,1fr)}.mgr{grid-template-columns:repeat(2,1fr)}table.st th:nth-child(n+5),table.st td:nth-child(n+5){display:none}.hist-grid{grid-template-columns:1fr}.hdr-right{flex-direction:column;align-items:flex-end;gap:6px}.league-name-hdr{max-width:140px}}
+@media(max-width:680px){
+.wrap{padding:0 12px}
+header{padding:14px 0 12px;margin-bottom:18px}
+header h1{font-size:1.15rem}
+header p{font-size:.72rem;line-height:1.7}
+.hdr-row{flex-direction:column;align-items:stretch;gap:10px}
+.hdr-right{flex-direction:row;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:8px}
+.league-name-hdr{max-width:none;flex:1 1 auto;min-width:0}
+.league-type-hdr{font-size:.68rem;padding:5px 9px}
+.btn{padding:9px 14px;font-size:.83rem}
+.btn-o{padding:8px 12px}
+.tab{padding:9px 13px;font-size:.85rem}
+.sec{margin-bottom:24px;scroll-margin-top:104px}
+.card{padding:14px}
+.evaluator{grid-template-columns:1fr}
+.eval-divider{padding-top:0;font-size:.9rem}
+.trade-sides{grid-template-columns:1fr}
+.trade-divider{display:none}
+.cgrid{grid-template-columns:repeat(2,1fr)}
+.mgr{grid-template-columns:repeat(2,1fr)}
+table.st th:nth-child(n+5),table.st td:nth-child(n+5){display:none}
+.hist-grid{grid-template-columns:1fr}
+.profile-grid{grid-template-columns:1fr}
+.agr2{grid-template-columns:repeat(2,1fr)}
+.elim-grid{grid-template-columns:repeat(2,1fr)}
+.arow .al{width:104px;font-size:.78rem}
+.value-settings{flex-direction:column;gap:10px}
+.toggle-group{width:100%}
+.mod{padding:16px;max-height:90vh}
+.champ-card{min-width:0;flex:1 1 100%}
+.predraft-panel{padding:24px 16px}
+.install-hint{font-size:.75rem}
+}
+@media(max-width:400px){
+.cgrid{grid-template-columns:1fr}
+.mgr{grid-template-columns:1fr}
+.agr2{grid-template-columns:1fr}
+.elim-grid{grid-template-columns:1fr}
+.ig{flex-direction:column}
+.ig .btn,.ig .btn-o{width:100%}
+header h1{font-size:1.05rem}
+.arow .al{width:84px}
+.sc .sv{font-size:1.3rem}
+}
 </style>
 </head>
 <body>
@@ -362,29 +421,32 @@ table.ht tr:hover td{background:var(--card-h)}
 </div>
 <div id="loading" class="hidden"><div class="spin"></div><p class="spinlabel" id="lbl">Loading...</p></div>
 <div id="dash" class="hidden">
-  <div class="tabs">
-    <button class="tab active" id="tab-season" onclick="switchTab('season')">This Season</button>
-    <button class="tab" id="tab-history" onclick="switchTab('history')">History</button>
-    <button class="tab" id="tab-trades" onclick="switchTab('trades')">Trade Analyzer</button>
+  <div class="navwrap">
+    <div class="tabs">
+      <button class="tab active" id="tab-season" onclick="switchTab('season')">This Season</button>
+      <button class="tab" id="tab-history" onclick="switchTab('history')">History</button>
+      <button class="tab" id="tab-trades" onclick="switchTab('trades')">Trade Analyzer</button>
+    </div>
+    <div class="secnav hidden" id="secnav"></div>
   </div>
   <div id="pane-season">
     <div class="league-format-row" id="league-format-row"></div>
     <div id="predraft-wrap"></div>
     <div id="season-content">
-      <div class="sec"><h2 class="stitle">League Snapshot</h2><div class="cgrid" id="snap"></div></div>
-      <div class="sec"><h2 class="stitle" id="standings-title">Standings &amp; Playoff Picture</h2>
+      <div class="sec" id="sec-snap" data-sec="Snapshot"><h2 class="stitle">League Snapshot</h2><div class="cgrid" id="snap"></div></div>
+      <div class="sec" id="sec-standings" data-sec="Standings"><h2 class="stitle" id="standings-title">Standings &amp; Playoff Picture</h2>
         <div id="standings-wrap"></div>
       </div>
-      <div class="sec hidden" id="elim-sec"><h2 class="stitle">Eliminated Teams</h2>
+      <div class="sec hidden" id="elim-sec" data-sec="Eliminated"><h2 class="stitle">Eliminated Teams</h2>
         <div class="card"><div class="elim-grid" id="elim-grid"></div></div>
       </div>
-      <div class="sec"><h2 class="stitle" id="age-title">Roster Age &amp; Dynasty Health</h2>
+      <div class="sec" id="sec-age" data-sec="Roster Age"><h2 class="stitle" id="age-title">Roster Age &amp; Dynasty Health</h2>
         <div class="card">
           <div class="aleg"><div class="ali"><div class="ald" style="background:var(--grn)"></div>Contending (avg &lt;26)</div><div class="ali"><div class="ald" style="background:var(--ylw)"></div>Aging Core (26–28)</div><div class="ali"><div class="ald" style="background:var(--blu)"></div>Rebuilding (&gt;28)</div></div>
           <div class="agrid" id="ag"></div><div class="cw"><canvas id="ac"></canvas></div>
         </div>
       </div>
-      <div class="sec"><h2 class="stitle">Trade &amp; Waiver Activity</h2>
+      <div class="sec" id="sec-activity" data-sec="Activity"><h2 class="stitle">Trade &amp; Waiver Activity</h2>
         <div class="card">
           <div class="fb-row" style="margin-bottom:13px"><span style="font-size:.85rem;color:var(--ts)">Recent transactions (last 3 weeks)</span><span id="txc" style="font-size:.78rem;color:var(--tm)"></span></div>
           <div class="txf" id="txf"></div>
@@ -393,7 +455,7 @@ table.ht tr:hover td{background:var(--card-h)}
           <div class="agr2" id="acg"></div>
         </div>
       </div>
-      <div class="sec"><h2 class="stitle">Manager Spotlight</h2>
+      <div class="sec" id="sec-managers" data-sec="Managers"><h2 class="stitle">Manager Spotlight</h2>
         <p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Click any manager to see their full roster, age breakdown, and transaction history.</p>
         <div class="mgr" id="mg"></div>
       </div>
@@ -402,8 +464,8 @@ table.ht tr:hover td{background:var(--card-h)}
   <div id="pane-history" class="hidden">
     <div id="hist-loading" class="hidden"><div class="spin"></div><p class="spinlabel" id="hist-lbl">Loading historical seasons...</p></div>
     <div id="hist-content" class="hidden">
-      <div class="sec"><h2 class="stitle">Champions</h2><div class="champs-row" id="champs-row"></div><p style="font-size:.75rem;color:var(--tm)" id="champs-note"></p></div>
-      <div class="sec"><h2 class="stitle" id="traj-title">Standings Trajectory</h2>
+      <div class="sec" id="sec-champs" data-sec="Champions"><h2 class="stitle">Champions</h2><div class="champs-row" id="champs-row"></div><p style="font-size:.75rem;color:var(--tm)" id="champs-note"></p></div>
+      <div class="sec" id="sec-traj" data-sec="Trajectory"><h2 class="stitle" id="traj-title">Standings Trajectory</h2>
         <div class="card">
           <p style="font-size:.8rem;color:var(--ts);margin-bottom:8px" id="traj-sub">Finish each year. Lower is better. 🏆 marks that season's champion.</p>
           <div class="chart-controls"><button class="btn btn-o btn-sm" onclick="selectAllManagers()">Select All</button><button class="btn btn-o btn-sm" onclick="clearAllManagers()">Clear All</button></div>
@@ -411,8 +473,8 @@ table.ht tr:hover td{background:var(--card-h)}
           <div id="hist-chart-area"><div class="hist-chart-wrap"><canvas id="hist-chart"></canvas></div></div>
         </div>
       </div>
-      <div class="sec"><h2 class="stitle">Year-over-Year Breakdown</h2><div class="card" style="overflow-x:auto"><table class="ht"><thead id="hist-thead"></thead><tbody id="hist-tbody"></tbody></table></div></div>
-      <div class="sec"><h2 class="stitle">Manager Histories</h2><div class="hist-grid" id="hist-grid"></div></div>
+      <div class="sec" id="sec-yoy" data-sec="Year-over-Year"><h2 class="stitle">Year-over-Year Breakdown</h2><div class="card" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table class="ht"><thead id="hist-thead"></thead><tbody id="hist-tbody"></tbody></table></div></div>
+      <div class="sec" id="sec-histories" data-sec="Histories"><h2 class="stitle">Manager Histories</h2><div class="hist-grid" id="hist-grid"></div></div>
     </div>
   </div>
   <div id="pane-trades" class="hidden">
@@ -431,7 +493,7 @@ table.ht tr:hover td{background:var(--card-h)}
           <div class="toggle-row"><span class="toggle-label">TE:</span><div class="te-btn-group"><button class="te-btn" id="te-btn-off" onclick="setTEPremium('off')">Off</button><button class="te-btn" id="te-btn-plus" onclick="setTEPremium('plus')">TE+</button><button class="te-btn" id="te-btn-plusplus" onclick="setTEPremium('plusplus')">TE++</button></div></div>
         </div>
       </div>
-      <div class="sec"><h2 class="stitle">What-If Evaluator</h2><p style="font-size:.83rem;color:var(--ts);margin-bottom:16px">Build a hypothetical trade and get an instant grade.</p>
+      <div class="sec" id="sec-eval" data-sec="Evaluator"><h2 class="stitle">What-If Evaluator</h2><p style="font-size:.83rem;color:var(--ts);margin-bottom:16px">Build a hypothetical trade and get an instant grade.</p>
         <div class="card">
           <div class="evaluator">
             <div class="eval-side"><h4>Side A gives</h4><input class="eval-search" id="eval-search-a" type="text" placeholder="Search players..." oninput="evalSearch('a')" autocomplete="off"/><div class="eval-results hidden" id="eval-results-a"></div><div class="eval-pick-row" id="pick-row-a"></div><div class="eval-assets" id="eval-assets-a"></div><div class="eval-total"><span>Total value</span><span id="eval-total-a" style="color:var(--acc);font-weight:700">0</span></div></div>
@@ -442,8 +504,8 @@ table.ht tr:hover td{background:var(--card-h)}
           <div id="eval-result-box" class="hidden eval-result-box" style="margin-top:16px"></div>
         </div>
       </div>
-      <div class="sec"><h2 class="stitle">Manager Trade Profiles</h2><p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Sharp = consistently gains value. Generous = consistently gives value.</p><div class="profile-grid" id="profile-grid"></div></div>
-      <div class="sec"><h2 class="stitle">Past Trade Grades</h2>
+      <div class="sec" id="sec-profiles" data-sec="Profiles"><h2 class="stitle">Manager Trade Profiles</h2><p style="font-size:.83rem;color:var(--ts);margin-bottom:13px">Sharp = consistently gains value. Generous = consistently gives value.</p><div class="profile-grid" id="profile-grid"></div></div>
+      <div class="sec" id="sec-grades" data-sec="Past Grades"><h2 class="stitle">Past Trade Grades</h2>
         <div class="trade-filter"><span style="font-size:.83rem;color:var(--ts)">Filter by manager:</span><select id="trade-filter-select" onchange="renderTradeGrades()"><option value="all">All managers</option></select><span id="trade-count" style="font-size:.78rem;color:var(--tm)"></span></div>
         <div class="trade-cards" id="trade-cards"></div>
       </div>
@@ -451,6 +513,7 @@ table.ht tr:hover td{background:var(--card-h)}
   </div>
 </div>
 </main>
+<button class="to-top" id="to-top" onclick="scrollTop()" title="Back to top" aria-label="Back to top">↑</button>
 <div class="ov hidden" id="ov" onclick="closeMod(event)">
   <div class="mod">
     <div class="mhdr"><div><h3 id="mtn"></h3><p style="font-size:.8rem;color:var(--ts);margin-top:2px" id="mmn"></p></div><button class="mcl" onclick="closeModD()">×</button></div>
@@ -652,7 +715,7 @@ async function loadHistory(){
   H.seasons=seasons.map(s=>{const sType=detectLeagueType(s.league);const sStatus=getLeagueStatus(s.league);const inProgress=(s.year===CUR_YEAR&&sStatus!=='complete');const champRosterId=champByYear[s.year]||null;const ps=s.league.settings?.playoff_teams||4;let standings;if(sType==='chopped'){const ranked=[...s.rosters].sort((a,b)=>{const ae=a.settings?.eliminated,be=b.settings?.eliminated;if(ae==null&&be==null)return((b.settings?.fpts||0)+(b.settings?.fpts_decimal||0)/100)-((a.settings?.fpts||0)+(a.settings?.fpts_decimal||0)/100);if(ae==null)return -1;if(be==null)return 1;return be-ae;});standings=ranked.map((r,i)=>({seasonType:'chopped',finishPlace:i+1,isChamp:champRosterId&&r.roster_id===champRosterId,userId:r.owner_id,rosterId:r.roster_id,displayName:currentNames[r.owner_id]||'Unknown',eliminatedWeek:r.settings?.eliminated??null,pf:((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1),}));}else{const sorted=[...s.rosters].sort((a,b)=>{const dw=(b.settings?.wins||0)-(a.settings?.wins||0);return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);});standings=sorted.map((r,i)=>({seasonType:'h2h',finishPlace:i+1,seed:i+1,isChamp:champRosterId&&r.roster_id===champRosterId,userId:r.owner_id,rosterId:r.roster_id,displayName:currentNames[r.owner_id]||'Unknown',wins:r.settings?.wins||0,losses:r.settings?.losses||0,pf:((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1),playoff:i<ps,}));}return{year:s.year,type:sType,inProgress,total:s.rosters.length,playoffSpots:ps,champRosterId,standings};});
   const userMap={};H.seasons.forEach(s=>{s.standings.forEach(st=>{if(!st.userId)return;if(!userMap[st.userId])userMap[st.userId]={userId:st.userId,name:currentNames[st.userId]||st.displayName,seasons:{}};userMap[st.userId].seasons[s.year]={...st,__total:s.total,__inProgress:s.inProgress,__playoffSpots:s.playoffSpots};});});
   H.userMap=userMap;H.years=H.seasons.map(s=>s.year);const latestCompleted=H.seasons.filter(s=>!s.inProgress).map(s=>s.year).sort((a,b)=>b-a)[0];H.latestCompleted=latestCompleted;H.sortedUsers=Object.values(userMap).sort((a,b)=>{const ap=a.seasons[latestCompleted]?.finishPlace||999,bp=b.seasons[latestCompleted]?.finishPlace||999;return ap-bp;});H.anyChopped=H.seasons.some(s=>s.type==='chopped');
-  histLoaded=true;hide('hist-loading');renderHistory();show('hist-content');
+  histLoaded=true;hide('hist-loading');renderHistory();show('hist-content');buildSecNav();
 }
 
 function renderHistory(){renderChampionsRow();updateHistCopy();buildCheckboxes();renderHistChart();renderHistTable();renderHistGrid();}
@@ -732,7 +795,7 @@ function evaluateTrade(){const valA=evalAssetsA.reduce((s,a)=>s+assetValue(a),0)
 function clearEvaluator(){evalAssetsA=[];evalAssetsB=[];refreshEvalUI();document.getElementById('eval-result-box').classList.add('hidden');document.getElementById('eval-search-a').value='';document.getElementById('eval-search-b').value='';}
 function renderManagerProfiles(trades){const profiles={};S.rosters.forEach(r=>{const u=S.users.find(u=>u.user_id===r.owner_id)||{};profiles[r.roster_id]={name:u.display_name||u.username||'Unknown',rosterId:r.roster_id,trades:0,valueGained:0,valueLost:0,wins:0,losses:0,ties:0};});trades.forEach(t=>{const g=gradeTrade(t);if(!g)return;[g.ridA,g.ridB].forEach(rid=>{if(!profiles[rid])return;profiles[rid].trades++;if(g.isTie){profiles[rid].ties++;}else if(String(rid)===String(g.winner)){profiles[rid].valueGained+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));profiles[rid].wins++;}else{profiles[rid].valueLost+=(Math.max(g.valA,g.valB)-Math.min(g.valA,g.valB));profiles[rid].losses++;}});});const sorted=Object.values(profiles).sort((a,b)=>b.trades-a.trades);document.getElementById('profile-grid').innerHTML=sorted.map(p=>{if(p.trades===0)return`<div class="profile-card"><div class="profile-name">${p.name}</div><p style="font-size:.8rem;color:var(--tm)">No trades found.</p></div>`;const netVal=p.valueGained-p.valueLost;const decidedTrades=p.wins+p.losses;const winRate=decidedTrades>0?Math.round((p.wins/decidedTrades)*100):null;const record=p.ties>0?`${p.wins}-${p.losses}-${p.ties} (W-L-T)`:`${p.wins}-${p.losses}`;const winRateStr=winRate!==null?`${winRate}% win rate`:'—';const tags=[];const addCount=trades.filter(t=>(t.roster_ids||[]).includes(p.rosterId)&&Object.values(t.adds||{}).includes(p.rosterId)).length;const dropCount=trades.filter(t=>(t.roster_ids||[]).includes(p.rosterId)&&Object.values(t.drops||{}).includes(p.rosterId)).length;if(addCount>dropCount*1.3)tags.push('<span class="buyer-tag">Buyer</span>');else if(dropCount>addCount*1.3)tags.push('<span class="seller-tag">Seller</span>');else tags.push('<span class="balanced-tag">Balanced</span>');if(decidedTrades>=3&&winRate>=65)tags.push('<span class="sharp-tag">Sharp</span>');else if(decidedTrades>=3&&winRate<=35)tags.push('<span class="generous-tag">Generous</span>');return`<div class="profile-card"><div class="profile-name">${p.name}</div><div class="profile-stats"><div class="profile-stat"><span class="profile-stat-label">Trades</span><span class="profile-stat-val">${p.trades}</span></div><div class="profile-stat"><span class="profile-stat-label">Record</span><span class="profile-stat-val">${record}</span></div><div class="profile-stat"><span class="profile-stat-label">Win rate</span><span class="profile-stat-val">${winRateStr}</span></div><div class="profile-stat"><span class="profile-stat-label">Net value</span><span class="profile-stat-val" style="color:${netVal>=0?'var(--grn)':'var(--red)'}">${netVal>=0?'+':''}${netVal.toLocaleString()}</span></div></div><div class="profile-tags">${tags.join('')}</div></div>`;}).join('');}
 
-function switchTab(t){['season','history','trades'].forEach(tab=>{document.getElementById(`tab-${tab}`).classList.toggle('active',t===tab);document.getElementById(`pane-${tab}`).classList.toggle('hidden',t!==tab);});if(t==='history'&&!histLoaded)loadHistory();if(t==='trades'){if(!tradesEnabled(S.league)){document.getElementById('trades-disabled').classList.remove('hidden');document.getElementById('trades-content').classList.add('hidden');return;}document.getElementById('trades-disabled').classList.add('hidden');document.getElementById('trades-content').classList.remove('hidden');if(!histLoaded)loadHistory().then(()=>initTradeTab());else initTradeTab();}}
+function switchTab(t){['season','history','trades'].forEach(tab=>{document.getElementById(`tab-${tab}`).classList.toggle('active',t===tab);document.getElementById(`pane-${tab}`).classList.toggle('hidden',t!==tab);});window.scrollTo({top:0});if(t==='history'&&!histLoaded)loadHistory();if(t==='trades'){if(!tradesEnabled(S.league)){document.getElementById('trades-disabled').classList.remove('hidden');document.getElementById('trades-content').classList.add('hidden');buildSecNav();return;}document.getElementById('trades-disabled').classList.add('hidden');document.getElementById('trades-content').classList.remove('hidden');if(!histLoaded)loadHistory().then(()=>initTradeTab());else initTradeTab();}buildSecNav();}
 function switchMTab(t){document.getElementById('mtab-roster').classList.toggle('active',t==='roster');document.getElementById('mtab-history').classList.toggle('active',t==='history');document.getElementById('mb-roster').classList.toggle('hidden',t!=='roster');document.getElementById('mb-history').classList.toggle('hidden',t!=='history');}
 
 function renderDash(){hideLoad();renderLeagueFormatRow();document.getElementById('league-name-hdr').textContent=S.league?.name||'';const lth=document.getElementById('league-type-hdr');if(lth){lth.textContent=typeLabel(leagueType);lth.className='league-type-hdr lth-'+leagueType;}show('hdr-right');show('dash');if(leagueStatus==='predraft'||leagueStatus==='drafting'){renderPredraft();renderPredraftActivity();document.getElementById('season-content').classList.add('hidden');document.getElementById('predraft-wrap').classList.remove('hidden');}else{document.getElementById('predraft-wrap').classList.add('hidden');document.getElementById('predraft-wrap').innerHTML='';document.getElementById('season-content').classList.remove('hidden');renderSnap();renderStandingsSection();renderAge();renderTx();renderMgr();}switchTab('season');}
@@ -764,8 +827,8 @@ function renderPredraftActivity(){
 function renderSnap(){const l=S.league,rp=l.roster_positions||[];const isSF=rp.includes('SF')||rp.filter(p=>p==='QB').length>1;const rec=l.scoring_settings?.rec;const scoring=rec===1?'Full PPR':rec===.5?'Half PPR':'Standard';const te=detectTEPremium(l);const teStr=te==='plusplus'?' · TE++':te==='plus'?' · TE+':'';const fmt=`${isSF?'SF':'1QB'} · ${scoring}${teStr}`;const stats=[{l:'Teams',v:l.total_rosters},{l:'Current Week',v:'Week '+S.week},{l:'Format',v:fmt}];if(leagueType==='chopped'){const alive=S.rosters.filter(r=>!isEliminated(r)).length;stats.push({l:'Still Alive',v:alive+' / '+l.total_rosters});stats.push({l:'Chopped',v:(l.total_rosters-alive)});}else{stats.push({l:'Playoff Spots',v:l.settings?.playoff_teams||'?'});stats.push({l:'Season',v:l.season});}document.getElementById('snap').innerHTML=stats.map(s=>`<div class="sc"><div class="sv" style="font-size:${s.l==='Format'?'.88rem':'1.5rem'}">${s.v}</div><div class="sl">${s.l}</div></div>`).join('');}
 function renderStandingsSection(){const titleEl=document.getElementById('standings-title');const ageTitle=document.getElementById('age-title');const healthLabel=(leagueType==='dynasty'||leagueType==='keeper')?'Roster Age & Dynasty Health':'Roster Age';if(leagueType==='chopped'){titleEl.textContent='Survival Standings';ageTitle.textContent='Roster Age';renderChoppedStandings();renderEliminated();document.getElementById('elim-sec').classList.remove('hidden');}else{titleEl.textContent='Standings & Playoff Picture';ageTitle.textContent=healthLabel;renderH2HStandings();document.getElementById('elim-sec').classList.add('hidden');}}
 function getStreak(r){let n=0,t=null;for(let w=S.week;w>=1;w--){const wm=S.matchups[w];if(!wm)continue;const me=wm.find(m=>m.roster_id===r.roster_id);if(!me)continue;const op=wm.find(m=>m.matchup_id===me.matchup_id&&m.roster_id!==r.roster_id);if(!op)continue;const w2=me.points>op.points;if(t===null)t=w2;if(w2!==t)break;n++;}return n===0?'-':`${t?'W':'L'}${n}`;}
-function renderH2HStandings(){const ps=S.league.settings?.playoff_teams||4;const sorted=[...S.rosters].sort((a,b)=>{const dw=(b.settings?.wins||0)-(a.settings?.wins||0);return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);});const rows=sorted.map((r,i)=>{const rk=i+1,w=r.settings?.wins||0,l=r.settings?.losses||0;const pf=((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1);const pa=((r.settings?.fpts_against||0)+(r.settings?.fpts_against_decimal||0)/100).toFixed(1);const st=getStreak(r);const ph=rk<=ps?`<span class="py">IN</span>`:rk===ps+1?`<span class="pb">BUBBLE</span>`:`<span class="pn">OUT</span>`;return`<tr><td style="color:var(--tm);font-weight:600">${rk}</td><td style="font-weight:600">${dn(r)}</td><td style="color:var(--ts)">${w}-${l}</td><td>${pf}</td><td>${pa}</td><td class="${st.startsWith('W')?'sw':'sl2'}">${st}</td><td>${ph}</td></tr>`;}).join('');document.getElementById('standings-wrap').innerHTML=`<div class="card" style="overflow-x:auto"><table class="st"><thead><tr><th>#</th><th>Username</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead><tbody>${rows}</tbody></table></div>`;}
-function renderChoppedStandings(){const alive=S.rosters.filter(r=>!isEliminated(r));const ranked=[...alive].map(r=>({r,pts:rosterTotalPoints(r)})).sort((a,b)=>b.pts-a.pts);const n=ranked.length;const dangerCount=Math.min(3,Math.max(1,Math.floor(n*0.2)));const infoBanner=`<div class="chop-info-banner"><span>🪓</span><div>In a Chopped league, the lowest total-points team each week is eliminated and its roster hits waivers. Rankings are by total season points — the bottom teams are on the chopping block.</div></div>`;let survivorBanner='';if(n===1&&leagueStatus==='complete'){survivorBanner=`<div class="survivor-banner"><span class="sb-icon">👑</span><div><div style="font-weight:700">${dn(ranked[0].r)} survived!</div><div style="font-size:.8rem;color:var(--ts)">Last team standing — ${ranked[0].pts.toFixed(1)} total points</div></div></div>`;}const rows=ranked.map((o,i)=>{const rk=i+1;const isChopZone=(i>=n-1)&&n>1;const isDanger=(i>=n-dangerCount)&&!isChopZone&&n>2;const rowCls=isChopZone?'chop-zone-row':isDanger?'danger-row':'';const status=isChopZone?`<span class="chop-status cs-chop">CHOP ZONE</span>`:isDanger?`<span class="chop-status cs-danger">DANGER</span>`:`<span class="chop-status cs-safe">SAFE</span>`;return`<tr class="${rowCls}"><td style="color:var(--tm);font-weight:600">${rk}</td><td style="font-weight:600">${dn(o.r)}</td><td>${o.pts.toFixed(1)}</td><td>${status}</td></tr>`;}).join('');const emptyNote=n===0?`<p style="color:var(--tm);font-size:.85rem;padding:14px 0">No scored weeks yet — standings appear once games are played.</p>`:'';document.getElementById('standings-wrap').innerHTML=`${survivorBanner}${infoBanner}<div class="card" style="overflow-x:auto">${n>0?`<table class="st"><thead><tr><th>#</th><th>Team</th><th>Total Pts</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`:emptyNote}</div>`;}
+function renderH2HStandings(){const ps=S.league.settings?.playoff_teams||4;const sorted=[...S.rosters].sort((a,b)=>{const dw=(b.settings?.wins||0)-(a.settings?.wins||0);return dw!==0?dw:(b.settings?.fpts||0)-(a.settings?.fpts||0);});const rows=sorted.map((r,i)=>{const rk=i+1,w=r.settings?.wins||0,l=r.settings?.losses||0;const pf=((r.settings?.fpts||0)+(r.settings?.fpts_decimal||0)/100).toFixed(1);const pa=((r.settings?.fpts_against||0)+(r.settings?.fpts_against_decimal||0)/100).toFixed(1);const st=getStreak(r);const ph=rk<=ps?`<span class="py">IN</span>`:rk===ps+1?`<span class="pb">BUBBLE</span>`:`<span class="pn">OUT</span>`;return`<tr><td style="color:var(--tm);font-weight:600">${rk}</td><td style="font-weight:600">${dn(r)}</td><td style="color:var(--ts)">${w}-${l}</td><td>${pf}</td><td>${pa}</td><td class="${st.startsWith('W')?'sw':'sl2'}">${st}</td><td>${ph}</td></tr>`;}).join('');document.getElementById('standings-wrap').innerHTML=`<div class="card" style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table class="st"><thead><tr><th>#</th><th>Username</th><th>W-L</th><th>PF</th><th>PA</th><th>Streak</th><th>Playoff</th></tr></thead><tbody>${rows}</tbody></table></div>`;}
+function renderChoppedStandings(){const alive=S.rosters.filter(r=>!isEliminated(r));const ranked=[...alive].map(r=>({r,pts:rosterTotalPoints(r)})).sort((a,b)=>b.pts-a.pts);const n=ranked.length;const dangerCount=Math.min(3,Math.max(1,Math.floor(n*0.2)));const infoBanner=`<div class="chop-info-banner"><span>🪓</span><div>In a Chopped league, the lowest total-points team each week is eliminated and its roster hits waivers. Rankings are by total season points — the bottom teams are on the chopping block.</div></div>`;let survivorBanner='';if(n===1&&leagueStatus==='complete'){survivorBanner=`<div class="survivor-banner"><span class="sb-icon">👑</span><div><div style="font-weight:700">${dn(ranked[0].r)} survived!</div><div style="font-size:.8rem;color:var(--ts)">Last team standing — ${ranked[0].pts.toFixed(1)} total points</div></div></div>`;}const rows=ranked.map((o,i)=>{const rk=i+1;const isChopZone=(i>=n-1)&&n>1;const isDanger=(i>=n-dangerCount)&&!isChopZone&&n>2;const rowCls=isChopZone?'chop-zone-row':isDanger?'danger-row':'';const status=isChopZone?`<span class="chop-status cs-chop">CHOP ZONE</span>`:isDanger?`<span class="chop-status cs-danger">DANGER</span>`:`<span class="chop-status cs-safe">SAFE</span>`;return`<tr class="${rowCls}"><td style="color:var(--tm);font-weight:600">${rk}</td><td style="font-weight:600">${dn(o.r)}</td><td>${o.pts.toFixed(1)}</td><td>${status}</td></tr>`;}).join('');const emptyNote=n===0?`<p style="color:var(--tm);font-size:.85rem;padding:14px 0">No scored weeks yet — standings appear once games are played.</p>`:'';document.getElementById('standings-wrap').innerHTML=`${survivorBanner}${infoBanner}<div class="card" style="overflow-x:auto;-webkit-overflow-scrolling:touch">${n>0?`<table class="st"><thead><tr><th>#</th><th>Team</th><th>Total Pts</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`:emptyNote}</div>`;}
 function renderEliminated(){const eliminated=S.rosters.filter(r=>isEliminated(r));if(!eliminated.length){document.getElementById('elim-grid').innerHTML=`<p style="color:var(--tm);font-size:.85rem">No teams chopped yet. Everyone's still alive.</p>`;return;}const sorted=[...eliminated].map(r=>({r,pts:rosterTotalPoints(r),wk:r.settings?.eliminated})).sort((a,b)=>{if(a.wk!=null&&b.wk!=null)return a.wk-b.wk;return a.pts-b.pts;});document.getElementById('elim-grid').innerHTML=sorted.map(o=>`<div class="elim-card"><div class="elim-week">${o.wk!=null?'Wk '+o.wk:'✖'}</div><div class="elim-info"><div class="elim-name">${dn(o.r)}</div><div class="elim-sub">${o.pts>0?o.pts.toFixed(1)+' total pts':'Chopped'}</div></div></div>`).join('');}
 function renderAge(){const rd=S.rosters.map(r=>{const ages=(r.players||[]).map(p=>S.players[p]?.age).filter(Boolean);const avg=ages.length?ages.reduce((a,b)=>a+b,0)/ages.length:0;return{r,avg:Math.round(avg*10)/10};}).filter(d=>d.avg>0).sort((a,b)=>a.avg-b.avg);if(!rd.length){document.getElementById('ag').innerHTML=`<p style="color:var(--tm);font-size:.85rem">No rostered players yet.</p>`;if(ageChart){ageChart.destroy();ageChart=null;}return;}const mn=Math.min(...rd.map(d=>d.avg)),mx=Math.max(...rd.map(d=>d.avg));document.getElementById('ag').innerHTML=rd.map(d=>{const pct=mx===mn?50:((d.avg-mn)/(mx-mn))*100;const cls=d.avg<26?'age-c':d.avg<=28?'age-a':'age-r';return`<div class="arow"><span class="al">${dn(d.r)}</span><div class="abt"><div class="abf ${cls}" style="width:${Math.max(8,pct)}%"></div></div><span class="av">${d.avg||'?'}</span></div>`;}).join('');const bk={'22-24':0,'25-26':0,'27-28':0,'29-30':0,'31+':0};S.rosters.forEach(r=>(r.players||[]).forEach(p=>{const a=S.players[p]?.age;if(!a)return;if(a<=24)bk['22-24']++;else if(a<=26)bk['25-26']++;else if(a<=28)bk['27-28']++;else if(a<=30)bk['29-30']++;else bk['31+']++;}));if(ageChart){ageChart.destroy();ageChart=null;}ageChart=new Chart(document.getElementById('ac').getContext('2d'),{type:'bar',data:{labels:Object.keys(bk),datasets:[{label:'Players',data:Object.values(bk),backgroundColor:['#22c55e','#22c55e','#eab308','#ef4444','#ef4444'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});}
 function renderTx(){const txs=S.transactions.filter(t=>t.status==='complete').sort((a,b)=>b.created-a.created);const trades=txs.filter(t=>t.type==='trade'),adds=txs.filter(t=>t.type!=='trade');document.getElementById('txc').textContent=`${trades.length} trades · ${adds.length} adds/drops`;document.getElementById('txf').innerHTML=txs.length?txs.slice(0,10).map(t=>{const icon=t.type==='trade'?'🔄':t.adds&&Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'🔀':'➕';const cls=t.type==='trade'?'tt':t.adds&&Object.keys(t.adds||{}).length&&Object.keys(t.drops||{}).length?'tad':t.adds&&Object.keys(t.adds||{}).length?'ta':'td2';const date=t.created?new Date(t.created).toLocaleDateString('en-US',{month:'short',day:'numeric'}):'';let body='';if(t.type==='trade'){const teams=[...new Set(t.roster_ids||[])].map(rid=>{const r=S.rosters.find(r=>r.roster_id===rid);return r?dn(r):`Team ${rid}`;}).join(' ↔ ');const added=Object.keys(t.adds||{}).map(p=>S.players[p]?.full_name||p).slice(0,3).join(', ');body=`<div class="txitt">${teams}</div><div class="txip">${added||'Players exchanged'}</div>`;}else{const apids=Object.keys(t.adds||{}),dpids=Object.keys(t.drops||{});const mid=apids.length?t.adds[apids[0]]:dpids.length?t.drops[dpids[0]]:null;const ros=mid?S.rosters.find(r=>r.roster_id===mid):null;const team=ros?dn(ros):'Unknown';let detail=apids.map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');if(dpids.length)detail+=(detail?' − ':'')+dpids.map(p=>S.players[p]?.full_name||p).slice(0,2).join(', ');body=`<div class="txitt">${team}</div><div class="txip">${detail}</div>`;}return`<div class="txi ${cls}"><span>${icon}</span><div class="txib">${body}</div><span class="txid">${date}</span></div>`;}).join(''):`<p style="color:var(--tm);font-size:.85rem">No transactions yet.</p>`;const am={};S.rosters.forEach(r=>{am[r.roster_id]=0;});S.transactions.filter(t=>t.status==='complete').forEach(t=>(t.roster_ids||[]).forEach(rid=>{if(am[rid]!==undefined)am[rid]++;}));const mx2=Math.max(...Object.values(am),1);document.getElementById('acg').innerHTML=S.rosters.map(r=>{const c=am[r.roster_id]||0;return`<div class="ac2"><div class="am">${dn(r)}</div><div style="font-size:.72rem;color:var(--tm)">${c} move${c!==1?'s':''}</div><div class="abt2"><div class="abf2" style="width:${(c/mx2)*100}%"></div></div></div>`;}).join('');const wv={};for(let w=1;w<=S.week;w++)wv['Wk '+w]=0;S.transactions.filter(t=>t.status==='complete').forEach(t=>{const k='Wk '+t.leg;if(wv[k]!==undefined)wv[k]++;});if(txChart){txChart.destroy();txChart=null;}txChart=new Chart(document.getElementById('txch').getContext('2d'),{type:'line',data:{labels:Object.keys(wv),datasets:[{label:'Transactions',data:Object.values(wv),borderColor:'#7c5cfc',backgroundColor:'rgba(124,92,252,.12)',borderWidth:2,pointRadius:3,pointBackgroundColor:'#7c5cfc',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8',maxTicksLimit:10}},y:{grid:{color:'#2a2d3e'},ticks:{color:'#94a3b8'},beginAtZero:true}}}});}
@@ -855,7 +918,60 @@ async function boot(){
   if(!handled)maybeShowInstallHint();
 }
 
-function resetToEntry(){const lth=document.getElementById('league-type-hdr');if(lth){lth.textContent='';lth.className='league-type-hdr';}if(ageChart){ageChart.destroy();ageChart=null;}if(txChart){txChart.destroy();txChart=null;}if(histChart){histChart.destroy();histChart=null;}hide('dash');hide('picker');hideLoad();hide('hdr-right');clearErr();show('entry');renderSaved();maybeShowInstallHint();histLoaded=false;H={};currentNames={};allHistTrades=[];evalAssetsA=[];evalAssetsB=[];draftSlotsBySeason={};sfFormat='sf';tePremium='off';leagueType='redraft';leagueStatus='inseason';S={...S,leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],nflState:null,week:1};}
+// ══════════ Section navigation (jump-to + scroll spy) ══════════
+let _spyTicking=false;
+function visibleSections(){
+  const pane=document.querySelector('#pane-season:not(.hidden), #pane-history:not(.hidden), #pane-trades:not(.hidden)');
+  if(!pane)return[];
+  return[...pane.querySelectorAll('.sec[data-sec]')].filter(el=>{
+    if(el.classList.contains('hidden'))return false;
+    // skip sections inside a hidden ancestor (e.g. season-content when pre-draft)
+    let p=el.parentElement;
+    while(p&&p!==pane){if(p.classList?.contains('hidden'))return false;p=p.parentElement;}
+    return el.offsetParent!==null;
+  });
+}
+function buildSecNav(){
+  const nav=document.getElementById('secnav');if(!nav)return;
+  const secs=visibleSections();
+  if(secs.length<2){nav.classList.add('hidden');nav.innerHTML='';return;}
+  nav.innerHTML=secs.map((el,i)=>{
+    if(!el.id)el.id='sec-auto-'+i;
+    return`<button class="secchip" data-target="${el.id}" onclick="jumpToSec('${el.id}')">${el.dataset.sec}</button>`;
+  }).join('');
+  nav.classList.remove('hidden');
+  spySections();
+}
+function jumpToSec(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function spySections(){
+  const nav=document.getElementById('secnav');if(!nav||nav.classList.contains('hidden'))return;
+  const secs=visibleSections();if(!secs.length)return;
+  const line=(document.querySelector('.navwrap')?.offsetHeight||90)+12;
+  let activeId=secs[0].id;
+  for(const el of secs){if(el.getBoundingClientRect().top<=line)activeId=el.id;}
+  // near the bottom, the last section is the one you're looking at
+  if(window.innerHeight+window.scrollY>=document.body.scrollHeight-40)activeId=secs[secs.length-1].id;
+  nav.querySelectorAll('.secchip').forEach(c=>{
+    const on=c.dataset.target===activeId;
+    c.classList.toggle('active',on);
+    if(on)c.scrollIntoView({block:'nearest',inline:'nearest'});
+  });
+}
+function scrollTop(){window.scrollTo({top:0,behavior:'smooth'});}
+function onScroll(){
+  const btn=document.getElementById('to-top');
+  if(btn)btn.classList.toggle('show',window.scrollY>420);
+  if(_spyTicking)return;
+  _spyTicking=true;
+  requestAnimationFrame(()=>{spySections();_spyTicking=false;});
+}
+window.addEventListener('scroll',onScroll,{passive:true});
+window.addEventListener('resize',()=>{buildSecNav();},{passive:true});
+
+function resetToEntry(){const lth=document.getElementById('league-type-hdr');if(lth){lth.textContent='';lth.className='league-type-hdr';}if(ageChart){ageChart.destroy();ageChart=null;}if(txChart){txChart.destroy();txChart=null;}if(histChart){histChart.destroy();histChart=null;}hide('dash');hide('picker');hideLoad();hide('hdr-right');clearErr();show('entry');renderSaved();maybeShowInstallHint();document.getElementById('secnav')?.classList.add('hidden');document.getElementById('to-top')?.classList.remove('show');histLoaded=false;H={};currentNames={};allHistTrades=[];evalAssetsA=[];evalAssetsB=[];draftSlotsBySeason={};sfFormat='sf';tePremium='off';leagueType='redraft';leagueStatus='inseason';S={...S,leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],nflState:null,week:1};}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModD();if(e.key==='Enter'&&!document.getElementById('entry').classList.contains('hidden')){const u=document.getElementById('ui').value.trim(),l=document.getElementById('li').value.trim();if(u)handleUser();else if(l)handleLeague();}});
 boot();
 </script>

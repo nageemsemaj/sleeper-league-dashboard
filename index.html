@@ -2,8 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Sleeper League Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>The Ledger — Fantasy League Dashboard</title>
+<link rel="manifest" href="./manifest.json"/>
+<meta name="theme-color" content="#0f1117"/>
+<meta name="description" content="The record of your Sleeper league: standings, trade grades, champions, and season history."/>
+<link rel="apple-touch-icon" href="./apple-touch-icon.png"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Ledger"/>
+<meta name="mobile-web-app-capable" content="yes"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root{--bg:#0f1117;--card:#1a1d27;--card-h:#21253a;--inp:#12151f;--brd:#2a2d3e;--acc:#7c5cfc;--acc-d:#4e3ab0;--acc-g:rgba(124,92,252,.15);--grn:#22c55e;--ylw:#eab308;--red:#ef4444;--blu:#3b82f6;--org:#f97316;--tp:#f1f5f9;--ts:#94a3b8;--tm:#475569;--rad:10px;--radl:16px}
@@ -20,6 +28,28 @@ header p a:hover{text-decoration:underline}
 .hdr-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
 .league-name-hdr{font-size:.82rem;font-weight:600;color:var(--ts);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:6px 10px;background:var(--card);border:1px solid var(--brd);border-radius:var(--rad)}
 .league-type-hdr{font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:var(--rad);flex-shrink:0}
+body{padding-bottom:env(safe-area-inset-bottom)}
+.saved-sec{margin-bottom:20px;text-align:left}
+.saved-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.saved-title{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--tm)}
+.saved-clear{background:none;border:none;color:var(--tm);font-size:.72rem;cursor:pointer;padding:0}
+.saved-clear:hover{color:var(--red)}
+.saved-list{display:flex;flex-direction:column;gap:6px}
+.saved-item{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--brd);border-radius:var(--rad);padding:10px 12px;cursor:pointer;transition:border-color .15s,background .15s;text-align:left}
+.saved-item:hover{border-color:var(--acc);background:var(--card-h)}
+.saved-item-body{flex:1;min-width:0}
+.saved-item-name{font-size:.86rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.saved-item-meta{font-size:.72rem;color:var(--tm);margin-top:1px}
+.saved-item-x{background:none;border:none;color:var(--tm);cursor:pointer;font-size:1rem;padding:0 2px;flex-shrink:0}
+.saved-item-x:hover{color:var(--red)}
+.install-hint{background:rgba(124,92,252,.08);border:1px solid rgba(124,92,252,.25);border-radius:var(--rad);padding:11px 14px;font-size:.78rem;color:var(--ts);margin-top:18px;display:flex;gap:9px;align-items:flex-start;text-align:left}
+.install-hint b{color:var(--tp)}
+.install-hint-x{background:none;border:none;color:var(--tm);cursor:pointer;font-size:1rem;padding:0;margin-left:auto;flex-shrink:0}
+.install-hint-x:hover{color:var(--tp)}
+.btn-share{background:transparent;border:1px solid var(--brd);color:var(--ts);border-radius:var(--rad);cursor:pointer;font-size:.78rem;font-weight:600;padding:6px 12px;transition:all .15s;flex-shrink:0}
+.btn-share:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-g)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(24px + env(safe-area-inset-bottom));background:var(--card);border:1px solid var(--acc);color:var(--tp);font-size:.83rem;padding:10px 18px;border-radius:99px;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.5);animation:toastIn .2s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}
 .lth-redraft{background:rgba(59,130,246,.16);color:#60a5fa;border:1px solid rgba(59,130,246,.4)}
 .lth-dynasty{background:rgba(124,92,252,.16);color:#a78bfa;border:1px solid rgba(124,92,252,.4)}
 .lth-keeper{background:rgba(34,197,94,.16);color:#4ade80;border:1px solid rgba(34,197,94,.4)}
@@ -300,12 +330,13 @@ table.ht tr:hover td{background:var(--card-h)}
 <header>
   <div class="wrap hdr-row">
     <div>
-      <h1>Sleeper <span>League Dashboard</span></h1>
+      <h1>The <span>Ledger</span></h1>
       <p>Powered by the Sleeper API &nbsp;·&nbsp; <a href="https://nageemsemaj.com" target="_blank" rel="noopener">nageemsemaj.com</a> &nbsp;·&nbsp; <a href="https://docs.google.com/forms/d/e/1FAIpQLSepYE4Y_v0LVK7YgRm7Rwjqp946WlyiX1W1cWC1FB3ef_Mkrg/viewform?usp=header" target="_blank" rel="noopener">Submit Feedback</a> &nbsp;·&nbsp; <a href="https://www.buymeacoffee.com/nageemsemaj" target="_blank" rel="noopener">Buy me a coffee ☕</a></p>
     </div>
     <div class="hdr-right hidden" id="hdr-right">
       <span class="league-name-hdr" id="league-name-hdr"></span>
       <span class="league-type-hdr" id="league-type-hdr"></span>
+      <button class="btn-share" onclick="shareLeague()">Share</button>
       <button class="btn btn-o" onclick="resetToEntry()">Change League</button>
     </div>
   </div>
@@ -314,10 +345,15 @@ table.ht tr:hover td{background:var(--card-h)}
 <div id="entry">
   <h2>Your League, At a Glance</h2>
   <p>Enter your Sleeper username or paste a league ID to see standings, roster health, and activity in one view.</p>
+  <div class="saved-sec hidden" id="saved-sec">
+    <div class="saved-hdr"><span class="saved-title">Saved</span><button class="saved-clear" onclick="clearSaved()">Clear all</button></div>
+    <div class="saved-list" id="saved-list"></div>
+  </div>
   <div class="ig"><input id="ui" type="text" placeholder="Sleeper username"/><button class="btn" onclick="handleUser()">Look Up</button></div>
   <div class="div">or</div>
   <div class="ig"><input id="li" type="text" placeholder="League ID"/><button class="btn btn-o" onclick="handleLeague()">Load League</button></div>
   <p class="err" id="err"></p>
+  <div class="install-hint hidden" id="install-hint"><span>📲</span><div id="install-hint-text"></div><button class="install-hint-x" onclick="dismissInstallHint()">×</button></div>
 </div>
 <div id="picker" class="hidden">
   <button class="back" onclick="resetToEntry()">← Back</button>
@@ -593,6 +629,7 @@ async function loadDash(id){
     S.transactions=txrs.flat();
     lbl('Loading players...');await loadPlayers();
     lbl('Loading trade values...');await loadValues();
+    saveLeague(id,league?.name,leagueType);
     renderDash();
   }catch(e){hideLoad();setErr('Failed: '+(e.message||'Unknown error'));show('entry');}
 }
@@ -742,8 +779,85 @@ function lbl(t){hide('entry');hide('picker');hide('dash');document.getElementByI
 function hideLoad(){hide('loading');}
 function setErr(m){document.getElementById('err').textContent=m;hideLoad();}
 function clearErr(){document.getElementById('err').textContent='';}
-function resetToEntry(){const lth=document.getElementById('league-type-hdr');if(lth){lth.textContent='';lth.className='league-type-hdr';}if(ageChart){ageChart.destroy();ageChart=null;}if(txChart){txChart.destroy();txChart=null;}if(histChart){histChart.destroy();histChart=null;}hide('dash');hide('picker');hideLoad();hide('hdr-right');clearErr();show('entry');histLoaded=false;H={};currentNames={};allHistTrades=[];evalAssetsA=[];evalAssetsB=[];draftSlotsBySeason={};sfFormat='sf';tePremium='off';leagueType='redraft';leagueStatus='inseason';S={...S,leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],nflState:null,week:1};}
+// ══════════ Saved leagues, deep links, share, PWA ══════════
+const SAVED_KEY='sl_saved_leagues_v1';
+const HINT_KEY='sl_install_hint_dismissed_v1';
+const MAX_SAVED=8;
+
+function getSaved(){try{const a=JSON.parse(localStorage.getItem(SAVED_KEY)||'[]');return Array.isArray(a)?a:[];}catch(e){return[];}}
+function writeSaved(list){try{localStorage.setItem(SAVED_KEY,JSON.stringify(list.slice(0,MAX_SAVED)));}catch(e){}}
+function saveLeague(id,name,type){
+  if(!id)return;
+  const list=getSaved().filter(x=>x.id!==id);
+  list.unshift({id,name:name||('League '+id),type:type||'redraft',at:Date.now()});
+  writeSaved(list);
+}
+function removeSaved(id,ev){if(ev)ev.stopPropagation();writeSaved(getSaved().filter(x=>x.id!==id));renderSaved();}
+function clearSaved(){writeSaved([]);renderSaved();}
+function renderSaved(){
+  const list=getSaved();const sec=document.getElementById('saved-sec');const box=document.getElementById('saved-list');
+  if(!sec||!box)return;
+  if(!list.length){sec.classList.add('hidden');box.innerHTML='';return;}
+  sec.classList.remove('hidden');
+  box.innerHTML=list.map(x=>{
+    const cls='lth-'+(x.type||'redraft');
+    return`<div class="saved-item" onclick="loadDash('${x.id}')"><span class="league-type-hdr ${cls}" style="font-size:.6rem;padding:3px 7px">${typeLabel(x.type||'redraft')}</span><div class="saved-item-body"><div class="saved-item-name">${x.name}</div><div class="saved-item-meta">ID ${x.id}</div></div><button class="saved-item-x" onclick="removeSaved('${x.id}',event)" title="Remove">×</button></div>`;
+  }).join('');
+}
+
+function toast(msg){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const el=document.createElement('div');el.className='toast';el.textContent=msg;document.body.appendChild(el);
+  setTimeout(()=>el.remove(),2600);
+}
+function shareLeague(){
+  if(!S.leagueId)return;
+  const url=location.origin+location.pathname+'?league='+encodeURIComponent(S.leagueId);
+  const title=S.league?.name?`${S.league.name} — The Ledger`:'The Ledger';
+  if(navigator.share){navigator.share({title,url}).catch(()=>{});return;}
+  if(navigator.clipboard?.writeText){navigator.clipboard.writeText(url).then(()=>toast('Link copied')).catch(()=>toast(url));return;}
+  toast(url);
+}
+
+function isStandalone(){return window.matchMedia?.('(display-mode: standalone)')?.matches||window.navigator.standalone===true;}
+function isIOS(){return /iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;}
+function dismissInstallHint(){try{localStorage.setItem(HINT_KEY,'1');}catch(e){}document.getElementById('install-hint')?.classList.add('hidden');}
+function maybeShowInstallHint(){
+  const el=document.getElementById('install-hint');const txt=document.getElementById('install-hint-text');
+  if(!el||!txt)return;
+  if(isStandalone())return;
+  try{if(localStorage.getItem(HINT_KEY))return;}catch(e){}
+  // iOS never prompts automatically — Safari's Share sheet is the only path.
+  txt.innerHTML=isIOS()
+    ? `<b>Add to your Home Screen:</b> tap Share in Safari, then "Add to Home Screen" for an app-like experience.`
+    : `<b>Install this app:</b> use your browser menu and choose "Install app" or "Add to Home screen".`;
+  el.classList.remove('hidden');
+}
+
+// Deep links: ?league=<id> loads straight in; ?user=<name> opens that user's league picker.
+async function handleDeepLink(){
+  const q=new URLSearchParams(location.search);
+  const lg=q.get('league');const usr=q.get('user');
+  if(lg){await loadDash(lg.trim());return true;}
+  if(usr){document.getElementById('ui').value=usr.trim();await handleUser();return true;}
+  return false;
+}
+
+function registerSW(){
+  if(!('serviceWorker'in navigator))return;
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});
+}
+
+async function boot(){
+  renderSaved();
+  registerSW();
+  const handled=await handleDeepLink();
+  if(!handled)maybeShowInstallHint();
+}
+
+function resetToEntry(){const lth=document.getElementById('league-type-hdr');if(lth){lth.textContent='';lth.className='league-type-hdr';}if(ageChart){ageChart.destroy();ageChart=null;}if(txChart){txChart.destroy();txChart=null;}if(histChart){histChart.destroy();histChart=null;}hide('dash');hide('picker');hideLoad();hide('hdr-right');clearErr();show('entry');renderSaved();maybeShowInstallHint();histLoaded=false;H={};currentNames={};allHistTrades=[];evalAssetsA=[];evalAssetsB=[];draftSlotsBySeason={};sfFormat='sf';tePremium='off';leagueType='redraft';leagueStatus='inseason';S={...S,leagueId:null,league:null,rosters:[],users:[],matchups:{},transactions:[],nflState:null,week:1};}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModD();if(e.key==='Enter'&&!document.getElementById('entry').classList.contains('hidden')){const u=document.getElementById('ui').value.trim(),l=document.getElementById('li').value.trim();if(u)handleUser();else if(l)handleLeague();}});
+boot();
 </script>
 </body>
 </html>
